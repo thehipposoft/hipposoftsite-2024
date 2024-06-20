@@ -1,0 +1,22 @@
+@import 'variables.scss';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: #FFF;
+}
+
+p {
+  font-family: $roboto-regular;
+}
+
+h2 {
+  font-family: $roboto-medium;
+}
+
+h4 {
+  font-family: $roboto-bold;
+  font-size: 14px;
+}

@@ -1,6 +1,7 @@
 'use client'
 import Image from 'next/image';
-import React, {useState} from 'react';
+import Link from 'next/link';
+import React, { useState } from 'react';
 
 const Banner = () => {
 
@@ -26,10 +27,9 @@ const Banner = () => {
         setIsToggleThree(true)
     }
 
-
     return (
-        <div className='md:h-screen relative z-10'>
-            <div className={`${isToggleOne ? 'opacity-1' : 'opacity-0'} duration-1000 absolute top-0 left-0 w-full h-full`}>
+        <div className='md:h-screen relative'>
+            <div className={`${isToggleOne ? 'opacity-1' : 'opacity-0'} duration-100 absolute top-0 left-0 w-full h-full`}>
                 <Image 
                     src={'/assets/images/banner/banner-1.jpeg'} 
                     layout='fill' alt='Desing Background' 
@@ -37,7 +37,7 @@ const Banner = () => {
                     objectPosition='center 70%'
                 />
             </div>
-            <div className={`${isToggleTwo ? 'opacity-1' : 'opacity-0'} duration-1000 absolute top-0 left-0 w-full h-full`}>
+            <div className={`${isToggleTwo ? 'opacity-1' : 'opacity-0'} duration-100 absolute top-0 left-0 w-full h-full`}>
                 <Image 
                     src={'/assets/images/banner/banner-2.jpeg'} 
                     layout='fill' alt='Desing Background' 
@@ -45,7 +45,7 @@ const Banner = () => {
                     objectPosition='center 70%'
                 />
             </div>
-            <div className={`${isToggleThree ? 'opacity-1' : 'opacity-0'} duration-1000 absolute top-0 left-0 w-full h-full`}>
+            <div className={`${isToggleThree ? 'opacity-1' : 'opacity-0'} duration-100 absolute top-0 left-0 w-full h-full`}>
                 <Image 
                     src={'/assets/images/banner/banner-3.jpeg'} 
                     layout='fill' alt='Desing Background' 
@@ -65,12 +65,17 @@ const Banner = () => {
                     onClick={toggleFunctionOne}
                 >
                     <div className=''>
-                        <div className={`${isToggleOne ? 'opacity-1 block' : 'opacity-0 hidden'} duration-200 w-[400px] flex gap-4 flex-col justify-center`}>
+                        <div className={`${isToggleOne ? 'opacity-1 block -top-12' : 'opacity-0 hidden '} relative duration-300 w-[400px] flex gap-4 flex-col justify-center`}>
                             <Image src={'/assets/logo.png'} width={150} height={250} alt='HippoSoft logo' />
                             <h4 className='text-cyan tracking-[0.5em]'>WE CREATE TO CONNECT</h4>
                             <h2 className='text-[64px] leading-[72px]'>Branding & Design</h2>
                             <p>Where it all begins. Identity. innovation. Unique</p>
-                            <button className='px-8 tracking-[0.3em] text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'>DISCOVER</button>
+                            <Link 
+                                className='px-8 tracking-[0.3em] text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
+                                href={'/design'}
+                            >
+                                DISCOVER
+                            </Link>
                         </div>
                         <div className={`${isToggleOne ? 'hidden' : 'block'}  flex gap-2 flex-col justify-center  items-center`}>
                                 <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className='opacity-0 group-hover:opacity-100 duration-300'>
@@ -114,7 +119,7 @@ const Banner = () => {
                     onClick={toggleFunctionThree}
                 >
                     <div className=''>
-                        <div className={`${isToggleThree ? 'opacity-1 block' : 'opacity-0 hidden'} w-[400px] gap-4 duration-200 flex flex-col justify-center `}>
+                        <div className={`${isToggleThree ? 'opacity-1 block -top-12' : 'opacity-0 hidden'} relative w-[400px] gap-4 duration-200 flex flex-col justify-center `}>
                             <h4 className='text-cyan tracking-[0.5em]'>LET'S GROW TOGETHER</h4>
                             <h2 className='text-[64px] leading-[72px]'>Are you an entrepenur?</h2>
                             <p>A product that no one can see is meaningless. We focus on getting the company to the right audience through the right channels.</p>

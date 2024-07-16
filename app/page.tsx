@@ -1,7 +1,6 @@
 import Banner from "@/components/Banner";
-import BrandingDesing from "@/components/BrandingDesing";
 import Menu from "@/components/Menu";
-import Image from "next/image";
+import BackButton from "@/components/commons/BackButton";
 
 export default function Home() {
   return (

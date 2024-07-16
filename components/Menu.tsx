@@ -27,15 +27,21 @@ const Menu = () => {
             delay: -0.75,
             duration: .5,
             xPercent: -125,
+            ease: 'power2.inOut',
+
         })
+        .from('.links-list > *', {
+            opacity: 0,
+            yPercent: 25,
+            delay: -0.5,
+            ease: 'power2.inOut',
+            stagger: .2
+        })
+        .reverse();
     }, {scope: container});
 
     useEffect(() => {
-        if(openMenu) {
-            tl.current.play();
-        } else {
-            tl.current.reverse();
-        }
+        tl.current.reversed(!openMenu);
     }, [openMenu])
 
     return (
@@ -53,7 +59,7 @@ const Menu = () => {
             <div className={`overlay ${openMenu ? '' : ''} -z-10 opacity-0 absolute w-full h-full top-0 bg-white/20 flex justify-end items-center`} />
             <div className={`menu translate-x-[100%] opacity-100 ${openMenu ? '' : ''}
                 absolute top-24 right-0 flex flex-col justify-between bg-[#221b35] z-10 rounded-lg px-16 h-[450px] w-[300px] py-8`} >
-                    <ul className='flex flex-col gap-7 pt-4'>
+                    <ul className='links-list flex flex-col gap-7 pt-4'>
                         <li className='translate-y-4 flex items-center gap-3 group'>
                             <div className='bg-white p-2 rounded-full group-hover:scale-110 duration-500'>
                                 <Image src={'/assets/images/vectors/menu-1.svg'} width={20} height={25} alt='' className='group-hover:scale-125 duration-500'/>
@@ -84,11 +90,12 @@ const Menu = () => {
                             </div>
                             <p  className='text-sm'>Contact</p>
                         </li>
+                        <div className='flex justify-between'>
+                            <p>HORA</p>
+                            <p>IG</p>
+                        </div>
                     </ul>
-                    <div className='flex justify-between'>
-                        <p>HORA</p>
-                        <p>IG</p>
-                    </div>
+
             </div>
         </div>
     );

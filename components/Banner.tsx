@@ -1,7 +1,9 @@
 'use client'
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 
 const Banner = () => {
 
@@ -27,8 +29,20 @@ const Banner = () => {
         setIsToggleThree(true)
     }
 
+    const container = useRef<HTMLDivElement>(null)
+
+    const { contextSafe } = useGSAP({ scope: container });
+
+    const toggleFunction1 = contextSafe(() => {
+        gsap.to('.first__content', { opacity: 1, top: 0, ease: 'power3.inOut'})
+        setIsToggleOne(true)
+        setIsToggleTwo(false)
+        setIsToggleThree(false)
+    })
+    
+
     return (
-        <div className='md:h-screen relative'>
+        <div className='md:h-screen relative' ref={container}>
             <div className={`${isToggleOne ? 'opacity-1' : 'opacity-0'} duration-100 absolute top-0 left-0 w-full h-full`}>
                 <Image 
                     src={'/assets/images/banner/banner-1.jpeg'} 
@@ -62,10 +76,10 @@ const Banner = () => {
                     h-full relative group
                     flex justify-center items-center duration-500
                     `} 
-                    onClick={toggleFunctionOne}
+                    onClick={toggleFunction1}
                 >
                     <div className=''>
-                        <div className={`${isToggleOne ? 'opacity-1 block -top-12' : 'opacity-0 hidden '} relative duration-300 w-[400px] flex gap-4 flex-col justify-center`}>
+                        <div className={`first__content ${isToggleOne ? 'opacity-1 block -top-12' : 'opacity-0 hidden '} relative duration-300 w-[400px] flex gap-4 flex-col justify-center`}>
                             <Image src={'/assets/logo.png'} width={150} height={250} alt='HippoSoft logo' />
                             <h4 className='text-cyan tracking-[0.5em]'>WE CREATE TO CONNECT</h4>
                             <h2 className='text-[64px] leading-[72px]'>Branding & Design</h2>
@@ -99,7 +113,12 @@ const Banner = () => {
                             <h4 className='text-cyan tracking-[0.5em]'>FROM DESIGN TO CODE</h4>
                             <h2 className='text-[64px] leading-[72px]'>Web Development</h2>
                             <p>Building is important but how is just as essential to us.</p>
-                            <button className='px-8 tracking-[0.3em] text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'>DISCOVER</button>
+                            <Link 
+                                className='px-8 tracking-[0.3em] text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
+                                href={'/web-development'}
+                            >
+                                DISCOVER
+                            </Link>
                         </div>
                         <div className={`${isToggleTwo ? 'hidden' : 'block'}  flex gap-2 flex-col justify-center  items-center`}>
                                 <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className='opacity-0 group-hover:opacity-100 duration-300'>

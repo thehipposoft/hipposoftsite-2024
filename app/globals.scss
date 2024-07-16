@@ -12,11 +12,22 @@ p {
   font-family: $roboto-regular;
 }
 
+h1 {
+  font-family: $roboto-bold;
+}
+
+h3 {
+  font-family: $roboto-medium;
+}
+
 h2 {
   font-family: $roboto-medium;
+  letter-spacing: -0.05em;
 }
 
 h4 {
   font-family: $roboto-bold;
   font-size: 14px;
 }
+
+

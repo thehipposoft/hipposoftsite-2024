@@ -1,5 +1,4 @@
 import WebDevelopmentIndividualComp from '@/components/WebDevelopment/WebDevelopmentIndividualComp';
-import Gsap from '@/components/gsap';
 import React from 'react';
 
 export default function Development() {

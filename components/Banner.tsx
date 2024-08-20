@@ -88,23 +88,22 @@ const Banner = () => {
                     )
                 })
             }
-            <div className='layers__container relative z-20 h-screen flex'>
+            <div className='layers__container relative z-20 h-screen flex flex-col md:flex-row'>
                 <div 
                     className={`
-                    layers opacity-0 -translate-x-24
-                    ${isToggleOne  ? 'w-1/2 bg-black/70' : 'w-1/4'}
-                    ${isToggleTwo  ? ' bg-black/50 hover:bg-black/55' : ''} 
-                    ${isToggleThree  ? ' bg-black/45 hover:bg-black/55' : ''} 
-                     h-full relative group
-                    flex justify-center items-center duration-500
+                    layers opacity-0 -translate-x-24 w-full
+                    md:h-full relative group flex justify-center items-center md:duration-500 duration-700
+                    ${isToggleOne  ? 'md:w-1/2 h-[70vh] bg-black/70' : 'md:w-1/4 h-1/4'}
+                    ${isToggleTwo  ? ' h-[15vh] bg-black/50 hover:bg-black/55' : ''} 
+                    ${isToggleThree  ? 'h-[15vh] bg-black/45 hover:bg-black/55' : ''} 
                     `} 
                     onClick={toggleFunctionOne}
                 >
                     <div className=''>
-                        <div className={`first__content ${isToggleOne ? 'opacity-1 block -top-12' : ' hidden '} relative duration-1000 w-[400px] flex gap-8 flex-col justify-center`}>
+                        <div className={`first__content ${isToggleOne ? 'opacity-1 block md:-top-12' : ' hidden '} relative duration-1000 w-[400px] flex gap-8 flex-col justify-center items-center md:items-start`}>
                             <Image src={'/assets/logo.png'} width={150} height={250} alt='HippoSoft logo' />
                             <h4 className='text-cyan tracking-[0.5em]'>WE CREATE TO CONNECT</h4>
-                            <h2 className='text-[64px] leading-[72px]'>Branding & Design</h2>
+                            <h2 className='md:text-[64px] text-5xl leading-[72px]'>Branding & Design</h2>
                             <p>Where it all begins. Identity. innovation. Unique</p>
                             <Link 
                                 className='px-8 tracking-[0.3em] text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
@@ -123,16 +122,16 @@ const Banner = () => {
                     </div>
                 </div>
                 <div 
-                    className={` layers opacity-0 -translate-x-24
-                    ${isToggleTwo ? 'w-1/2 bg-black/70' : 'w-1/4 bg-black/50 hover:bg-black/60'}
-                      bg-black/50  group h-full flex justify-center items-center origin-right duration-500 relative `} 
+                    className={`md:h-full layers opacity-0 -translate-x-24
+                    ${isToggleTwo ? 'md:w-1/2 bg-black/70 h-[70vh]' : 'md:w-1/4 bg-black/50 hover:bg-black/60 h-[15vh]'}
+                      bg-black/50  group h-full flex justify-center items-center origin-right md:duration-500 duration-700 relative `} 
                     onClick={toggleFunctionOnTwo}
                 >
                     <div className=''>
-                        <div className={`${isToggleTwo ? 'opacity-1 block' : ' hidden'} w-[400px] gap-4 duration-1000 flex flex-col justify-center`}>
+                        <div className={`${isToggleTwo ? 'opacity-1 block' : ' hidden'} w-[400px] gap-8 duration-1000 flex flex-col justify-center items-center md:items-start`}>
                             <h4 className='text-cyan tracking-[0.5em]'>FROM DESIGN TO CODE</h4>
-                            <h2 className='text-[64px] leading-[72px]'>Web Development</h2>
-                            <p>Building is important but how is just as essential to us.</p>
+                            <h2 className='md:text-[64px] text-5xl leading-[72px]'>Web Development</h2>
+                            <p className='px-10 text-center md:px-0 md:text-left'>Building is important but how is just as essential to us.</p>
                             <Link 
                                 className='px-8 tracking-[0.3em] text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
                                 href={'/web-development'}
@@ -150,18 +149,18 @@ const Banner = () => {
                     </div>
                 </div>
                 <div 
-                    className={` layers opacity-0 -translate-x-24
-                    ${isToggleThree ? 'bg-black/70 w-1/2' : 'w-1/4'} 
+                    className={`md:h-full layers opacity-0 -translate-x-24
+                    ${isToggleThree ? 'bg-black/70 md:w-1/2 h-[70vh]' : 'md:w-1/4 h-[15vh]'} 
                     ${isToggleOne  ? ' bg-black/40 hover:bg-black/55' : ''}
                     ${isToggleTwo  ? ' bg-black/50 hover:bg-black/55' : ''} 
-                     bg-black/40   group flex justify-center items-center h-full origin-right duration-500 relative `} 
+                     bg-black/40   group flex justify-center items-center h-full origin-right md:duration-500 duration-700 relative `} 
                     onClick={toggleFunctionThree}
                 >
                     <div className=''>
-                        <div className={`${isToggleThree ? 'opacity-1 block -top-12' : 'opacity-0 hidden'} relative w-[400px] gap-4 duration-1000 flex flex-col justify-center `}>
+                        <div className={`${isToggleThree ? 'opacity-1 block -top-12' : 'opacity-0 hidden'} relative w-[400px] gap-8 duration-1000 flex flex-col justify-center items-center md:items-start`}>
                             <h4 className='text-cyan tracking-[0.5em]'>LET'S GROW TOGETHER</h4>
-                            <h2 className='text-[64px] leading-[72px]'>Are you an entrepenur?</h2>
-                            <p>A product that no one can see is meaningless. We focus on getting the company to the right audience through the right channels.</p>
+                            <h2 className='md:text-[64px] text-5xl leading-[72px] text-center md:text-left'>Are you an entrepenur?</h2>
+                            <p className='px-8 text-center md:px-0 md:text-left'>A product that no one can see is meaningless. We focus on getting the company to the right audience through the right channels.</p>
                             <button className='px-8 tracking-[0.3em] text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'>DISCOVER</button>
                         </div>
                         <div className={`${isToggleThree ? 'hidden' : 'block'} subTitle opacity-0 flex gap-4 flex-col justify-center  items-center`}>

@@ -29,7 +29,6 @@ const Menu = () => {
         })
         .to('.menu', {
             opacity: 1,
-            delay: -0.75,
             duration: 1,
             x: 0,
             ease: 'power3.inOut',
@@ -52,7 +51,7 @@ const Menu = () => {
     return (
         <div ref={container} className=''>
             <div 
-                className='absolute top-12 right-24 hover:bg-white/30 rounded-xl px-2 py-3 duration-300 cursor-pointer z-40'
+                className='absolute top-12 md:right-24 right-10 hover:bg-white/30 rounded-xl px-2 py-3 duration-300 cursor-pointer z-40'
                 onClick={openMenuFunc}
             >
                 <svg width="30" height="15" viewBox="0 0 30 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -61,39 +60,39 @@ const Menu = () => {
                     <rect y="12.25" width="30" height="2.75" rx="1.375" fill="#70FFE5"/>
                 </svg>
             </div>
-            <div className={`overlay ${openMenu ? '' : ''} -z-10 opacity-0 absolute w-full h-full top-0 bg-white/20 flex justify-end items-center`} />
+            <div className={`overlay ${openMenu ? '' : ''} -z-10 opacity-0 absolute w-full h-full top-0 bg-white/20 md:flex justify-end items-center hidden`} />
             <div className={`menu translate-x-[100%] opacity-100 ${openMenu ? '' : ''}
-                absolute top-0 right-0 flex flex-col justify-center items-center bg-[#221b35] z-30 px-16 h-screen w-[400px] py-4`} >
+                absolute top-0 right-0 flex flex-col justify-center items-center bg-[#221b35] z-30 px-16 h-screen md:w-[400px] w-screen py-4`} >
                     <ul className='links-list flex flex-col gap-12'>
                         <li className='translate-y-4 flex items-center gap-3 group'>
                             <div className='bg-white p-2 rounded-full group-hover:scale-110 duration-500'>
                                 <Image src={'/assets/images/vectors/menu-1.svg'} width={20} height={25} alt='' className='group-hover:scale-125 duration-500'/>
                             </div>
-                            <p className=''>Branding & Design</p>
+                            <p className='light text-2xl'>Branding & Design</p>
                         </li>
                         <li className='translate-y-4 flex items-center gap-3 group'>
                             <div className='bg-white p-2 rounded-full group-hover:scale-110 duration-500'>
                                 <Image src={'/assets/images/vectors/menu-2.svg'} width={20} height={25} alt='' className='group-hover:scale-125 duration-500'/>
                             </div>
-                            <p  className=''>Web Development</p>
+                            <p  className='light text-2xl'>Web Development</p>
                         </li>
                         <li className=' translate-y-4 flex items-center gap-3 group'>
                             <div className='bg-white p-2 rounded-full group-hover:scale-110 duration-500'>
                                 <Image src={'/assets/images/vectors/menu-3.svg'} width={20} height={25} alt='' className='group-hover:scale-125 duration-500'/>
                             </div>
-                            <p  className=''>Projects</p>
+                            <p  className='light text-2xl'>Projects</p>
                         </li>
                         <li className=' translate-y-4 flex items-center gap-3 group'>
                             <div className='bg-white p-2 rounded-full group-hover:scale-110 duration-500'>
                                 <Image src={'/assets/images/vectors/menu-4.svg'} width={20} height={25} alt='' className='group-hover:scale-125 duration-500'/>
                             </div>
-                            <p  className=''>Entrepeneurs</p>
+                            <p  className='light text-2xl'>Entrepeneurs</p>
                         </li>
                         <li className='translate-y-4 flex items-center gap-3 group'>
                             <div className='bg-white p-2 rounded-full group-hover:scale-110 duration-500'>
                                 <Image src={'/assets/images/vectors/menu-5.svg'} width={20} height={25} alt='' className='group-hover:scale-125 duration-500'/>
                             </div>
-                            <p  className=''>Contact</p>
+                            <p  className='light text-2xl'>Contact</p>
                         </li>
                         <div className='flex justify-between'>
                             <p className="tracking-wider inline-block bg-gradient-to-r from-[#9747FF] via-[#7B8FDD] to-[#09F4F4] bg-clip-text text-xl text-transparent">{formattedDate}</p>

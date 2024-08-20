@@ -16,13 +16,13 @@ const LogofolioSingleComp = ({ data }:any) => {
                             <BackButton href={'/design'}/>
                         </div>
                         :
-                        <div className='flex items-center gap-4'>
-                            <p>Logofolio</p>
+                        <div className='flex items-center gap-8'>
+                            <h4 className='text-base'>Logofolio</h4>
                             <BackButton href={'/logofolio'}/>
                         </div>
                     }
             </div>
-            <div className='w-[1300px] mx-auto h-[550px] flex justify-between gap-2'>
+            <div className='w-[1300px] mx-auto min-h-[600px] 2xl:min-h-[700px] 2xl:m-auto flex justify-between gap-2'>
                 <div className='w-[375px] h-[500px]'>
                     <LogofolioGallery images={data.gallery} />
                 </div>
@@ -43,15 +43,15 @@ const LogofolioSingleComp = ({ data }:any) => {
                                 </div>
                                 :
                                 <div>
-                                    <p>Concept:</p>
+                                    <h4>Concept:</h4>
                                     {
                                         data.concept.length > 1 ? 
                                         <div>
-                                            <p>{data.concept[0]}</p>
-                                            <p>{data.concept[1]}</p>
+                                            <h4>{data.concept[0]}</h4>
+                                            <h4>{data.concept[1]}</h4>
                                         </div>
                                         :
-                                        <p>{data.concept}</p>
+                                        <h4>{data.concept}</h4>
         
                                     }
                                 </div>
@@ -63,11 +63,11 @@ const LogofolioSingleComp = ({ data }:any) => {
                         </div>
                     </div>
                 </div>
-                <div className='flex flex-col justify-between'>
-                    <div className='uppercase text-[15px]'>
-                        <h3>{data.information[0]}</h3>
-                        <h3>{data.information[1]}</h3>
-                        <h3>{data.information[2]}</h3>
+                <div className='flex flex-col justify-between h-[400px]'>
+                    <div className='uppercase text-[15px] flex flex-col items-end gap-1'>
+                        <h3 className='light'>{data.information[0]}</h3>
+                        <h3 className='light'>{data.information[1]}</h3>
+                        <h3 className='light'>{data.information[2]}</h3>
                         {data.category ? <Link href={data.href} rel='noreferrer' target='_blank' className='flex w-fit mt-6'>
                                             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <g clip-path="url(#clip0_2328_1259)">
@@ -85,7 +85,7 @@ const LogofolioSingleComp = ({ data }:any) => {
                     </div>
                     {
                         data.logo ?
-                        <div className={`relative w-[${data.logoSizes[0]}] h-[${data.logoSizes[1]}] `}>
+                        <div className={`relative w-[${data.logoSizes[0]}] h-[${data.logoSizes[1]}]`}>
                             <Image src={data.logo} alt={`${data.name} logo`} fill />
                         </div>
                         :

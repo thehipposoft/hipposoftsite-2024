@@ -6,7 +6,7 @@ const LOGOFOLIO_DATA = [
         description: ['Rock Steady assists organizations in their digital transformation and implements their requirements.',
             'Its mission is to enhance companies existing digital capabilities through website and social media development, e-commerce implementations and digital transformations.', 'Rock Steady brings people, processes, tools and data together in a creative way that helps companies achieve success through continuous improvement.'],
         concept: [`The logo is bold and playful, a symbol of the company's attitude. It represents its rebellious and innovative character. The accompanying elements (stars) symbolize the digital transformation journey, which aims to connect the past with the future of the companies.`],
-        content: <div className="flex gap-12 pt-12">
+        content: <div className="flex flex-col md:flex-row gap-12 pt-12">
                     <div className="flex flex-col gap-6">
                         <p className="text-sm">Primary Palett</p>
                         <div className="flex gap-12">
@@ -60,7 +60,7 @@ const LOGOFOLIO_DATA = [
         description: ['Inspir is an elite performance expert that helps elite athletes and executives in competitive fields tounleash the power of the mind and create the mental toughness needed to perform at their best.',
             'It provides an innovative and efficient solution for associations, and responds to all requests: help, advice and support to athletes, teams or organizations.'],
         concept: [`“The mind is not a vessel to be filled, but a fire to be ignited.”, Plutarch, ancient Greece.`],
-        content: <div className="flex items-end gap-4 pt-4">
+        content: <div className="flex flex-col md:flex-row md:items-end gap-4 pt-4">
                     <div className="relative w-[300px] h-[165px]">
                         <Image src={'/assets/images/logofolio/inspir/inspir-info.webp'} fill alt="Inspir primary colors" />
                     </div>
@@ -78,12 +78,12 @@ const LOGOFOLIO_DATA = [
         name: 'Diversity Employment',
         description: ['Diversity Employment  helps companies in the Nelson/Tasman region recruit to retain employees in hard-to-fill short-skill occupations.', 'Recruitment for retention combines  the process of carefully selecting an individual to obtain a lasting and satisfying relationship with the employee.'],
         concept: ['Rope, conexion, abstract monogram “D E”. The construction of the brand was generated from the circle, one of the most flexible and meaningful geometric shapes.', 'In this case, both semicircles joined by an inner circle seek to reflect the aim of the company, which is to intermediate between the employer and the immigrant. Its circular shape makes it emotionally more positive and close, other values that conveys are: movement, globality, protection, reliability.'],
-        content: <div className="flex justify-between pt-6">
+        content: <div className="flex flex-col md:flex-row justify-between pt-6 gap-8 md:gap-0">
                     <div className="flex flex-col gap-2">
                         <p className=" text-sm">Primary Colors</p>
                         <div className="grid grid-cols-3">
                             <div className="flex flex-col gap-4">
-                                <div className="w-[7vw] h-[5vh] bg-[#44B2AF]" />
+                                <div className="md:w-[7vw] w-[15vw] h-[5vh] bg-[#44B2AF]" />
                                 <div className="flex flex-col gap-[2px] text-xs">
                                     <p className="light">R: 68</p>
                                     <p className="light">G: 178</p>
@@ -96,7 +96,7 @@ const LOGOFOLIO_DATA = [
                                 </div>
                           </div>
                             <div className="flex flex-col gap-4">
-                                <div className="w-[7vw] h-[5vh] bg-[#30528D]" />
+                                <div className="md:w-[7vw] w-[15vw] h-[5vh] bg-[#30528D]" />
                                 <div className="flex flex-col gap-[2px] text-xs">
                                     <p className="light">R: 68</p>
                                     <p className="light">G: 178</p>
@@ -109,7 +109,7 @@ const LOGOFOLIO_DATA = [
                                 </div>
                             </div>
                             <div className="flex flex-col gap-4">
-                                <div className="w-[7vw] h-[5vh] bg-[#F15F3F]" />
+                                <div className="md:w-[7vw] w-[15vw] h-[5vh] bg-[#F15F3F]" />
                                 <div className="flex flex-col gap-[2px] text-xs">
                                     <p className="light">R: 68</p>
                                     <p className="light">G: 178</p>
@@ -127,7 +127,7 @@ const LOGOFOLIO_DATA = [
                         <p className=" text-sm">Accent</p>
                         <div className="grid">
                             <div className="flex flex-col gap-4">
-                                <div className="w-[7vw] h-[5vh] bg-[#FFCC5F]" />
+                                <div className="md:w-[7vw] w-[15vw] h-[5vh] bg-[#FFCC5F]" />
                                 <div className="flex flex-col gap-[2px] text-xs">
                                     <p className="light">R: 68</p>
                                     <p className="light">G: 178</p>
@@ -152,12 +152,12 @@ const LOGOFOLIO_DATA = [
         name: 'Destino Salta',
         description: ['Destino Salta is a temporary rental project that seeks to offer a unique lodging experience in the city of Salta, the Northwest of Argentina, in a simple and reliable way.'],
         concept: ['Destino Salta is a brand that honors the cultural and scenic richness of the province of Salta. The logo seeks to capture its essence, its earthy colors evoke the regional chromatic palette, highlighting the burgundy tone of the Salta poncho as the primary color.', `Recognized elements of the local flora and fauna were chosen for the design to convey the concept of the province's vast biodiversity. Salta's landscape is one of its most famous attributes and that is why thousands of tourists visit it every year.`],
-        content: <div className="flex flex-row-reverse justify-between pt-6">
+        content: <div className="flex md:flex-row-reverse flex-col-reverse gap-8 md:gap-0 justify-between pt-6">
                     <div className="flex flex-col gap-2">
                         <p className=" text-sm">Secundary Colors</p>
                         <div className="grid grid-cols-3">
                             <div className="flex flex-col gap-4">
-                                <div className="w-[7vw] h-[5vh] bg-[#BE6312]" />
+                                <div className="md:w-[7vw] w-[15vw] h-[5vh] bg-[#BE6312]" />
                                 <div className="flex flex-col gap-[2px] text-xs">
                                     <p className="light">R: 190</p>
                                     <p className="light">G: 99</p>
@@ -170,7 +170,7 @@ const LOGOFOLIO_DATA = [
                                 </div>
                         </div>
                             <div className="flex flex-col gap-4">
-                                <div className="w-[7vw] h-[5vh] bg-[#EF973B]" />
+                                <div className="md:w-[7vw] w-[15vw] h-[5vh] bg-[#EF973B]" />
                                 <div className="flex flex-col gap-[2px] text-xs">
                                     <p className="light">R: 239</p>
                                     <p className="light">G: 151</p>
@@ -183,7 +183,7 @@ const LOGOFOLIO_DATA = [
                                 </div>
                             </div>
                             <div className="flex flex-col gap-4">
-                                <div className="w-[7vw] h-[5vh] bg-[#4B4136]" />
+                                <div className="md:w-[7vw] w-[15vw] h-[5vh] bg-[#4B4136]" />
                                 <div className="flex flex-col gap-[2px] text-xs">
                                     <p className="light">R: 75</p>
                                     <p className="light">G: 65</p>
@@ -201,7 +201,7 @@ const LOGOFOLIO_DATA = [
                         <p className=" text-sm">Primary Colors</p>
                         <div className="grid">
                             <div className="flex flex-col gap-4">
-                                <div className="w-[7vw] h-[5vh] bg-[#8F122B]" />
+                                <div className="md:w-[7vw] w-[15vw] h-[5vh] bg-[#8F122B]" />
                                 <div className="flex flex-col gap-[2px] text-xs">
                                     <p className="light">R: 68</p>
                                     <p className="light">G: 178</p>

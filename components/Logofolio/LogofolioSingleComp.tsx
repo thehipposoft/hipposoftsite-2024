@@ -6,34 +6,46 @@ import BackButton from '../commons/BackButton';
 
 const LogofolioSingleComp = ({ data }:any) => {
     return (
-        <div className='flex flex-col h-screen text-black'>
-            <div className='flex justify-between py-8 w-[1300px] mx-auto'>
+        <div className='flex flex-col md:h-screen text-black'>
+            <div className='flex justify-between py-8 md:w-[1300px] w-[85vw] mx-auto'>
                 <h2 className='text-4xl'>{data.name}</h2>
                     {
                         data.category ?
                         <div className='flex items-center gap-4'>
-                            <p>Social Media</p>
+                            <p className='hidden md:block'>Social Media</p>
                             <BackButton href={'/design'}/>
+                            <Link href={'/design'} className='md:hidden block'>
+                                <svg className='' width="20" height="20" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2 0.75C2 0.33579 2.33579 0 2.75 0H9C10.9786 0 12.5041 0.82266 13.5198 2.07425C14.5207 3.30739 15 4.9201 15 6.5C15 8.0799 14.5207 9.6926 13.5198 10.9258C12.5041 12.1773 10.9786 13 9 13H2.56066L5.0303 15.4697C5.3232 15.7626 5.3232 16.2374 5.0303 16.5303C4.73744 16.8232 4.26256 16.8232 3.96967 16.5303L0.219668 12.7803C-0.0732225 12.4874 -0.0732225 12.0126 0.219668 11.7197L3.96967 7.9697C4.26256 7.6768 4.73744 7.6768 5.0303 7.9697C5.3232 8.2626 5.3232 8.7374 5.0303 9.0303L2.56066 11.5H9C10.5214 11.5 11.6209 10.8852 12.3552 9.9805C13.1043 9.0574 13.5 7.7951 13.5 6.5C13.5 5.2049 13.1043 3.94261 12.3552 3.0195C11.6209 2.11484 10.5214 1.5 9 1.5H2.75C2.33579 1.5 2 1.16421 2 0.75Z" 
+                                    fill='#000000'/>
+                                </svg>
+                            </Link>
                         </div>
                         :
                         <div className='flex items-center gap-8'>
-                            <h4 className='text-base'>Logofolio</h4>
+                            <h4 className='text-base hidden md:block'>Logofolio</h4>
                             <BackButton href={'/logofolio'}/>
+                            <Link href={'/logofolio'} className='md:hidden block'>
+                                <svg className='' width="20" height="20" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2 0.75C2 0.33579 2.33579 0 2.75 0H9C10.9786 0 12.5041 0.82266 13.5198 2.07425C14.5207 3.30739 15 4.9201 15 6.5C15 8.0799 14.5207 9.6926 13.5198 10.9258C12.5041 12.1773 10.9786 13 9 13H2.56066L5.0303 15.4697C5.3232 15.7626 5.3232 16.2374 5.0303 16.5303C4.73744 16.8232 4.26256 16.8232 3.96967 16.5303L0.219668 12.7803C-0.0732225 12.4874 -0.0732225 12.0126 0.219668 11.7197L3.96967 7.9697C4.26256 7.6768 4.73744 7.6768 5.0303 7.9697C5.3232 8.2626 5.3232 8.7374 5.0303 9.0303L2.56066 11.5H9C10.5214 11.5 11.6209 10.8852 12.3552 9.9805C13.1043 9.0574 13.5 7.7951 13.5 6.5C13.5 5.2049 13.1043 3.94261 12.3552 3.0195C11.6209 2.11484 10.5214 1.5 9 1.5H2.75C2.33579 1.5 2 1.16421 2 0.75Z" 
+                                    fill='#000000'/>
+                                </svg>
+                            </Link>
                         </div>
                     }
             </div>
-            <div className='w-[1300px] mx-auto min-h-[600px] 2xl:min-h-[700px] 2xl:m-auto flex justify-between gap-2'>
-                <div className='w-[375px] h-[500px]'>
+            <div className='md:w-[1300px] w-[80vw] my-12 md:my-0 mx-auto min-h-[600px] 2xl:min-h-[700px] 2xl:m-auto flex flex-col-reverse md:flex-row justify-between md:gap-2 gap-12'>
+                <div className='md:w-[375px] w-[344px] h-[500px]'>
                     <LogofolioGallery images={data.gallery} />
                 </div>
                 <div className='flex flex-col justify-between '>
-                    <div className='flex flex-col gap-2 text-sm w-[460px]'>
+                    <div className='flex flex-col gap-2 text-sm md:w-[460px]'>
                         <p>{data.description[0]}</p>
                         <p>{data.description[1]}</p>
                         <p>{data.description[2]}</p>
                     </div>
                     <div>
-                        <div className='font-black w-[460px] text-sm pt-12'>
+                        <div className='font-black md:w-[460px] text-sm pt-12'>
                             {
                                 data.client ?
                                 <div>
@@ -63,23 +75,13 @@ const LogofolioSingleComp = ({ data }:any) => {
                         </div>
                     </div>
                 </div>
-                <div className='flex flex-col justify-between h-[400px]'>
-                    <div className='uppercase text-[15px] flex flex-col items-end gap-1'>
+                <div className='flex flex-col gap-6 justify-between md:h-[400px]'>
+                    <div className='uppercase text-[15px] flex flex-col md:items-end gap-1'>
                         <h3 className='light'>{data.information[0]}</h3>
                         <h3 className='light'>{data.information[1]}</h3>
                         <h3 className='light'>{data.information[2]}</h3>
                         {data.category ? <Link href={data.href} rel='noreferrer' target='_blank' className='flex w-fit mt-6'>
-                                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <g clip-path="url(#clip0_2328_1259)">
-                                                <path d="M17 2H7C4.23858 2 2 4.23858 2 7V17C2 19.7614 4.23858 22 7 22H17C19.7614 22 22 19.7614 22 17V7C22 4.23858 19.7614 2 17 2Z" stroke="#41EAD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M15.9997 11.3698C16.1231 12.2021 15.981 13.052 15.5935 13.7988C15.206 14.5456 14.5929 15.1512 13.8413 15.5295C13.0898 15.9077 12.2382 16.0394 11.4075 15.9057C10.5768 15.7721 9.80947 15.3799 9.21455 14.785C8.61962 14.1901 8.22744 13.4227 8.09377 12.592C7.96011 11.7614 8.09177 10.9097 8.47003 10.1582C8.84829 9.40667 9.45389 8.79355 10.2007 8.40605C10.9475 8.01856 11.7975 7.8764 12.6297 7.99981C13.4786 8.1257 14.2646 8.52128 14.8714 9.12812C15.4782 9.73496 15.8738 10.5209 15.9997 11.3698Z" stroke="#41EAD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                </g>
-                                                <defs>
-                                                <clipPath id="clip0_2328_1259">
-                                                <rect width="24" height="24" fill="white"/>
-                                                </clipPath>
-                                                </defs>
-                                            </svg>
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#a)" stroke="#41EAD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5Z"/><path d="M16 11.37a4 4 0 1 1-7.914 1.173A4 4 0 0 1 16 11.37Z"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
                                         </Link> 
                         : <></>}
                     </div>

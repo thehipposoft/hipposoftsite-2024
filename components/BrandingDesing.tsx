@@ -66,7 +66,8 @@ const BrandingDesing = () => {
             transformOrigin: 'bottom',
             width: 180,
             height: 220,
-            duration: 1
+            duration: 1,
+            opacity: 100,
         })
         .to('.image-animation', {
             transformOrigin: 'bottom',
@@ -104,48 +105,47 @@ const BrandingDesing = () => {
 
 
     return (
-        <div ref={container} className='h-screen bg-white'>
+        <div ref={container} className='h-screen hidden md:block bg-white'>
             <div className='title items-center opacity-0 flex justify-between w-full px-20 pt-16 pb-4'>
                 <h1 className='text-black text-5xl'>Branding & Design</h1>
                 <BackButton href={'/'} color='black' />
             </div>
             <div className={`bg-white flex flex-col justify-center items-center pt-8 relative overflow-hidden`}>
                 <div className={`carousel__wrapper translate-x-[900px] flex gap-20 items-center`}>
-                    <div className='w-[200px] h-[10px] relative image-animation' onClick={onClickOne}>
+                    <div className='w-[200px] h-[10px] opacity-0 relative image-animation' onClick={onClickOne}>
                         <Link href={'/logofolio'} className={`${state.isActive1 ? '' : 'hidden'} absolute w-full h-full z-[11]`} />
                         <div className='info relative z-10 flex opacity-0 pt-12 pl-12 items-center gap-3'>
                             <h3 className='text-4xl'>{DESIGN_DATA[0].name}</h3>
                             <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1.25 20H38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
-                                <path d="M20 1.25V38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
+                                <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                                <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                             </svg>
                         </div>
-                        <Image src={DESIGN_DATA[0].image} fill objectFit='cover' objectPosition='center' alt='Inspir logo' className=''/>
+                        <Image src={DESIGN_DATA[0].image} fill className='object-cover object-center' alt='Inspir logo' priority/>
                     </div>
                     <div className='w-[850px] h-[530px] relative carousel-slide opacity-0' onClick={onClickTwo}>
                         <Link href={'/web-design'} className={`${state.isActive2 ? '' : 'hidden'} absolute w-full h-full z-[11]`} />
                         <div className='relative z-10 flex pt-12 pl-12 items-center gap-3'>
                             <h3 className='text-4xl'>{DESIGN_DATA[1].name}</h3>
                             <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1.25 20H38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
-                                <path d="M20 1.25V38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
+                                <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                                <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                             </svg>
                         </div>
-                        <Image src={DESIGN_DATA[1].image} fill objectFit='cover' objectPosition='center' alt='Inspir logo' className=''/>
+                        <Image src={DESIGN_DATA[1].image} fill className='object-cover object-center' alt='Inspir logo'/>
                     </div>
                     <div className='w-[850px] h-[530px] relative carousel-slide opacity-0' onClick={onClickThree}>
                         <Link href={'/social-media'} className={`${state.isActive3 ? '' : 'hidden'} absolute w-full h-full z-[11]`} />
                         <div className=' relative z-10 flex pt-12 pl-12 items-center gap-3'>
                             <h3 className='text-4xl'>{DESIGN_DATA[2].name}</h3>
                             <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1.25 20H38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
-                                <path d="M20 1.25V38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
+                                <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                                <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                             </svg>
                         </div>
-                        <Image src={DESIGN_DATA[2].image} fill objectFit='cover' objectPosition='center' alt='Inspir logo' className=''/>
+                        <Image src={DESIGN_DATA[2].image} fill className='object-cover object-center' alt='Inspir logo' />
                     </div>
                 </div>
-
             </div>
         </div>
     );

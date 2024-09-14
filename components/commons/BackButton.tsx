@@ -34,7 +34,7 @@ const BackButton = ({ href, color, bgColor }:ButtonTypes) => {
             href={href}
             onMouseEnter={mouseEnterAnimation}
             onMouseLeave={mouseLeaveAnimation}
-            className='relative flex items-center justify-center gap-2 px-5 py-1 overflow-hidden'
+            className='hidden relative md:flex items-center justify-center gap-2 px-5 py-1 overflow-hidden'
          >
             <div className='overlay bg-black/20 absolute top-0 left-0 w-0 h-full rounded-3xl opacity-0' />
             <svg width="13" height="13" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">

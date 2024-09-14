@@ -63,11 +63,17 @@ const Cards = () => {
 
     return (
         <div>
-            <div className='title flex w-[1250px] mx-auto pt-12 justify-between items-center text-black'>
+            <div className='title flex md:w-[1250px] w-[80vw] mx-auto pt-12 justify-between items-center text-black'>
                 <h2 className='text-5xl'>Web Development</h2>
                 <BackButton href={'/'} />
+                <Link href={'/'} className='md:hidden block'>
+                    <svg className='' width="20" height="20" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 0.75C2 0.33579 2.33579 0 2.75 0H9C10.9786 0 12.5041 0.82266 13.5198 2.07425C14.5207 3.30739 15 4.9201 15 6.5C15 8.0799 14.5207 9.6926 13.5198 10.9258C12.5041 12.1773 10.9786 13 9 13H2.56066L5.0303 15.4697C5.3232 15.7626 5.3232 16.2374 5.0303 16.5303C4.73744 16.8232 4.26256 16.8232 3.96967 16.5303L0.219668 12.7803C-0.0732225 12.4874 -0.0732225 12.0126 0.219668 11.7197L3.96967 7.9697C4.26256 7.6768 4.73744 7.6768 5.0303 7.9697C5.3232 8.2626 5.3232 8.7374 5.0303 9.0303L2.56066 11.5H9C10.5214 11.5 11.6209 10.8852 12.3552 9.9805C13.1043 9.0574 13.5 7.7951 13.5 6.5C13.5 5.2049 13.1043 3.94261 12.3552 3.0195C11.6209 2.11484 10.5214 1.5 9 1.5H2.75C2.33579 1.5 2 1.16421 2 0.75Z" 
+                        fill='#000000'/>
+                    </svg>
+                </Link>
             </div>
-            <div ref={container} className='max-w-[1400px] mx-auto flex justify-between items-end h-[600px] overflow-hidden'>
+            <div ref={container} className='md:max-w-[1400px] max-w-[80vw] mx-auto flex flex-col md:flex-row justify-between md:items-end gap-20 md:gap-0 pt-12 md:pt-0 md:h-[600px] overflow-hidden'>
                 {
                     CARDS_DATA.map((val, index) => {
                         return(
@@ -93,43 +99,3 @@ const Cards = () => {
 };
 
 export default Cards;
-
-/*
-
-              <div className='card'>
-                    <Link href={CARDS_DATA[0].href} className='flex flex-col gap-4 text-black max-w-[320px] relative'>
-                        <div className='relative w-[320px] h-[240px]'>
-                            <Image fill alt={`Image ${CARDS_DATA[0]}`} src={CARDS_DATA[0].image} objectFit='cover' />
-                        </div>
-                        <h4>{CARDS_DATA[0].title}</h4>
-                        <p className='text-sm'>{CARDS_DATA[0].description}</p>
-                    </Link>
-                </div>
-                <div className='card'>
-                    <Link href={CARDS_DATA[1].href} className='flex flex-col gap-4 text-black max-w-[320px] relative bottom-[50px]'>
-                        <div className='relative w-[320px] h-[240px]'>
-                            <Image fill alt={`Image ${CARDS_DATA[1]}`} src={CARDS_DATA[1].image} objectFit='cover' />
-                        </div>
-                        <h4>{CARDS_DATA[1].title}</h4>
-                        <p className='text-sm'>{CARDS_DATA[1].description}</p>
-                    </Link>
-                </div>
-                <div className='card'>
-                    <Link href={CARDS_DATA[2].href} className='flex flex-col gap-4 text-black max-w-[320px] relative bottom-[100px]'>
-                        <div className='relative w-[320px] h-[240px]'>
-                            <Image fill alt={`Image ${CARDS_DATA[2]}`} src={CARDS_DATA[2].image} objectFit='cover' />
-                        </div>
-                        <h4>{CARDS_DATA[2].title}</h4>
-                        <p className='text-sm'>{CARDS_DATA[2].description}</p>
-                    </Link>
-                </div>
-                <div className='card'>
-                    <Link href={CARDS_DATA[3].href} className='flex flex-col gap-4 text-black max-w-[320px] relative bottom-[150px]'>
-                        <div className='relative w-[320px] h-[240px]'>
-                            <Image fill alt={`Image ${CARDS_DATA[3]}`} src={CARDS_DATA[3].image} objectFit='cover' />
-                        </div>
-                        <h4>{CARDS_DATA[3].title}</h4>
-                        <p className='text-sm'>{CARDS_DATA[3].description}</p>
-                    </Link>
-                </div>
-*/

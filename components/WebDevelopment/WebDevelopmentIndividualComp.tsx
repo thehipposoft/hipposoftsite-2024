@@ -24,7 +24,7 @@ const WebDevelopmentIndividualComp = ({props}:any) => {
             ease: 'back.out'
         })
 
-        mm.add("(mix-width: 800px)", () => {
+        mm.add("(min-width: 800px)", () => {
             gsap.to('.line' , {
                 width: '100%',
                 ease: 'power3.inOut',

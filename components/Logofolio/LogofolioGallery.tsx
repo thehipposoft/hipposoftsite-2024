@@ -5,7 +5,7 @@ import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 
 
-const LogofolioGallery = ({ images }:any) => {
+const LogofolioGallery = ({ images, vc }:any) => {
  
     const container = useRef<HTMLDivElement>(null);
 
@@ -41,17 +41,33 @@ const LogofolioGallery = ({ images }:any) => {
     return (
         <div ref={container}>
             <div className='gallery__wrapper origin-top flex relative overflow-hidden mx-auto'>
-                <div className='min-w-[375px] h-[500px] relative' onClick={onClickOne}>
-                    <Image src={images[0]} alt='RS' fill objectFit='contain' />
+                <div className='min-w-[375px] h-[500px] relative group cursor-pointer' onClick={onClickOne}>
+                    <Image src={images[0]} alt='RS' fill className='object-cover' />
+                    <svg className='absolute md:right-4 right-12 bottom-4 z-10 duration-500 group-hover:rotate-180 group-hover:scale-110' width="45" height="45" viewBox="0 0 40 40" fill="" xmlns="http://www.w3.org/2000/svg"  >
+                        <path d="M1.25 20H38.75" stroke={`${vc[0]}`} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                        <path d="M20 1.25V38.75" stroke={`${vc[0]}`} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                    </svg>
                 </div>
-                <div className='min-w-[375px] h-[500px] relative' onClick={onClickTwo}>
-                    <Image src={images[1]} alt='RS' fill objectFit='contain'/>
+                <div className='min-w-[375px] h-[500px] relative group cursor-pointer' onClick={onClickTwo}>
+                    <Image src={images[1]} alt='RS' fill className='object-cover' />
+                    <svg className='absolute md:right-4 right-12 bottom-4 z-10 duration-500 group-hover:rotate-180 group-hover:scale-110' width="45" height="45" viewBox="0 0 40 40" fill="" xmlns="http://www.w3.org/2000/svg"  >
+                        <path d="M1.25 20H38.75" stroke={`${vc[1]}`} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                        <path d="M20 1.25V38.75" stroke={`${vc[1]}`} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                    </svg>
                 </div>
-                <div className='min-w-[375px] h-[500px] relative' onClick={onClickThree}>
-                    <Image src={images[2]} alt='RS' fill objectFit='contain'/>
+                <div className='min-w-[375px] h-[500px] relative group cursor-pointer' onClick={onClickThree}>
+                    <Image src={images[2]} alt='RS' fill className='object-cover' />
+                    <svg className='absolute md:right-4 right-12 bottom-4 z-10 duration-500 group-hover:rotate-180 group-hover:scale-110' width="45" height="45" viewBox="0 0 40 40" fill="" xmlns="http://www.w3.org/2000/svg"  >
+                        <path d="M1.25 20H38.75" stroke={`${vc[2]}`} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                        <path d="M20 1.25V38.75" stroke={`${vc[2]}`} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                    </svg>
                 </div>
-                <div className='min-w-[375px] h-[500px] relative' onClick={onClickFour}>
-                    <Image src={images[3]} alt='RS' fill objectFit='contain'/>
+                <div className='min-w-[375px] h-[500px] relative group cursor-pointer' onClick={onClickFour}>
+                    <Image src={images[3]} alt='RS' fill className='object-cover' />
+                    <svg className='absolute md:right-4 right-12 bottom-4 z-10 duration-500 group-hover:rotate-180 group-hover:scale-110' width="45" height="45" viewBox="0 0 40 40" fill="" xmlns="http://www.w3.org/2000/svg"  >
+                        <path d="M1.25 20H38.75" stroke={`${vc[3]}`} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                        <path d="M20 1.25V38.75" stroke={`${vc[3]}`} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                    </svg>
                 </div>
             </div>
         </div>

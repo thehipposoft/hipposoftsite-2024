@@ -33,8 +33,8 @@ const LogofolioLayout = () => {
         <div ref={container} className='h-full flex md:pt-[7%] pt-10 md:gap-20 gap-12 flex-col md:max-w-[1250px] mx-auto'>
             <div className='layout__one flex flex-col gap-12 md:gap-0 md:flex-row flex-wrap justify-between items-center md:w-[1100px] mx-auto '>
                 <Link href={'/logofolio/rock-steady-digital'} className='flex flex-col items-center gap-4 group'>
-                    <div className='w-[220px] h-[100px] relative opacity-60 -bottom-2 group-hover:bottom-0 duration-300'>
-                        <Image src={'/assets/images/logofolio/logofolio-1.webp'} fill className='object-center'  alt='' />
+                    <div className='w-[220px] h-[120px] relative opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 -bottom-2 group-hover:bottom-2 duration-500'>
+                        <Image src={'/assets/images/logofolio/rock-steady.png'} fill className='object-center'  alt='' />
                     </div>
                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
@@ -42,8 +42,8 @@ const LogofolioLayout = () => {
                     </svg>
                 </Link>
                 <Link href={'/logofolio/inspir-performance'} className='flex flex-col items-center gap-4 group'>
-                    <div className='w-[190px] h-[100px] relative opacity-60 -bottom-2 group-hover:bottom-0 duration-300'>
-                        <Image src={'/assets/images/logofolio/logofolio-2.webp'} fill className='object-center'  alt='' />
+                    <div className='w-[190px] h-[100px] relative opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 -bottom-2 group-hover:bottom-2 duration-500'>
+                        <Image src={'/assets/images/logofolio/inspir.png'} fill className='object-center'  alt='' />
                     </div>
                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
@@ -51,8 +51,8 @@ const LogofolioLayout = () => {
                     </svg>
                 </Link>
                 <Link href={'/logofolio/diversity-employment'} className='flex flex-col items-center gap-4 group'>
-                    <div className='w-[280px] h-[80px] relative opacity-60 -bottom-2 group-hover:bottom-0 duration-300'>
-                        <Image src={'/assets/images/logofolio/logofolio-3.webp'} fill className='object-center'  alt='' />
+                    <div className='w-[280px] h-[80px] relative opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 -bottom-2 group-hover:bottom-2 duration-500'>
+                        <Image src={'/assets/images/logofolio/diversity.png'} fill className='object-center'  alt='' />
                     </div>
                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
@@ -62,8 +62,8 @@ const LogofolioLayout = () => {
             </div>
             <div className='layout__two flex flex-col gap-16 md:gap-0 md:flex-row flex-wrap justify-between md:items-end items-center md:w-[1200px] mx-auto'>
                 <Link href={'/logofolio/destino-salta'} className='flex flex-col items-center gap-4 group'>
-                    <div className='w-[170px] h-[180px] relative opacity-60 -bottom-2 group-hover:bottom-0 duration-300'>
-                        <Image src={'/assets/images/logofolio/logofolio-4.webp'} fill className='object-center'  alt='' />
+                    <div className='w-[170px] h-[180px] relative opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 -bottom-2 group-hover:bottom-2 duration-500'>
+                        <Image src={'/assets/images/logofolio/destino.png'} fill className='object-center'  alt='' />
                     </div>
                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>

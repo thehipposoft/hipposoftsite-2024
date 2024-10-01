@@ -50,17 +50,19 @@ const LOGOFOLIO_DATA = [
                         </div>
                     </div>
                 </div>,
+        href: 'https://www.rocksteadydigital.com.au/',
         information: ['Rock steady digital', 'AUSTRALIA', 'November 2022'],
-        logo: '/assets/images/logofolio/logofolio-1.webp',
-        logoSizes: ['200px', '100px'],
-        gallery: ['/assets/images/logofolio/rs/rs-4.webp', '/assets/images/logofolio/rs/rs-1.webp', '/assets/images/logofolio/rs/rs-2.webp', '/assets/images/logofolio/rs/rs-3.webp']
+        logo: '/assets/images/logofolio/rock-steady.png',
+        logoSizes: ['220px', '120px'],
+        gallery: ['/assets/images/logofolio/rs/rock-1.webp', '/assets/images/logofolio/rs/rock-2.webp', '/assets/images/logofolio/rs/rock-3.webp', '/assets/images/logofolio/rs/rock-4.webp'],
+        vectorColors: ['#000000', '#000000', '#000000', '#70FFE5',],
     },
     {
         name: 'Inspir Performance',
         description: ['Inspir is an elite performance expert that helps elite athletes and executives in competitive fields tounleash the power of the mind and create the mental toughness needed to perform at their best.',
             'It provides an innovative and efficient solution for associations, and responds to all requests: help, advice and support to athletes, teams or organizations.'],
         concept: [`“The mind is not a vessel to be filled, but a fire to be ignited.”, Plutarch, ancient Greece.`],
-        content: <div className="flex flex-col md:flex-row md:items-end gap-4 pt-4">
+        content: <div className="flex flex-col gap-12 pt-4">
                     <div className="relative w-[300px] h-[165px]">
                         <Image src={'/assets/images/logofolio/inspir/inspir-info.webp'} fill alt="Inspir primary colors" />
                     </div>
@@ -69,10 +71,11 @@ const LOGOFOLIO_DATA = [
                     </div>
                 </div>,
         information: ['INSPIR PERFORMANCE', 'PARIS - AUSTRALIA', 'March 2023'],
-        logo: '/assets/images/logofolio/logofolio-2.webp',
+        logo: '/assets/images/logofolio/inspir.png',
         logoSizes: ['200px', '100px'],
-
-        gallery: ['/assets/images/logofolio/inspir/inspir-1.webp', '/assets/images/logofolio/inspir/inspir-2.webp', '/assets/images/logofolio/inspir/inspir-3.webp', '/assets/images/logofolio/inspir/inspir-4.webp']
+        href: 'https://www.inspirperformance.com/',
+        gallery: ['/assets/images/logofolio/inspir/inspir-1.webp', '/assets/images/logofolio/inspir/inspir-2.webp', '/assets/images/logofolio/inspir/inspir-3.webp', '/assets/images/logofolio/inspir/inspir-4.webp'],
+        vectorColors: ['#70FFE5', '#000000', '#000000', '#70FFE5',],
     },
     {
         name: 'Diversity Employment',
@@ -142,11 +145,12 @@ const LOGOFOLIO_DATA = [
                         </div>
                     </div>
                 </div>,
+        href: 'https://diversityemployment.nz/',
         information: ['Diversity employment', 'New Zealand', 'October 2023'],
-        logo: '/assets/images/logofolio/logofolio-3.webp',
+        logo: '/assets/images/logofolio/diversity.png',
         logoSizes: ['300px', '80px'],
-        gallery: ['/assets/images/logofolio/diversity/diversity-1.webp', '/assets/images/logofolio/diversity/diversity-2.webp', '/assets/images/logofolio/diversity/diversity-3.webp', '/assets/images/logofolio/diversity/diversity-4.webp']
-
+        gallery: ['/assets/images/logofolio/diversity/diversity-1.webp', '/assets/images/logofolio/diversity/diversity-3.webp', '/assets/images/logofolio/diversity/diversity-4.webp', '/assets/images/logofolio/diversity/diversity-2.webp'],
+        vectorColors: ['#000000', '#000000', '#70FFE5', '#70FFE5',],
     },
     {
         name: 'Destino Salta',
@@ -216,10 +220,12 @@ const LOGOFOLIO_DATA = [
                         </div>
                     </div>
                 </div>,
+        href: 'https://destinosalta.com.ar/',
         information: ['Destino salta', 'Argentina', 'October 2023'],
-        logo: '/assets/images/logofolio/logofolio-4.webp',
+        logo: '/assets/images/logofolio/destino.png',
         logoSizes: ['200px', '200px'],
-        gallery: ['/assets/images/logofolio/destino/destino-1.webp', '/assets/images/logofolio/destino/destino-2.webp', '/assets/images/logofolio/destino/destino-3.webp', '/assets/images/logofolio/destino/destino-4.webp']
+        gallery: ['/assets/images/logofolio/destino/destino-1.webp', '/assets/images/logofolio/destino/destino-2.webp', '/assets/images/logofolio/destino/destino-3.webp', '/assets/images/logofolio/destino/destino-4.webp'],
+        vectorColors: ['#70FFE5', '#70FFE5', '#000000', '#000000',],
     },
 ]
 

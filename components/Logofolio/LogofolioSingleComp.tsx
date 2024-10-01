@@ -36,9 +36,9 @@ const LogofolioSingleComp = ({ data }:any) => {
             </div>
             <div className='md:w-[1300px] w-[80vw] my-12 md:my-0 mx-auto min-h-[600px] 2xl:min-h-[700px] 2xl:m-auto flex flex-col-reverse md:flex-row justify-between md:gap-2 gap-12'>
                 <div className='md:w-[375px] w-[344px] h-[500px]'>
-                    <LogofolioGallery images={data.gallery} />
+                    <LogofolioGallery images={data.gallery} vc={data.vectorColors} />
                 </div>
-                <div className='flex flex-col justify-between '>
+                <div className='flex flex-col '>
                     <div className='flex flex-col gap-2 text-sm md:w-[460px]'>
                         <p>{data.description[0]}</p>
                         <p>{data.description[1]}</p>
@@ -51,7 +51,7 @@ const LogofolioSingleComp = ({ data }:any) => {
                                 <div>
                                     <p>Client:</p>
                                     <p>{data.client}</p>
-                                    <p>We invite you to check out their Instagram profile <Link href={data.href} target='_blank' rel='noreferrer' className='underline'>here!</Link></p>
+                                    <p>We invite you to check out their Instagram profile <Link href={data.instagram} target='_blank' rel='noreferrer' className='underline bold'>here!</Link></p>
                                 </div>
                                 :
                                 <div>
@@ -80,8 +80,11 @@ const LogofolioSingleComp = ({ data }:any) => {
                         <h3 className='light'>{data.information[0]}</h3>
                         <h3 className='light'>{data.information[1]}</h3>
                         <h3 className='light'>{data.information[2]}</h3>
-                        {data.category ? <Link href={data.href} rel='noreferrer' target='_blank' className='flex w-fit mt-6'>
-                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#a)" stroke="#41EAD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5Z"/><path d="M16 11.37a4 4 0 1 1-7.914 1.173A4 4 0 0 1 16 11.37Z"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
+                        <Link href={data.href} target='_blank' rel='noreferrer' className='relative z-10 mt-2 overflow-hidden duration-500 px-4 tracking-[0.2em] text-xs py-2 border-cyan border-2 text-black w-fit rounded-3xl hover:bg-cyan hover:scale-x-105'>
+                                DISCOVER SITE
+                        </Link>
+                        {data.category ? <Link href={data.instagram} rel='noreferrer' target='_blank' className='flex w-fit mt-6'>
+                                            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clipPath="url(#a)" stroke="#41EAD4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5Z"/><path d="M16 11.37a4 4 0 1 1-7.914 1.173A4 4 0 0 1 16 11.37Z"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>
                                         </Link> 
                         : <></>}
                     </div>

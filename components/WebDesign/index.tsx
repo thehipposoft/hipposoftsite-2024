@@ -3,8 +3,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { MutableRefObject, use, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { useGSAP } from '@gsap/react';
 import BackButton from '../commons/BackButton';
+gsap.registerPlugin(ScrollTrigger);
 
 const WebDesignComp = () => {
 
@@ -28,7 +30,7 @@ const WebDesignComp = () => {
             background: '/assets/images/webdesign/steelart.webp',
             href: 'https://steelartsla.com.ar/',
             textColor: 'black',
-            vectorColor: '#70FFE5',
+            vectorColor: '#000000',
         },
         {
             name: 'Destino Salta',
@@ -44,15 +46,31 @@ const WebDesignComp = () => {
             textColor: 'black',
             vectorColor: '#000000',
         },
+        {
+            name: 'Laboratorio LIAP',
+            background: '/assets/images/webdesign/liap.webp',
+            href: 'https://laboratorioliap.com.ar/',
+            textColor: 'black',
+            vectorColor: '#000000',
+        },
+/*         {
+            name: 'MASONRY MEN',
+            background: '/assets/images/webdesign/masonry.webp',
+            href: 'https://www.conradarchitect.com/',
+            textColor: 'black',
+            vectorColor: '#000000',
+        }, */
     ]
 
     const container = useRef<HTMLDivElement>(null);
 
     const [index, setCurrentIndex] = useState<number>(1);
 
-    const sliderMovement = 100 * index;
+    const sliderMovement = 100 * WEBDESIGN_DATA.length - 2;
 
     const tl = useRef<any>();
+
+    let mm = gsap.matchMedia();
 
     useGSAP(() => {
         tl.current = gsap
@@ -83,14 +101,31 @@ const WebDesignComp = () => {
             duration: 1.5,
             delay: -0.5,
         })
+        .from('.scroll-text > *', {
+            opacity: 0,
+            x: -50,
+            ease: 'back.out',
+            stagger: .2,
+            delay: -0.5,
+        })
 
-
-
+        mm.add("(min-width: 800px)", () => {
+            gsap.to('.slider__wrapper > *', {
+                x: '-500vw',
+                ease: 'power3.inOut',
+                scrollTrigger: {
+                    trigger: container.current,
+                    scrub: 2,
+                    end: '=+12000',
+                    pin: true,
+                }
+            })
+        })
     }, {scope: container});
 
     const { contextSafe } = useGSAP({ scope: container }); 
 
-    const nextSlide = contextSafe(() => {
+/*     const nextSlide = contextSafe(() => {
         gsap.to('.slider__wrapper > *', { x: `-${sliderMovement}%`, duration: 1.2, ease: 'power3.inOut' });
         if(index < WEBDESIGN_DATA.length - 1) {
             setCurrentIndex(prev => prev + 1)
@@ -116,21 +151,21 @@ const WebDesignComp = () => {
             ease: 'power3.inOut',
         })
 
-    });
+    }); */
 
     return (
-        <div className='h-screen w-screen' ref={container}>
-            <div className='slider__wrapper relative overflow-hidden flex'>
+        <div className='h-screen w-screen relative' ref={container}>
+            <div className='slider__wrapper relative overflow-hidden flex md:flex-row flex-col'>
                     {
                         WEBDESIGN_DATA.map((value, index) => {
                             return(
                                 <div className='min-w-[100vw] min-h-screen relative' key={index}>
                                     <Image className='background-image' src={value.background} alt={`${value.name} site background`} fill objectFit='cover' />
-                                    <div className='md:max-w-[1350px] max-w-[80vw] mx-auto flex flex-col justify-between md:h-[85vh] h-[92vh] relative md:pt-12 pt-6 z-10'>
+                                    <div className='md:max-w-[1350px] max-w-[80vw] mx-auto flex flex-col justify-between md:h-[90vh] h-[92vh] relative md:pt-12 pt-6 z-10'>
                                         <div className={`flex justify-between items-center text-${value.textColor}`}>
                                             <div className='flex flex-col gap-4'>
                                                 <h2 className='title text-5xl'>Web Design</h2>
-                                                <h4 className='slide__name text-2xl'>{value.name}</h4>
+                                                <h4 className='slide__name text-2xl thin'>{value.name}</h4>
                                             </div>
                                             <div className='back opacity-0'>
                                                 <BackButton href={'/design'} color={value.textColor} />
@@ -142,28 +177,37 @@ const WebDesignComp = () => {
                                                 </Link>
                                             </div>
                                         </div>
-                                        <div className='navigation opacity-0 flex flex-col md:items-end items-center md:gap-20 gap-12'>
-                                            <div 
+                                        <div className='navigation opacity-0 flex flex-col md:items-end items-center md:gap-0 gap-12'>
+{/*                                             <div 
                                                 onMouseEnter={MouseEnter}
                                                 onMouseLeave={MouseLeave}
                                                 onClick={nextSlide}
                                                 className='md:p-2 p-[10px] flex flex-col gap-2 items-center md:block rounded-md cursor-pointer vector-container bg-white/45 md:bg-transparent' 
                                             >
-                                                <svg width="45" height="45" viewBox="0 0 40 40" fill="" xmlns="http://www.w3.org/2000/svg" className='vector' >
+                                                <svg width="50" height="50" viewBox="0 0 40 40" fill="" xmlns="http://www.w3.org/2000/svg" className='vector' >
                                                     <path d="M1.25 20H38.75" stroke={`${value.vectorColor}`} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
                                                     <path d="M20 1.25V38.75" stroke={`${value.vectorColor}`} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
                                                 </svg>
-                                                <p className={`md:hidden text-[#000000]`}>See More</p>
-                                            </div>
+                                                <p className={`md:hidden text-[#000000]`}>Next</p>
+                                            </div> */}
                                             <div>
                                                 <Link 
-                                                    className='px-8 tracking-[0.3em] text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
+                                                    className='px-8 tracking-[0.3em] duration-700 hover:bg-white/50 hover:scale-105 text-sm font-medium py-3 bg-cyan text-black rounded-3xl'
                                                     href={value.href}
                                                     target='_blank'
                                                     rel='noreferrer'
                                                 >
-                                                    DISCOVER NOW
+                                                    DISCOVER SITE
                                                 </Link>
+                                            </div>
+                                            <div className={`${index === 0 ? 'md:flex' : 'hidden'} hidden scroll-text items-center gap-4 w-[1300px] mx-auto text-xl`}>
+                                                <p className='thin text-black'>S</p>
+                                                <p className='thin text-black'>C</p>
+                                                <p className='thin text-black'>R</p>
+                                                <p className='thin text-black'>O</p>
+                                                <p className='thin text-black'>L</p>
+                                                <p className='thin text-black'>L</p>
+                                                <p className='thin text-black'>&#10509;</p>
                                             </div>
                                         </div>
                                     </div>
@@ -172,6 +216,7 @@ const WebDesignComp = () => {
                         })
                     }
             </div>
+
         </div>
     );
 };

@@ -5,7 +5,7 @@ import Link from 'next/link';
 const ContactComponent = () => {
     return (
         <div className='md:h-screen relative flex justify-center items-center'>
-            <Image src={'/assets/images/contact/contactBg.webp'} alt='' fill />
+            <Image src={'/assets/images/contact/contactBg.webp'} alt='Contact section background' fill />
             <div className='absolute h-full w-full left-0 top-0 z-[5] md:bg-white/10 bg-white/30' />
             <div className='md:w-[1200px] w-[80vw] flex flex-col mx-auto relative z-10 gap-8 my-8 md:my-0'>
                 <div className='flex justify-end'>

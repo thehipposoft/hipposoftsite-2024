@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "HippoSoft | Create to Connect",
-  description: "HippoSoft | Create to Connect",
+  description: "We create to connect. We create and build digital experiences to boost your business. We want to inspire you.",
 };
 
 export default function RootLayout({

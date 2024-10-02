@@ -57,8 +57,8 @@ const BrandingDesignMobile = () => {
                 </Link>
             </div>
             <div className={`bg-white flex flex-col justify-center items-center pt-8 relative my-12`}>
-                <div className={`images__layout flex flex-col gap-20 items-center`}>
-                    <div className='w-screen h-[530px] opacity-100 relative image-animation'>
+                <div className={`images__layout flex flex-col gap-12 items-center`}>
+                    <div className='w-[95vw] h-[530px] opacity-100 relative image-animation'>
                         <Link href={'/logofolio'} className='absolute w-full h-full z-[11]'/>
                         <div className='info relative z-10 flex pt-12 pl-12 items-center gap-3'>
                             <h3 className='text-4xl'>{DESIGN_DATA[0].name}</h3>
@@ -67,9 +67,9 @@ const BrandingDesignMobile = () => {
                                 <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                             </svg>
                         </div>
-                        <Image src={DESIGN_DATA[0].image} fill className='object-cover object-center' alt='Inspir logo' priority/>
+                        <Image src={DESIGN_DATA[0].image} fill className='object-cover object-center rounded-xl shadow-lg' alt='Logofolio section background' priority/>
                     </div>
-                    <div className='w-screen h-[530px] relative carousel-slide'>
+                    <div className='w-[95vw] h-[530px] relative carousel-slide'>
                         <Link href={'/web-design'} className='absolute w-full h-full z-[11]' />
                         <div className='relative z-10 flex pt-12 pl-12 items-center gap-3'>
                             <h3 className='text-4xl'>{DESIGN_DATA[1].name}</h3>
@@ -78,9 +78,9 @@ const BrandingDesignMobile = () => {
                                 <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                             </svg>
                         </div>
-                        <Image src={DESIGN_DATA[1].image} fill className='object-cover object-center' alt='Inspir logo' />
+                        <Image src={DESIGN_DATA[1].image} fill className='object-cover object-center rounded-xl shadow-lg' alt='Web design section background' />
                     </div>
-                    <div className='w-screen h-[530px] relative carousel-slide'>
+                    <div className='w-[95vw] h-[530px] relative carousel-slide'>
                         <Link href={'/social-media'} className='absolute w-full h-full z-[11]' />
                         <div className=' relative z-10 flex pt-12 pl-12 items-center gap-3'>
                             <h3 className='text-4xl'>{DESIGN_DATA[2].name}</h3>
@@ -89,7 +89,7 @@ const BrandingDesignMobile = () => {
                                 <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                             </svg>
                         </div>
-                        <Image src={DESIGN_DATA[2].image} fill className='object-cover object-center' alt='Inspir logo' />
+                        <Image src={DESIGN_DATA[2].image} fill className='object-cover object-center rounded-xl shadow-lg' alt='Social media section background' />
                     </div>
                 </div>
             </div>

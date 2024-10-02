@@ -84,7 +84,7 @@ const Cards = () => {
                                             <path d="M1.25 20H38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
                                             <path d="M20 1.25V38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
                                         </svg>
-                                        <Image fill alt={`Image ${val.title}`} src={val.image} objectFit='cover' />
+                                        <Image fill alt={`${val.title} image`} src={val.image} objectFit='cover' />
                                     </div>
                                     <h4 className='group-hover:pt-3 group-hover:mb-3 duration-500'>{val.title}</h4>
                                     <p className='text-sm  duration-500'>{val.description}</p>

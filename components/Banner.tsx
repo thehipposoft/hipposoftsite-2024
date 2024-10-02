@@ -87,7 +87,8 @@ const Banner = () => {
                         <div key={index} className={`${currentBackground === index ? 'opacity-100 -z-[1] transition-none' : ' '} opacity-0 absolute top-0 left-0 w-full h-full duration-700`}>
                             <Image 
                                 src={val} 
-                                layout='fill' alt='Desing Background' 
+                                layout='fill' 
+                                alt='Desing Background' 
                                 objectFit='cover' 
                                 objectPosition='center 70%'
                             />
@@ -166,9 +167,9 @@ const Banner = () => {
                     <div className=''>
                         <div className={`${isToggleThree ? 'opacity-1 block -top-12' : 'opacity-0 hidden'} relative w-[400px] gap-8 duration-1000 flex flex-col justify-center items-center md:items-start`}>
                             <h4 className='text-cyan tracking-[0.5em]'>LET'S GROW TOGETHER</h4>
-                            <h2 className='md:text-[64px] text-5xl leading-[72px] text-center md:text-left'>Are you an entrepenur?</h2>
+                            <h2 className='md:text-[64px] text-5xl leading-[72px] text-center md:text-left'>Are you an entrepeneur?</h2>
                             <p className='px-8 text-center md:px-0 md:text-left'>A product that no one can see is meaningless. We focus on getting the company to the right audience through the right channels.</p>
-                            <Link href={'/entrepenur'} className='px-8 tracking-[0.3em] hover:animate-pulse text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'>
+                            <Link href={'/entrepeneur'} className='px-8 tracking-[0.3em] hover:animate-pulse text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'>
                                 DISCOVER
                             </Link>
                         </div>

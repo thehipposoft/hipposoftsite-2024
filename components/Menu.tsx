@@ -63,31 +63,31 @@ const Menu = () => {
                     <ul className='links-list flex flex-col gap-12'>
                         <Link href={'/design'} className='translate-y-4 flex items-center gap-6 group '>
                             <div className='bg-white p-4 rounded-full group-hover:scale-110 duration-500'>
-                                <Image src={'/assets/images/vectors/menu-1.svg'} width={40} height={40} alt='' className='group-hover:scale-125 group-hover:rotate-90 duration-700'/>
+                                <Image src={'/assets/images/vectors/menu-1.svg'} width={40} height={40} alt='Branding & Design vector' className='group-hover:scale-125 group-hover:rotate-90 duration-700'/>
                             </div>
                             <p className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse '>Branding & Design</p>
                         </Link>
                         <Link href={'/web-development'} className='translate-y-4 flex items-center gap-6 group'>
                             <div className='bg-white p-4 rounded-full group-hover:scale-110 duration-500'>
-                                <Image src={'/assets/images/vectors/menu-2.svg'} width={40} height={40} alt='' className='group-hover:scale-125 group-hover:rotate-90 duration-700'/>
+                                <Image src={'/assets/images/vectors/menu-2.svg'} width={40} height={40} alt='Web development vector' className='group-hover:scale-125 group-hover:rotate-90 duration-700'/>
                             </div>
                             <p  className=' thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>Web Development</p>
                         </Link>
                         <Link href={'/web-design'} className=' translate-y-4 flex items-center gap-6 group '>
                             <div className='bg-white p-4 rounded-full group-hover:scale-110 duration-500'>
-                                <Image src={'/assets/images/vectors/menu-3.svg'} width={40} height={40} alt='' className='group-hover:scale-125 group-hover:rotate-90 duration-700'/>
+                                <Image src={'/assets/images/vectors/menu-3.svg'} width={40} height={40} alt='Projects Vector' className='group-hover:scale-125 group-hover:rotate-90 duration-700'/>
                             </div>
                             <p  className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>Projects</p>
                         </Link>
-                        <Link href={'/entrepeneurs'} className=' translate-y-4 flex items-center gap-6 group'>
+                        <Link href={'/entrepeneur'} className=' translate-y-4 flex items-center gap-6 group'>
                             <div className='bg-white p-4 rounded-full group-hover:scale-110 duration-500'>
-                                <Image src={'/assets/images/vectors/menu-4.svg'} width={40} height={40} alt='' className='group-hover:scale-125 group-hover:rotate-90 duration-700'/>
+                                <Image src={'/assets/images/vectors/menu-4.svg'} width={40} height={40} alt='Entrepeneurs vector' className='group-hover:scale-125 group-hover:rotate-90 duration-700'/>
                             </div>
                             <p  className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>Entrepeneurs</p>
                         </Link>
                         <Link href={'/contact'} className='translate-y-4 flex items-center gap-6 group'>
                             <div className='bg-white p-4 rounded-full group-hover:scale-110 duration-500'>
-                                <Image src={'/assets/images/vectors/menu-5.svg'} width={40} height={40} alt='' className='group-hover:scale-125 group-hover:rotate-90 duration-700'/>
+                                <Image src={'/assets/images/vectors/menu-5.svg'} width={40} height={40} alt='Contact vector' className='group-hover:scale-125 group-hover:rotate-90 duration-700'/>
                             </div>
                             <p  className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>Contact</p>
                         </Link>

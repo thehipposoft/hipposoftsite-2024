@@ -83,15 +83,11 @@ const WebDesignComp = () => {
         })
         .from('.title', {
             opacity: 0,
-            y: '-120%',
-            rotate: '-12deg',
             duration: 1.2,
             ease: 'back.out'
         })
         .from('.slide__name', {
             opacity: 0,
-            y: '-120%',
-            rotate: '-12deg',
             duration: 1.2,
             ease: 'back.out',
             delay: -0.5,
@@ -104,6 +100,7 @@ const WebDesignComp = () => {
         .from('.scroll-text > *', {
             opacity: 0,
             x: -50,
+            duration: .7,
             ease: 'back.out',
             stagger: .2,
             delay: -0.5,
@@ -112,7 +109,7 @@ const WebDesignComp = () => {
         mm.add("(min-width: 800px)", () => {
             gsap.to('.slider__wrapper > *', {
                 x: '-500vw',
-                ease: 'power3.inOut',
+                ease: 'power1.inOut',
                 scrollTrigger: {
                     trigger: container.current,
                     scrub: 2,
@@ -161,9 +158,9 @@ const WebDesignComp = () => {
                             return(
                                 <div className='min-w-[100vw] min-h-screen relative' key={index}>
                                     <Image className='background-image' src={value.background} alt={`${value.name} site background`} fill objectFit='cover' />
-                                    <div className='md:max-w-[1350px] max-w-[80vw] mx-auto flex flex-col justify-between md:h-[90vh] h-[92vh] relative md:pt-12 pt-6 z-10'>
+                                    <div className='md:max-w-[1250px] max-w-[80vw] mx-auto flex flex-col justify-between md:h-[90vh] h-[92vh] relative md:pt-8 pt-6 z-10'>
                                         <div className={`flex justify-between items-center text-${value.textColor}`}>
-                                            <div className='flex flex-col gap-4'>
+                                            <div className='flex flex-col gap-2'>
                                                 <h2 className='title text-5xl'>Web Design</h2>
                                                 <h4 className='slide__name text-2xl thin'>{value.name}</h4>
                                             </div>

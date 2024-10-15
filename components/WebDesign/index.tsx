@@ -53,20 +53,20 @@ const WebDesignComp = () => {
             textColor: 'black',
             vectorColor: '#000000',
         },
-/*         {
+        {
             name: 'MASONRY MEN',
             background: '/assets/images/webdesign/masonry.webp',
-            href: 'https://www.conradarchitect.com/',
+            href: 'https://masonrymen.com.au/',
             textColor: 'black',
             vectorColor: '#000000',
-        }, */
+        },
     ]
 
     const container = useRef<HTMLDivElement>(null);
 
     const [index, setCurrentIndex] = useState<number>(1);
 
-    const sliderMovement = 100 * WEBDESIGN_DATA.length - 2;
+    const sliderMovement = 100 * WEBDESIGN_DATA.length;
 
     const tl = useRef<any>();
 
@@ -108,7 +108,7 @@ const WebDesignComp = () => {
 
         mm.add("(min-width: 800px)", () => {
             gsap.to('.slider__wrapper > *', {
-                x: '-500vw',
+                x: `-${sliderMovement - 100}vw`,
                 ease: 'power1.inOut',
                 scrollTrigger: {
                     trigger: container.current,

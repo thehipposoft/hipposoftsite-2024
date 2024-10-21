@@ -6,9 +6,9 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
 const BACKGROUNDS = [
-    '/assets/images/banner/banner-1.jpeg',
-    '/assets/images/banner/banner-2.jpeg',
-    '/assets/images/banner/banner-3.jpeg',
+    '/assets/images/banner/banner-1.webp',
+    '/assets/images/banner/banner-2.webp',
+    '/assets/images/banner/banner-3.webp',
 ]
 
 const Banner = () => {
@@ -125,7 +125,7 @@ const Banner = () => {
                                     <path d="M1.25 20H38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
                                     <path d="M20 1.25V38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
                                 </svg>
-                                <h3 className='relative font-medium tracking-[0.5em] -top-4 duration-300 group-hover:top-0'>DESIGN</h3>
+                                <h3 className='relative font-medium tracking-[0.5em] -top-4 duration-500 group-hover:top-0'>DESIGN</h3>
                         </div>
                     </div>
                 </div>
@@ -152,7 +152,7 @@ const Banner = () => {
                                     <path d="M1.25 20H38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
                                     <path d="M20 1.25V38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
                                 </svg>
-                                <h3 className=' relative font-medium tracking-[0.5em] -top-4 duration-300 group-hover:top-0'>WEB DEVELOPMENT</h3>
+                                <h3 className=' relative font-medium tracking-[0.5em] -top-4 duration-500 group-hover:top-0'>WEB DEVELOPMENT</h3>
                         </div>
                     </div>
                 </div>
@@ -178,7 +178,7 @@ const Banner = () => {
                                     <path d="M1.25 20H38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
                                     <path d="M20 1.25V38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
                                 </svg>
-                                <h3 className=' relative font-medium tracking-[0.5em] -top-4 duration-300 group-hover:top-0'>ENTREPENUR</h3>
+                                <h3 className=' relative font-medium tracking-[0.5em] -top-4 duration-500 group-hover:top-0'>ENTREPENUR</h3>
                         </div>
                     </div>
                 </div>

@@ -27,7 +27,7 @@ const Menu = () => {
         .to('.menu', {
             opacity: 1,
             x: 0,
-            ease: 'power1.inOut',
+            ease: 'sine.inOut',
 
         })
         .from('.links-list > *', {
@@ -49,7 +49,7 @@ const Menu = () => {
     return (
         <div ref={container} className=''>
             <div 
-                className='absolute top-12 md:right-24 right-10 hover:bg-white/30 rounded-xl px-2 py-3 duration-300 cursor-pointer z-40'
+                className='absolute top-12 md:right-24 right-10 hover:bg-white/30 rounded-xl px-2 py-3 duration-500 cursor-pointer z-40'
                 onClick={openMenuFunc}
             >
                 <svg width="35" height="35" viewBox="0 0 30 15" fill="none" xmlns="http://www.w3.org/2000/svg">

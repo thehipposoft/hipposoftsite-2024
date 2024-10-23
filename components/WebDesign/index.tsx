@@ -109,11 +109,11 @@ const WebDesignComp = () => {
         mm.add("(min-width: 800px)", () => {
             gsap.to('.slider__wrapper > *', {
                 x: `-${sliderMovement - 100}vw`,
-                ease: 'power1.inOut',
+                ease: 'power1.out',
                 scrollTrigger: {
                     trigger: container.current,
                     scrub: 2,
-                    end: '=+12000',
+                    end: '=+9000',
                     pin: true,
                 }
             })

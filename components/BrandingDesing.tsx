@@ -121,7 +121,7 @@ const BrandingDesing = () => {
                                 <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                             </svg>
                         </div>
-                        <Image src={DESIGN_DATA[0].image} fill className={`${state.isActive1 ? 'group-hover:scale-110' : 'hover:shadow-2xl hover:scale-[1.01] hover:shadow-[#221b35c5]'} rounded-md duration-1000 object-cover object-center`} alt='Logofolio section background' priority/>
+                        <Image src={DESIGN_DATA[0].image} fill className={`${state.isActive1 ? 'group-hover:scale-110 duration-1000 ' : 'duration-500 hover:shadow-2xl hover:scale-[1.01] hover:shadow-[#221b35c5]'} rounded-md object-cover object-center`} alt='Logofolio section background' priority/>
                     </div>
                     <div className={`${state.isActive2 ? 'overflow-hidden' : ''} w-[850px] h-[530px] relative group carousel-slide opacity-0 rounded-md`} onClick={onClickTwo}>
                         <Link href={'/web-design'} className={`${state.isActive2 ? '' : 'hidden'} absolute w-full h-full z-[11]`} />
@@ -132,7 +132,7 @@ const BrandingDesing = () => {
                                 <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                             </svg>
                         </div>
-                        <Image src={DESIGN_DATA[1].image} fill className={`${state.isActive2 ? 'group-hover:scale-110' : 'hover:shadow-2xl hover:scale-[1.01] hover:shadow-[#221b35c5]'} rounded-md duration-1000 object-cover object-center`} alt='Web design section background'/>
+                        <Image src={DESIGN_DATA[1].image} fill className={`${state.isActive2 ? 'group-hover:scale-110 duration-1000' : 'duration-500 hover:shadow-2xl hover:scale-[1.01] hover:shadow-[#221b35c5]'} rounded-md object-cover object-center`} alt='Web design section background'/>
                     </div>
                     <div className={`${state.isActive3 ? 'overflow-hidden' : ''} w-[850px] h-[530px] relative group carousel-slide opacity-0 rounded-md`} onClick={onClickThree}>
                         <Link href={'/social-media'} className={`${state.isActive3 ? '' : 'hidden'} absolute w-full h-full z-[11]`} />
@@ -143,7 +143,7 @@ const BrandingDesing = () => {
                                 <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                             </svg>
                         </div>
-                        <Image src={DESIGN_DATA[2].image} fill className={` ${state.isActive3 ? 'group-hover:scale-110' : 'hover:shadow-2xl hover:scale-[1.01] hover:shadow-[#221b35c5]'} rounded-md duration-1000 object-cover object-center`} alt='Social Media section background' />
+                        <Image src={DESIGN_DATA[2].image} fill className={` ${state.isActive3 ? 'group-hover:scale-110 duration-1000' : 'duration-500 hover:shadow-2xl hover:scale-[1.01] hover:shadow-[#221b35c5]'} rounded-md object-cover object-center`} alt='Social Media section background' />
                     </div>
                 </div>
             </div>

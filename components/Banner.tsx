@@ -166,10 +166,10 @@ const Banner = () => {
                 >
                     <div className=''>
                         <div className={`${isToggleThree ? 'opacity-1 block -top-12' : 'opacity-0 hidden'} relative w-[400px] gap-8 duration-1000 flex flex-col justify-center items-center md:items-start`}>
-                            <h4 className='text-cyan tracking-[0.5em]'>LET'S GROW TOGETHER</h4>
-                            <h2 className='md:text-[64px] text-5xl leading-[72px] text-center md:text-left'>Are you an entrepeneur?</h2>
-                            <p className='px-8 text-center md:px-0 md:text-left'>A product that no one can see is meaningless. We focus on getting the company to the right audience through the right channels.</p>
-                            <Link href={'/entrepeneur'} className='px-8 tracking-[0.3em] hover:animate-pulse text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'>
+                            <h4 className='text-cyan tracking-[0.5em]'>WORK IN ACTION</h4>
+                            <h2 className='md:text-[64px] text-5xl leading-[72px] text-center md:text-left'>Portfolio</h2>
+                            <p className='px-8 text-center md:px-0 md:text-left'>Discover projects where strategic design meets impactful results.</p>
+                            <Link href={'/portfolio'} className='px-8 tracking-[0.3em] hover:animate-pulse text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'>
                                 DISCOVER
                             </Link>
                         </div>
@@ -178,7 +178,7 @@ const Banner = () => {
                                     <path d="M1.25 20H38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
                                     <path d="M20 1.25V38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
                                 </svg>
-                                <h3 className=' relative font-medium tracking-[0.5em] -top-4 duration-500 group-hover:top-0'>ENTREPENUR</h3>
+                                <h3 className=' relative font-medium tracking-[0.5em] -top-4 duration-500 group-hover:top-0'>PORTFOLIO</h3>
                         </div>
                     </div>
                 </div>

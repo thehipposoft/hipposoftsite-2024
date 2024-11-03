@@ -5,6 +5,7 @@ $roboto-bold: 'Roboto-Bold';
 $roboto-thin: 'Roboto-Thin';
 $roboto-medium: 'Roboto-Medium';
 $roboto-black: 'Roboto-Black';
+$sora: 'Sora';
 
 
 @font-face {
@@ -47,4 +48,11 @@ $roboto-black: 'Roboto-Black';
     font-style: normal;
     font-weight: 900;
     src: url('/assets/fonts/Roboto-Black.ttf');
+}
+
+@font-face {
+    font-family: 'Sora';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/assets/fonts/Sora-Regular.ttf');
 }

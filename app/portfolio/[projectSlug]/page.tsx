@@ -1,11 +1,10 @@
-import { useParams } from 'next/navigation'
-import { PORTFOLIO_DATA } from "@/components/Portfolio/constants";
+import { PORTFOLIO_DATA, PROJECTS } from "@/components/Portfolio/constants";
 import SingleProyect from "@/components/Portfolio/SingleProyect";
 
 type Params = {
     params: {
-        Slug: string,
-        ProjectId: number,
+        projectSlug: typeof PROJECTS,
+        data: any,
     }
 }
 
@@ -35,10 +34,15 @@ type Params = {
     };
 } */
 
-export default async function ProjectPage({ params: {Slug}}: Params) {
-    return(
-        <div>
-          <SingleProyect project={PORTFOLIO_DATA[0].data} />
-        </div>
-    )
+
+export default async function ProjectPage({params}: Params) {
+  const slug = params.projectSlug;
+
+  const projectData = PROJECTS[slug];
+
+  return (
+       projectData ? <SingleProyect project={projectData} /> 
+       : <p>No project for the selected slug o algo asi</p>
+  )
 }
+

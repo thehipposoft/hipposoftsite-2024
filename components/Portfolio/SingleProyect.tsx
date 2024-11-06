@@ -20,7 +20,7 @@ const SingleProyect = ({project}: any) => {
             <div className='md:w-[90vw] w-[75vw] md:bg-inherit bg-white/70 py-4 md:py-0 rounded-xl flex md:flex-row flex-col justify-between items-center mx-auto relative z-10 gap-2 md:gap-0'>
                 {project.logo_full}
                 <div className='flex md:flex-row flex-col gap-8'>
-                    <div className='flex flex-col'>
+                    <div className='flex flex-col bg-white/70 rounded-md py-4 px-6'>
                         <h4 className={`text-xl text-[${project.textColor}]`}>{project.name}</h4>
                         <p className={`uppercase text-sm text-sora pt-2 text-[${project.textColor}]`}>{project.industry}</p>
                         <p className={`uppercase text-sm text-sora text-[${project.textColor}]`}>{project.work}</p>
@@ -31,7 +31,7 @@ const SingleProyect = ({project}: any) => {
                         </div>
                     </div>
                     <div className='flex justify-center items-center'>
-                        <Link href={project.href} target='_blank' className='md:px-6 px-4 tracking-[0.2em] hover:animate-pulse md:text-sm text-xs font-medium md:py-3 py-2 bg-black text-white w-fit rounded-3xl'>
+                        <Link href={project.href} target='_blank' className='md:px-6 px-4 tracking-[0.2em] border border-black hover:text-black hover:bg-transparent hover:scale-x-105 duration-500 md:text-sm text-xs font-medium md:py-3 py-2 bg-black text-white w-fit rounded-3xl'>
                             DISCOVER SITE
                         </Link>
                     </div>

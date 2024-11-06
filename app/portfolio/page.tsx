@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function PortfolioPage () {
     return(
         <div className='flex flex-col py-12 gap-12 justify-between items-center md:max-w-[1250px] mx-auto text-black'>
-            <div className="flex justify-between items-center md:w-[85vw] w-[80vw] mx-auto gap-12 md:gap-0">
+            <div className="flex justify-between items-center md:w-[85vw] w-[80vw] md:max-w-[1250px] mx-auto gap-12 md:gap-0">
                 <h1 className="text-5xl">Our Projects</h1>
                 <BackButton href="/" />
                 <Link href={'/'} className='md:hidden'>

@@ -114,7 +114,7 @@ const Banner = () => {
                             <h2 className='md:text-[64px] text-5xl leading-[72px]'>Branding & Design</h2>
                             <p>Where it all begins. Identity. innovation. Unique</p>
                             <Link 
-                                className='px-8 tracking-[0.3em] hover:animate-pulse text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl '
+                                className='px-8 tracking-[0.3em] border border-cyan hover:bg-transparent hover:text-cyan hover:scale-105 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl '
                                 href={'/design'}
                             >
                                 DISCOVER
@@ -141,7 +141,7 @@ const Banner = () => {
                             <h2 className='md:text-[64px] text-5xl leading-[72px]'>Web Development</h2>
                             <p className='px-10 text-center md:px-0 md:text-left'>Building is important but how is just as essential to us.</p>
                             <Link 
-                                className='px-8 tracking-[0.3em] hover:animate-pulse text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
+                                className='px-8 tracking-[0.3em] border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
                                 href={'/web-development'}
                             >
                                 DISCOVER
@@ -169,7 +169,7 @@ const Banner = () => {
                             <h4 className='text-cyan tracking-[0.5em]'>WORK IN ACTION</h4>
                             <h2 className='md:text-[64px] text-5xl leading-[72px] text-center md:text-left'>Portfolio</h2>
                             <p className='px-8 text-center md:px-0 md:text-left'>Discover projects where strategic design meets impactful results.</p>
-                            <Link href={'/portfolio'} className='px-8 tracking-[0.3em] hover:animate-pulse text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'>
+                            <Link href={'/portfolio'} className='px-8 tracking-[0.3em] border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'>
                                 DISCOVER
                             </Link>
                         </div>

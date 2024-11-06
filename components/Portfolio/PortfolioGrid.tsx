@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const PortfolioGrid = () => {
     return (
-        <div className='grid md:grid-cols-3 grid-cols-1 gap-12 md:w-[85vw] w-[80vw] md:self-baseline'>
+        <div className='grid md:grid-cols-3 grid-cols-1 gap-12 md:w-[85vw] w-[80vw] md:max-w-[1250px] md:self-baseline mx-auto'>
             {
                 PORTFOLIO_DATA.map((val, index) => (
                     <div className='flex flex-col gap-4' key={index}>
@@ -17,7 +17,7 @@ const PortfolioGrid = () => {
                             <div className='absolute bottom-4 left-4'>
                                 {val.data.logo_content}
                             </div>
-                            <svg className='absolute md:right-4 right-12 bottom-4 z-10 duration-500 group-hover:rotate-180 group-hover:scale-110' width="45" height="45" viewBox="0 0 40 40" fill="" xmlns="http://www.w3.org/2000/svg"  >
+                            <svg className='absolute right-4 bottom-4 z-10 duration-500 group-hover:rotate-180 group-hover:scale-110' width="45" height="45" viewBox="0 0 40 40" fill="" xmlns="http://www.w3.org/2000/svg"  >
                                 <path d="M1.25 20H38.75" className='group-hover:stroke-white duration-500' stroke={`#000000`} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                 <path d="M20 1.25V38.75" className='group-hover:stroke-white duration-500' stroke={`#000000`} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                             </svg>

@@ -73,11 +73,11 @@ const Menu = () => {
                             </div>
                             <p  className=' thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>Web Development</p>
                         </Link>
-                        <Link href={'/web-design'} className='hidden translate-y-4 items-center gap-6 group '>
+                        <Link href={'/web-design'} className='flex translate-y-4 items-center gap-6 group '>
                             <div className='bg-white p-4 rounded-full group-hover:scale-110 duration-500'>
-                                <Image src={'/assets/images/vectors/menu-3.svg'} width={40} height={40} alt='Projects Vector' className='group-hover:scale-125 group-hover:rotate-90 duration-700'/>
+                                <Image src={'/assets/images/vectors/menu-3.svg'} width={40} height={40} alt='Web designgit status Vector' className='group-hover:scale-125 group-hover:rotate-90 duration-700'/>
                             </div>
-                            <p  className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>Projects</p>
+                            <p className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>Web Design</p>
                         </Link>
                         <Link href={'/portfolio'} className=' translate-y-4 flex items-center gap-6 group'>
                             <div className='bg-white p-4 rounded-full group-hover:scale-110 duration-500'>

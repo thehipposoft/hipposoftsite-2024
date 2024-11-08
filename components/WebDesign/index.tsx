@@ -60,6 +60,20 @@ const WebDesignComp = () => {
             textColor: 'black',
             vectorColor: '#000000',
         },
+        {
+            name: 'Copa tomada',
+            background: '/assets/images/portfolio/copa-mockg.webp',
+            href: 'https://masonrymen.com.au/',
+            textColor: 'black',
+            vectorColor: '#000000',
+        },
+        {
+            name: 'The C Therapy',
+            background: '/assets/images/portfolio/c-therapy-mockg.webp',
+            href: 'https://masonrymen.com.au/',
+            textColor: 'black',
+            vectorColor: '#000000',
+        },
     ]
 
     const container = useRef<HTMLDivElement>(null);

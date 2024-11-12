@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React from 'react';
 import Link from 'next/link';
 import BackButton from '../commons/BackButton';
+import { Form } from '../Form';
 
 const ContactComponent = () => {
     return (
@@ -37,73 +38,42 @@ const ContactComponent = () => {
                         </div>
                     </div>
                     <div className='bg-[#EEEEEE] rounded-xl p-10'>
-                        <form action="#" className='flex flex-col md:gap-4 gap-8 md:w-[600px]'>
-                            <div className='flex flex-col gap-4'>
-                                <p className='text-black text-lg'>I'm intereseted in...</p>
-                                <div className='flex gap-4 flex-wrap'>
-                                    <div className='relative py-4 px-2 flex justify-center items-center w-44 hover:shadow-lg duration-500'>
-                                        <input type="checkbox" name="web-design" id="web-design" className='cursor-pointer appearance-none w-full h-full border-2 checked:border-[#7653E3] absolute rounded duration-500' />
-                                        <label htmlFor="web-design" className='text-black'>Web Design</label>
-                                    </div>
-                                    <div className='relative py-4 px-2 flex justify-center items-center w-44 hover:shadow-lg duration-500'>
-                                        <input type="checkbox" name="web-development" id="web-development" className='cursor-pointer appearance-none w-full h-full border-2 checked:border-[#7653E3] absolute rounded duration-500' />
-                                        <label htmlFor="web-development" className='text-black'>Web Development</label>
-                                    </div>
-                                    <div className='relative py-4 px-2 flex justify-center items-center w-44 hover:shadow-lg duration-500'>
-                                        <input type="checkbox" name="web-development" id="web-development" className='cursor-pointer appearance-none w-full h-full border-2 checked:border-[#7653E3] absolute rounded duration-500' />
-                                        <label htmlFor="web-development" className='text-black'>Graphic Design</label>
-                                    </div>
-                                    <div className='relative py-4 px-2 flex justify-center items-center w-44 hover:shadow-lg duration-500'>
-                                        <input type="checkbox" name="web-development" id="web-development" className='cursor-pointer appearance-none w-full h-full border-2 checked:border-[#7653E3] absolute rounded duration-500' />
-                                        <label htmlFor="web-development" className='text-black'>Branding</label>
-                                    </div>
-                                    <div className='relative py-4 px-2 flex justify-center items-center w-44 hover:shadow-lg duration-500'>
-                                        <input type="checkbox" name="web-development" id="web-development" className='cursor-pointer appearance-none w-full h-full border-2 checked:border-[#7653E3] absolute rounded duration-500' />
-                                        <label htmlFor="web-development" className='text-black'>Social Media</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <label htmlFor="name">
-                                <input 
-                                    type="text" 
-                                    id="name" 
-                                    name="name" 
-                                    placeholder="Your name" 
-                                    required
-                                    className='border-b-2 focus:border-[#7653E3] border-[#9042C04D] focus:outline-0 w-full px-2 py-4 text-black bg-transparent focus:placeholder:text-black placeholder:text-[#9042c0a8]'
-                                />
-                            </label>
-                            <label htmlFor="email">
-                                <input 
-                                    type="email" 
-                                    id="email" 
-                                    name="email" 
-                                    placeholder="Your email" 
-                                    required
-                                    className='border-b-2 focus:border-[#7653E3] border-[#9042C04D] focus:outline-0 w-full px-2 py-4 text-black bg-transparent focus:placeholder:text-black placeholder:text-[#9042c0a8]'
-                                />
-                            </label>
-                            <label htmlFor="message">
-                                <textarea 
-                                    className='resize-none border-b-2 focus:border-[#7653E3] border-[#9042C04D] focus:outline-0 w-full px-2 py-4 text-black bg-transparent focus:placeholder:text-black placeholder:text-[#9042c0a8]' 
-                                    id="message" 
-                                    name="message" 
-                                    placeholder="Your message" 
-                                    rows={2} 
-                                    required>
-                                </textarea>
-                            </label>
-                            <button 
-                                type="submit"
-                                className='group bg-black/30 hover:bg-black/50 hover:text-cyan duration-500 w-72 tracking-[0.3em] py-5 px-5 text-left flex justify-between items-center text-base mt-8'
-                            >
-                                SEND MESSAGE
-                                <svg width="35" height="35" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className='group-hover:rotate-180 duration-500'>
-                                    <path d="M1.25 20H38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
-                                    <path d="M20 1.25V38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
-                                </svg>
-                            </button>
-                        </form>
+                        <Form
+                            fields={[
+                                {
+                                    name: 'interest',
+                                    type: 'select',
+                                    label: '',
+                                    placeholder: 'Your Name',
+                                    required: true,
+                                },
+                                {
+                                    name: 'name',
+                                    type: 'text',
+                                    label: '',
+                                    placeholder: 'Your Name',
+                                    required: true,
+                                },
+                                {
+                                    name: 'customerEmail',
+                                    type: 'email',
+                                    label: '',
+                                    placeholder: 'You Email',
+                                    required: true,
+                                },
+                                {
+                                    name: 'message',
+                                    type: 'textArea',
+                                    label: '',
+                                    placeholder: 'Your Message',
+                                    required: true,
+                                },
+                            ]}
+                            onSuccessMessage={'Your message was submited succesfully. We will contact you soon.'}
+                            onErrorMessage={'Please, try again in some minutes'}
+                            submitButtonLabel={'SEND MESSAGE'}
+                            emailServiceURL={'https://thehippoapi.netlify.app/.netlify/functions/api///hipposoft-email'}
+                        />
                     </div>
                 </div>
             </div>

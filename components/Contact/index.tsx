@@ -22,9 +22,9 @@ const ContactComponent = () => {
                     <div className='flex flex-col gap-10'>
                         <h2 className='text-7xl text-black'>Let´s take the<br/> next step!</h2>
                         <div className='flex flex-col gap-16 mt-8'>
-                            <Link href={'mailto:hipposoft@gmail.com'} className='flex gap-4 items-center '>
+                            <Link href={'mailto:hello@thehipposoft.com'} className='flex gap-4 items-center '>
                                 <svg width="24" height="18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M.075 2.333A3 3 0 0 1 3 0h18a3 3 0 0 1 2.925 2.333L12 9.62.075 2.332ZM0 4.045v10.656l8.704-5.337L0 4.045Zm10.142 6.2-9.855 6.04A3 3 0 0 0 3 18h18a3 3 0 0 0 2.712-1.716l-9.855-6.04L12 11.378l-1.858-1.136v.002Zm5.154-.879L24 14.701V4.046l-8.704 5.318v.002Z" fill="#031728"/></svg>                              
-                                <p className='text-xl text-black hover:underline'>hipposoft@gmail.com</p>
+                                <p className='text-xl text-black hover:underline'>hello@thehipposoft.com</p>
                             </Link>
                             <Link href={'tel:61 414 286 242'} className='flex gap-4 items-center'>
                                 <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#a)"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.828.766a2.617 2.617 0 0 1 3.915.245L9.435 4.47c.494.634.668 1.46.473 2.24l-.82 3.286a1.017 1.017 0 0 0 .266.964l3.686 3.686a1.017 1.017 0 0 0 .966.267l3.283-.82a2.617 2.617 0 0 1 2.241.472l3.46 2.69a2.617 2.617 0 0 1 .244 3.917l-1.551 1.551c-1.11 1.11-2.77 1.598-4.316 1.053a27.95 27.95 0 0 1-10.515-6.63A27.95 27.95 0 0 1 .222 6.633C-.32 5.088.167 3.427 1.277 2.317l1.55-1.55Z" fill="#031728"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>

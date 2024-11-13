@@ -35,7 +35,7 @@ const ContactComponent = () => {
                                 <svg width="24" height="28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 14c.825 0 1.531-.274 2.12-.823.587-.548.88-1.207.88-1.977s-.293-1.43-.88-1.978C13.532 8.674 12.825 8.4 12 8.4c-.825 0-1.531.274-2.118.822C9.294 9.77 9 10.43 9 11.2s.294 1.429.882 1.977c.587.549 1.293.823 2.118.823Zm0 14c-4.025-3.197-7.031-6.166-9.018-8.908C.994 16.35 0 13.813 0 11.48c0-3.5 1.206-6.288 3.62-8.365C6.031 1.038 8.825 0 12 0c3.175 0 5.968 1.038 8.38 3.115C22.795 5.192 24 7.98 24 11.48c0 2.333-.994 4.87-2.98 7.612C19.032 21.834 16.024 24.803 12 28Z" fill="#031728"/></svg>
                                 <p className='text-xl text-black'>Melbourne, Australia</p>
                             </div>
-                            <Link href={''} className='flex gap-4 items-center w-8'>
+                            <Link href={'https://wa.link/j3oqk4'} target='_blank' className='flex gap-4 items-center w-8'>
                                 <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h20v20H0z"/><path d="M16.8 5.7C14.4 2 9.5.9 5.7 3.2 2 5.5.8 10.5 3.2 14.2l.2.3-.8 3 3-.8.3.2c1.3.7 2.7 1.1 4.1 1.1 1.5 0 3-.4 4.3-1.2 3.7-2.4 4.8-7.3 2.5-11.1zm-2.1 7.7c-.4.6-.9 1-1.6 1.1-.4 0-.9.2-2.9-.6-1.7-.8-3.1-2.1-4.1-3.6-.6-.7-.9-1.6-1-2.5 0-.8.3-1.5.8-2 .2-.2.4-.3.6-.3H7c.2 0 .4 0 .5.4.2.5.7 1.7.7 1.8.1.1.1.3 0 .4.1.2 0 .4-.1.5-.1.1-.2.3-.3.4-.2.1-.3.3-.2.5.4.6.9 1.2 1.4 1.7.6.5 1.2.9 1.9 1.2.2.1.4.1.5-.1s.6-.7.8-.9c.2-.2.3-.2.5-.1l1.6.8c.2.1.4.2.5.3.1.3.1.7-.1 1z"/></svg> 
                              </Link>
                         </div>
@@ -75,7 +75,7 @@ const ContactComponent = () => {
                             onSuccessMessage={'Your message was submited succesfully. We will contact you soon.'}
                             onErrorMessage={'Please, try again in some minutes'}
                             submitButtonLabel={'SEND MESSAGE'}
-                            emailServiceURL={'https://thehippoapi.netlify.app/.netlify/functions/api///hipposoft-email'}
+                            emailServiceURL={'https://thehippoapi.netlify.app/.netlify/functions/api/hipposoft-email'}
                         />
                     </div>
                 </div>

@@ -24,7 +24,7 @@ const WebDevelopmentIndividualComp = ({props}:any) => {
             ease: 'back.out'
         })
 
-        mm.add("(min-width: 800px)", () => {
+        mm.add("(min-width: 1300px)", () => {
             gsap.to('.line' , {
                 width: '100%',
                 ease: 'power3.inOut',
@@ -38,7 +38,7 @@ const WebDevelopmentIndividualComp = ({props}:any) => {
             })
         })
 
-        mm.add("(min-width: 800px)", () => {
+        mm.add("(min-width: 1300px)", () => {
             gsap.to('.box', {
                 opacity: 1,
                 x: 0,
@@ -54,8 +54,7 @@ const WebDevelopmentIndividualComp = ({props}:any) => {
             })
         })
 
-
-        mm.add("(max-width: 500px)", () => {
+        mm.add("(max-width: 1300px)", () => {
             gsap.to('.box', {
                 opacity: 1,
                 x: 0,
@@ -66,7 +65,6 @@ const WebDevelopmentIndividualComp = ({props}:any) => {
                 ease: 'back.out',
             })
         })
-
 
         gsap.from('.scroll-text > *', {
             opacity: 0,
@@ -79,8 +77,8 @@ const WebDevelopmentIndividualComp = ({props}:any) => {
 
     return (
         <div ref={container} className='section flex flex-col text-black'>
-            <div className='title md:w-[1300px] w-[80vw] flex mx-auto justify-between items-center pt-12'>
-                <h2 className='md:text-6xl text-4xl w-3/4 md:w-auto'>{props.title}</h2>
+            <div className='title lg:w-[1300px] w-[80vw] flex mx-auto justify-between items-center pt-12'>
+                <h2 className='lg:text-6xl md:text-5xl text-4xl w-3/4 md:w-auto'>{props.title}</h2>
                 <BackButton href='/web-development' />
                 <Link href={'/web-development'} className='md:hidden block'>
                     <svg className='' width="20" height="20" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -89,9 +87,9 @@ const WebDevelopmentIndividualComp = ({props}:any) => {
                     </svg>
                 </Link>
             </div>
-            <div className='timelapse gap-16 flex flex-col md:mt-44 mt-20 '>
-                <div className='line hidden md:block h-[2px] w-[400px] bg-cyan' />
-                <div className='box__wrapper md:w-[1250px] w-[80vw] gap-16 mx-auto flex flex-col md:flex-row justify-between mb-20 md:mb-0'>
+            <div className='timelapse gap-16 flex flex-col lg:mt-44 lg:mb-0 mt-20 md:mb-16'>
+                <div className='line hidden lg:block h-[2px] w-[400px] bg-cyan' />
+                <div className='box__wrapper lg:w-[1250px] w-[80vw] gap-16 mx-auto flex flex-col lg:flex-row justify-between mb-20 md:mb-0'>
                     {
                         props.boxes.map((val:any, index:any) => {
                             return(
@@ -105,7 +103,7 @@ const WebDevelopmentIndividualComp = ({props}:any) => {
                     }
                 </div>
             </div>
-            <div className='scroll-text md:flex items-center gap-4 w-[1300px] mx-auto pt-32 text-xl hidden'>
+            <div className='scroll-text lg:flex items-center gap-4 w-[1300px] mx-auto pt-32 text-xl hidden'>
                 <p className='thin'>S</p>
                 <p className='thin'>C</p>
                 <p className='thin'>R</p>

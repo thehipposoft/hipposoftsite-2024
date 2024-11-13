@@ -109,7 +109,7 @@ const MyCustomForm = ({
 
     return (
         <form
-            className={`form mx-auto w-[600px]`}
+            className={`form mx-auto lg:w-[600px]`}
             onSubmit={(event) => handleSubmit(event)}
         >
             {
@@ -138,7 +138,7 @@ const MyCustomForm = ({
                             return (
                                 <section className='flex flex-col gap-4 mb-6'>
                                     <p className='text-black text-lg'>I'm intereseted in...</p>
-                                    <div className='flex gap-4 flex-wrap'>
+                                    <div className='flex justify-center md:justify-start gap-4 flex-wrap'>
                                         <div className='relative py-4 px-2 flex justify-center items-center w-44 hover:shadow-lg duration-500'>
                                             <input onChange={handleChange} type="checkbox" name="interest" id="web-design" value='web-design' className='cursor-pointer appearance-none w-full h-full border-2 checked:border-[#7653E3] absolute rounded duration-500' />
                                             <label htmlFor="web-design" className='text-black'>Web Design</label>
@@ -187,7 +187,7 @@ const MyCustomForm = ({
                     disabled={isAPILoading}
                     value={submitButtonLabel ? submitButtonLabel : 'Send'}
                     type="submit"
-                    className={` ${isAPILoading ? 'opacity-50' : ''} group bg-black/30 hover:bg-black/50 hover:text-cyan duration-500 w-72 tracking-[0.3em] py-5 px-5 text-left flex justify-between items-center text-sm mt-8`}
+                    className={` ${isAPILoading ? 'opacity-50' : ''} group bg-black/30 hover:bg-black/50 hover:text-cyan duration-500 w-72 tracking-[0.3em] py-5 px-5 text-left flex justify-between items-center text-sm mt-2`}
                 >
                     {submitButtonLabel}
                     <svg width="35" height="35" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className='group-hover:rotate-180 duration-500'>

@@ -96,12 +96,12 @@ const Banner = () => {
                     )
                 })
             }
-            <div className='layers__container relative z-20 h-screen flex flex-col md:flex-row'>
+            <div className='layers__container relative z-20 h-screen flex flex-col lg:flex-row'>
                 <div 
                     className={`
                     layers opacity-0  w-full
-                    md:h-full relative group flex justify-center items-center md:duration-500 duration-700
-                    ${isToggleOne  ? 'md:w-1/2 h-[70vh] bg-black/70' : 'md:w-1/4 h-1/4 cursor-pointer'}
+                    lg:h-full relative group flex justify-center items-center md:duration-500 duration-700
+                    ${isToggleOne  ? 'lg:w-1/2 h-[70vh] bg-black/70' : 'lg:w-1/4 h-1/4 cursor-pointer'}
                     ${isToggleTwo  ? ' h-[15vh] bg-black/50 hover:bg-black/55' : ''} 
                     ${isToggleThree  ? 'h-[15vh] bg-black/45 hover:bg-black/55' : ''} 
                     `} 
@@ -113,12 +113,14 @@ const Banner = () => {
                             <h4 className='text-cyan tracking-[0.5em]'>WE CREATE TO CONNECT</h4>
                             <h2 className='md:text-[64px] text-5xl leading-[72px]'>Branding & Design</h2>
                             <p>Where it all begins. Identity. innovation. Unique</p>
-                            <Link 
-                                className='px-8 tracking-[0.3em] border border-cyan hover:bg-transparent hover:text-cyan hover:scale-105 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl '
-                                href={'/design'}
-                            >
-                                DISCOVER
-                            </Link>
+                            <div>
+                                <Link 
+                                    className='px-8 tracking-[0.3em] border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
+                                    href={'/design'}
+                                >
+                                    DISCOVER
+                                </Link>
+                            </div>
                         </div>
                         <div className={`${isToggleOne ? 'hidden' : 'block'}  flex gap-4 flex-col justify-center  items-center`}>
                                 <svg width="35" height="35" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className='opacity-0 group-hover:opacity-100 duration-300'>
@@ -130,9 +132,9 @@ const Banner = () => {
                     </div>
                 </div>
                 <div 
-                    className={`md:h-full layers opacity-0 bg-black/50 group flex justify-center items-center
+                    className={`lg:h-full layers opacity-0 bg-black/50 group flex justify-center items-center
                      origin-right md:duration-500 duration-700 relative  
-                    ${isToggleTwo ? 'md:w-1/2 bg-black/70 h-[70vh]' : ' cursor-pointer md:w-1/4 bg-black/50 hover:bg-black/60 h-[15vh]'}`} 
+                    ${isToggleTwo ? 'lg:w-1/2 bg-black/70 h-[70vh]' : ' cursor-pointer lg:w-1/4 bg-black/50 hover:bg-black/60 h-[15vh]'}`} 
                     onClick={toggleFunctionOnTwo}
                 >
                     <div className=''>
@@ -157,9 +159,9 @@ const Banner = () => {
                     </div>
                 </div>
                 <div 
-                    className={`md:h-full layers opacity-0 bg-black/40 group flex justify-center items-center
+                    className={`lg:h-full layers opacity-0 bg-black/40 group flex justify-center items-center
                      origin-right md:duration-500 duration-700 relative
-                    ${isToggleThree ? 'bg-black/70 md:w-1/2 h-[70vh]' : 'md:w-1/4 h-[15vh] cursor-pointer'} 
+                    ${isToggleThree ? 'bg-black/70 lg:w-1/2 h-[70vh]' : 'lg:w-1/4 h-[15vh] cursor-pointer'} 
                     ${isToggleOne  ? ' bg-black/40 hover:bg-black/55' : ''}
                     ${isToggleTwo  ? ' bg-black/50 hover:bg-black/55' : ''}`} 
                     onClick={toggleFunctionThree}

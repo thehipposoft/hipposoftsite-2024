@@ -5,8 +5,8 @@ import Link from 'next/link';
 
 const LogofolioComp = () => {
     return (
-        <div className='md:h-screen flex flex-col'>
-            <div className='flex md:w-[1250px] mx-auto pt-12 gap-12 md:gap-0 justify-between items-center text-black'>
+        <div className='lg:h-screen flex flex-col'>
+            <div className='flex lg:w-[1250px] md:w-[80vw] mx-auto pt-12 gap-12 md:gap-0 justify-between items-center text-black'>
                 <h1 className='text-5xl light'>LOGOFOLIO</h1>
                 <BackButton href={'/design'} />
                 <Link href={'/design'} className='md:hidden '>

@@ -49,7 +49,7 @@ const Menu = () => {
     return (
         <div ref={container} className=''>
             <div 
-                className='absolute top-12 md:right-8 right-10 hover:bg-white/30 rounded-xl px-2 py-3 duration-500 cursor-pointer z-40'
+                className='absolute md:top-12 top-7 md:right-8 right-7 hover:bg-white/30 rounded-xl px-2 py-3 duration-500 cursor-pointer z-40'
                 onClick={openMenuFunc}
             >
                 <svg width="35" height="35" viewBox="0 0 30 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -60,34 +60,34 @@ const Menu = () => {
             </div>
             <div className={`menu translate-x-[100%] opacity-100
                 absolute top-0 right-0 flex flex-col justify-center items-center md:items-start bg-[#221b35] z-30 md:px-32 h-screen w-screen py-4`} >
-                    <ul className='links-list flex flex-col gap-12'>
-                        <Link href={'/design'} className='translate-y-4 flex items-center gap-6 group '>
-                            <div className='bg-white p-4 rounded-full group-hover:scale-110 duration-500'>
-                                <Image src={'/assets/images/vectors/menu-1.svg'} width={40} height={40} alt='Branding & Design vector' className='group-hover:scale-125 group-hover:rotate-90 duration-700'/>
+                    <ul className='links-list flex flex-col gap-6 md:gap-10 lg:gap-12 md:mx-auto lg:mx-0'>
+                        <Link href={'/design'} className='translate-y-4 flex items-center gap-4 lg:gap-6 group '>
+                            <div className='bg-white md:p-4 p-3 rounded-full group-hover:scale-110 duration-500'>
+                                <Image src={'/assets/images/vectors/menu-1.svg'} width={40} height={40} alt='Branding & Design vector' className='h-8 md:h-10 w-8 md:w-10 group-hover:scale-125 group-hover:rotate-90 duration-700'/>
                             </div>
                             <p className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse '>Branding & Design</p>
                         </Link>
-                        <Link href={'/web-development'} className='translate-y-4 flex items-center gap-6 group'>
-                            <div className='bg-white p-4 rounded-full group-hover:scale-110 duration-500'>
-                                <Image src={'/assets/images/vectors/menu-2.svg'} width={40} height={40} alt='Web development vector' className='group-hover:scale-125 group-hover:rotate-90 duration-700'/>
+                        <Link href={'/web-development'} className='translate-y-4 flex items-center gap-4 lg:gap-6 group'>
+                            <div className='bg-white md:p-4 p-3  rounded-full group-hover:scale-110 duration-500'>
+                                <Image src={'/assets/images/vectors/menu-2.svg'} width={40} height={40} alt='Web development vector' className='h-8 md:h-10 w-8 md:w-10 group-hover:scale-125 group-hover:rotate-90 duration-700'/>
                             </div>
                             <p  className=' thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>Web Development</p>
                         </Link>
-                        <Link href={'/web-design'} className='flex translate-y-4 items-center gap-6 group '>
-                            <div className='bg-white p-4 rounded-full group-hover:scale-110 duration-500'>
-                                <Image src={'/assets/images/vectors/menu-3.svg'} width={40} height={40} alt='Web designgit status Vector' className='group-hover:scale-125 group-hover:rotate-90 duration-700'/>
+                        <Link href={'/web-design'} className='flex translate-y-4 items-center gap-4 lg:gap-6 group '>
+                            <div className='bg-white md:p-4 p-3  rounded-full group-hover:scale-110 duration-500'>
+                                <Image src={'/assets/images/vectors/menu-3.svg'} width={40} height={40} alt='Web designgit status Vector' className='h-8 md:h-10 w-8 md:w-10 group-hover:scale-125 group-hover:rotate-90 duration-700'/>
                             </div>
                             <p className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>Web Design</p>
                         </Link>
-                        <Link href={'/portfolio'} className=' translate-y-4 flex items-center gap-6 group'>
-                            <div className='bg-white p-4 rounded-full group-hover:scale-110 duration-500'>
-                                <Image src={'/assets/images/vectors/menu-4.svg'} width={40} height={40} alt='Portfolio vector' className='group-hover:scale-125 group-hover:rotate-90 duration-700'/>
+                        <Link href={'/portfolio'} className=' translate-y-4 flex items-center gap-4 lg:gap-6 group'>
+                            <div className='bg-white md:p-4 p-3  rounded-full group-hover:scale-110 duration-500'>
+                                <Image src={'/assets/images/vectors/menu-4.svg'} width={40} height={40} alt='Portfolio vector' className='h-8 md:h-10 w-8 md:w-10 group-hover:scale-125 group-hover:rotate-90 duration-700'/>
                             </div>
                             <p  className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>Portfolio</p>
                         </Link>
-                        <Link href={'/contact'} className='translate-y-4 flex items-center gap-6 group'>
-                            <div className='bg-white p-4 rounded-full group-hover:scale-110 duration-500'>
-                                <Image src={'/assets/images/vectors/menu-5.svg'} width={40} height={40} alt='Contact vector' className='group-hover:scale-125 group-hover:rotate-90 duration-700'/>
+                        <Link href={'/contact'} className='translate-y-4 flex items-center gap-4 lg:gap-6 group'>
+                            <div className='bg-white md:p-4 p-3  rounded-full group-hover:scale-110 duration-500'>
+                                <Image src={'/assets/images/vectors/menu-5.svg'} width={40} height={40} alt='Contact vector' className='h-8 md:h-10 w-8 md:w-10 group-hover:scale-125 group-hover:rotate-90 duration-700'/>
                             </div>
                             <p  className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>Contact</p>
                         </Link>

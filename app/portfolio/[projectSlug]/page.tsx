@@ -42,7 +42,7 @@ export default async function ProjectPage({params}: Params) {
 
   return (
        projectData ? <SingleProyect project={projectData} /> 
-       : <p>No project for the selected slug o algo asi</p>
+       : <p>No project for the selected slug</p>
   )
 }
 

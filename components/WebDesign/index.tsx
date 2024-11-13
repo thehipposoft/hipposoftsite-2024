@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { MutableRefObject, use, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { useGSAP } from '@gsap/react';
@@ -63,14 +63,14 @@ const WebDesignComp = () => {
         {
             name: 'Copa tomada',
             background: '/assets/images/portfolio/copa-mockg.webp',
-            href: 'https://masonrymen.com.au/',
+            href: 'https://copatomada.com.ar/',
             textColor: 'black',
             vectorColor: '#000000',
         },
         {
             name: 'The C Therapy',
             background: '/assets/images/portfolio/c-therapy-mockg.webp',
-            href: 'https://masonrymen.com.au/',
+            href: 'https://thectherapy.com.au/',
             textColor: 'black',
             vectorColor: '#000000',
         },
@@ -120,7 +120,7 @@ const WebDesignComp = () => {
             delay: -0.5,
         })
 
-        mm.add("(min-width: 800px)", () => {
+        mm.add("(min-width: 600px)", () => {
             gsap.to('.slider__wrapper > *', {
                 x: `-${sliderMovement - 100}vw`,
                 ease: 'power1.out',
@@ -134,36 +134,6 @@ const WebDesignComp = () => {
         })
     }, {scope: container});
 
-    const { contextSafe } = useGSAP({ scope: container }); 
-
-/*     const nextSlide = contextSafe(() => {
-        gsap.to('.slider__wrapper > *', { x: `-${sliderMovement}%`, duration: 1.2, ease: 'power3.inOut' });
-        if(index < WEBDESIGN_DATA.length - 1) {
-            setCurrentIndex(prev => prev + 1)
-        } else {
-            setCurrentIndex(0)
-        }
-    });
-
-    const MouseEnter = contextSafe(() => {
-        gsap.to('.vector', {
-            rotate: 180,
-            scale: 1.2,
-            duration: .7,
-            ease: 'power3.inOut',
-        })
-    });
-
-    const MouseLeave = contextSafe(() => {
-        gsap.to('.vector', {
-            rotate: 0,
-            scale: 1,
-            duration: .7,
-            ease: 'power3.inOut',
-        })
-
-    }); */
-
     return (
         <div className='h-screen w-screen relative' ref={container}>
             <div className='slider__wrapper relative overflow-hidden flex md:flex-row flex-col'>
@@ -172,7 +142,7 @@ const WebDesignComp = () => {
                             return(
                                 <div className='min-w-[100vw] min-h-screen relative' key={index}>
                                     <Image className='background-image' src={value.background} alt={`${value.name} site background`} fill objectFit='cover' />
-                                    <div className='md:max-w-[1250px] max-w-[80vw] mx-auto flex flex-col justify-between md:h-[90vh] h-[92vh] relative md:pt-8 pt-6 z-10'>
+                                    <div className='lg:max-w-[1250px] max-w-[80vw] mx-auto flex flex-col justify-between md:h-[90vh] h-[92vh] relative md:pt-8 pt-6 z-10'>
                                         <div className={`flex justify-between items-center text-${value.textColor}`}>
                                             <div className='flex flex-col gap-2'>
                                                 <h2 className='title text-5xl'>Web Design</h2>
@@ -188,30 +158,16 @@ const WebDesignComp = () => {
                                                 </Link>
                                             </div>
                                         </div>
-                                        <div className='navigation opacity-0 flex flex-col md:items-end items-center md:gap-0 gap-12'>
-{/*                                             <div 
-                                                onMouseEnter={MouseEnter}
-                                                onMouseLeave={MouseLeave}
-                                                onClick={nextSlide}
-                                                className='md:p-2 p-[10px] flex flex-col gap-2 items-center md:block rounded-md cursor-pointer vector-container bg-white/45 md:bg-transparent' 
+                                        <div className='navigation lg:max-w-[1250px] max-w-[80vw] opacity-0 flex flex-col md:flex-row-reverse md:justify-between items-center md:gap-0 gap-12'>
+                                            <Link 
+                                                className='px-8 tracking-[0.3em] duration-700 hover:bg-white/50 hover:scale-105 text-sm font-medium py-3 bg-cyan text-black rounded-3xl'
+                                                href={value.href}
+                                                target='_blank'
+                                                rel='noreferrer'
                                             >
-                                                <svg width="50" height="50" viewBox="0 0 40 40" fill="" xmlns="http://www.w3.org/2000/svg" className='vector' >
-                                                    <path d="M1.25 20H38.75" stroke={`${value.vectorColor}`} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
-                                                    <path d="M20 1.25V38.75" stroke={`${value.vectorColor}`} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
-                                                </svg>
-                                                <p className={`md:hidden text-[#000000]`}>Next</p>
-                                            </div> */}
-                                            <div>
-                                                <Link 
-                                                    className='px-8 tracking-[0.3em] duration-700 hover:bg-white/50 hover:scale-105 text-sm font-medium py-3 bg-cyan text-black rounded-3xl'
-                                                    href={value.href}
-                                                    target='_blank'
-                                                    rel='noreferrer'
-                                                >
-                                                    DISCOVER SITE
-                                                </Link>
-                                            </div>
-                                            <div className={`${index === 0 ? 'md:flex' : 'hidden'} hidden scroll-text items-center gap-4 w-[1300px] mx-auto text-xl`}>
+                                                DISCOVER SITE
+                                            </Link>
+                                            <div className={`${index === 0 ? 'md:flex' : 'hidden'} hidden scroll-text items-center gap-4 text-xl`}>
                                                 <p className='thin text-black'>S</p>
                                                 <p className='thin text-black'>C</p>
                                                 <p className='thin text-black'>R</p>
@@ -227,7 +183,6 @@ const WebDesignComp = () => {
                         })
                     }
             </div>
-
         </div>
     );
 };

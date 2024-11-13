@@ -26,7 +26,7 @@ const PORTFOLIO_DATA = [
                     <Image src={'/assets/images/portfolio/tct.svg'} alt="The C-therapy logo" width={35} height={35} />
                 </div>
             </div>,
-            logo_full: <Image src={'/assets/images/portfolio/tct.svg'} alt="The C-therapy logo" width={35} height={35} />,
+            logo_full: <Image src={'/assets/images/portfolio/tct-big.svg'} alt="The C-therapy logo" width={35} height={35} />,
         }
     },
     {
@@ -224,7 +224,9 @@ const PROJECTS:any = {
                 <Image src={'/assets/images/portfolio/tct.svg'} alt="The C-therapy logo" width={35} height={35} />
             </div>
         </div>,
-        logo_full: <Image src={'/assets/images/portfolio/tct.svg'} alt="The C-therapy logo" width={120} height={120} />,
+        logo_full: <div className="p-2 bg-[#bcb4a8]">
+                <Image src={'/assets/images/portfolio/tct-big.svg'} alt="The C-therapy logo" width={180} height={120} />
+            </div>,
 
     },
     CopaTomada: {

@@ -63,8 +63,8 @@ const Cards = () => {
 
     return (
         <div>
-            <div className='title flex md:w-[1250px] w-[80vw] mx-auto pt-12 justify-between items-center text-black'>
-                <h2 className='text-5xl'>Web Development</h2>
+            <div className='title flex lg:w-[1250px] w-[80vw] mx-auto pt-12 justify-between items-center text-black'>
+                <h2 className='md:text-5xl text-4xl w-3/4 md:w-auto'>Web Development</h2>
                 <BackButton href={'/'} />
                 <Link href={'/'} className='md:hidden block'>
                     <svg className='' width="20" height="20" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -73,13 +73,13 @@ const Cards = () => {
                     </svg>
                 </Link>
             </div>
-            <div ref={container} className='md:max-w-[1400px] max-w-[80vw] mx-auto flex flex-col md:flex-row justify-between md:items-end gap-20 md:gap-0 pt-12 md:pt-0 md:h-[600px] overflow-hidden'>
+            <div ref={container} className='lg:max-w-[1400px] max-w-[80vw] mx-auto flex flex-col lg:flex-row justify-between lg:items-end gap-20 md:gap-32 lg:gap-0 pt-12 lg:pt-0 lg:h-[600px] overflow-hidden'>
                 {
                     CARDS_DATA.map((val, index) => {
                         return(
                             <div className={`card card-${index} group relative`} key={index}>
-                                <Link href={val.href} className={`flex flex-col gap-4 text-black max-w-[320px] relative`}>
-                                    <div className='relative w-[320px] h-[240px]'>
+                                <Link href={val.href} className={`flex flex-col gap-4 text-black lg:max-w-[320px] max-w-[80vw] relative`}>
+                                    <div className='relative lg:w-[320px] w-[80vw] h-[240px]'>
                                         <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className='relative z-10 left-[85%] top-[5%] duration-500 group-hover:scale-125'>
                                             <path d="M1.25 20H38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
                                             <path d="M20 1.25V38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>

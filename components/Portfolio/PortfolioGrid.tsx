@@ -5,11 +5,11 @@ import Link from 'next/link';
 
 const PortfolioGrid = () => {
     return (
-        <div className='grid md:grid-cols-3 grid-cols-1 gap-12 md:w-[85vw] w-[80vw] md:max-w-[1250px] md:self-baseline mx-auto'>
+        <div className='grid lg:grid-cols-3 grid-cols-1 gap-12 lg:w-[85vw] md:w-[600px] w-[80vw] md:max-w-[1250px] md:self-baseline mx-auto'>
             {
                 PORTFOLIO_DATA.map((val, index) => (
                     <div className='flex flex-col gap-4' key={index}>
-                        <Link href={`/portfolio/${val.slug}`}  className='w-[340px] h-[520px] relative group cursor-pointer' key={index}>
+                        <Link href={`/portfolio/${val.slug}`}  className='w-[80vw] md:w-[600px] lg:w-[340px] h-[520px] relative group cursor-pointer' key={index}>
                             <div className='w-full h-full absolute top-0 left-0 bg-black/40 flex justify-center items-center opacity-0 group-hover:opacity-100 duration-500 z-10'>
                                 <h4 className='px-8 tracking-[0.2em] font-medium py-3 text-white text-2xl'>DISCOVER</h4>
                             </div>

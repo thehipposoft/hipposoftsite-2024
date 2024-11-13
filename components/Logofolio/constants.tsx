@@ -86,7 +86,7 @@ const LOGOFOLIO_DATA = [
                         <p className=" text-sm">Primary Colors</p>
                         <div className="grid grid-cols-3">
                             <div className="flex flex-col gap-3">
-                                <div className="md:w-[7vw] w-[20vw] h-[5vh] bg-[#44B2AF]" />
+                                <div className="lg:w-[7vw] md:w-[15vw] w-[20vw] h-[5vh] bg-[#44B2AF]" />
                                 <div className="flex flex-col gap-[1px] text-xs">
                                     <p className="light">R: 68</p>
                                     <p className="light">G: 178</p>
@@ -99,7 +99,7 @@ const LOGOFOLIO_DATA = [
                                 </div>
                           </div>
                             <div className="flex flex-col gap-3">
-                                <div className="md:w-[7vw] w-[20vw] h-[5vh] bg-[#30528D]" />
+                                <div className="lg:w-[7vw] md:w-[15vw] w-[20vw] h-[5vh] bg-[#30528D]" />
                                 <div className="flex flex-col gap-[1px] text-xs">
                                     <p className="light">R: 68</p>
                                     <p className="light">G: 178</p>
@@ -112,7 +112,7 @@ const LOGOFOLIO_DATA = [
                                 </div>
                             </div>
                             <div className="flex flex-col gap-3">
-                                <div className="md:w-[7vw] w-[20vw] h-[5vh] bg-[#F15F3F]" />
+                                <div className="lg:w-[7vw] md:w-[15vw] w-[20vw] h-[5vh] bg-[#F15F3F]" />
                                 <div className="flex flex-col gap-[1px] text-xs">
                                     <p className="light">R: 68</p>
                                     <p className="light">G: 178</p>
@@ -130,7 +130,7 @@ const LOGOFOLIO_DATA = [
                         <p className=" text-sm">Accent</p>
                         <div className="grid">
                             <div className="flex flex-col gap-3">
-                                <div className="md:w-[7vw] w-[20vw] h-[5vh] bg-[#FFCC5F]" />
+                                <div className="lg:w-[7vw] md:w-[15vw] w-[20vw] h-[5vh] bg-[#FFCC5F]" />
                                 <div className="flex flex-col gap-[1px] text-xs">
                                     <p className="light">R: 68</p>
                                     <p className="light">G: 178</p>
@@ -161,7 +161,7 @@ const LOGOFOLIO_DATA = [
                         <p className=" text-sm">Secundary Colors</p>
                         <div className="grid grid-cols-3">
                             <div className="flex flex-col gap-4">
-                                <div className="md:w-[7vw] w-[20vw] h-[5vh] bg-[#BE6312]" />
+                                <div className="lg:w-[7vw] md:w-[15vw] w-[20vw] h-[5vh] bg-[#BE6312]" />
                                 <div className="flex flex-col gap-[2px] text-xs">
                                     <p className="light">R: 190</p>
                                     <p className="light">G: 99</p>
@@ -174,7 +174,7 @@ const LOGOFOLIO_DATA = [
                                 </div>
                         </div>
                             <div className="flex flex-col gap-4">
-                                <div className="md:w-[7vw] w-[20vw] h-[5vh] bg-[#EF973B]" />
+                                <div className="lg:w-[7vw] md:w-[15vw] w-[20vw] h-[5vh] bg-[#EF973B]" />
                                 <div className="flex flex-col gap-[2px] text-xs">
                                     <p className="light">R: 239</p>
                                     <p className="light">G: 151</p>
@@ -187,7 +187,7 @@ const LOGOFOLIO_DATA = [
                                 </div>
                             </div>
                             <div className="flex flex-col gap-4">
-                                <div className="md:w-[7vw] w-[20vw] h-[5vh] bg-[#4B4136]" />
+                                <div className="lg:w-[7vw] md:w-[15vw] w-[20vw] h-[5vh] bg-[#4B4136]" />
                                 <div className="flex flex-col gap-[2px] text-xs">
                                     <p className="light">R: 75</p>
                                     <p className="light">G: 65</p>
@@ -205,7 +205,7 @@ const LOGOFOLIO_DATA = [
                         <p className=" text-sm">Primary Colors</p>
                         <div className="grid">
                             <div className="flex flex-col gap-4">
-                                <div className="md:w-[7vw] w-[20vw] h-[5vh] bg-[#8F122B]" />
+                                <div className="lg:w-[7vw] md:w-[15vw] w-[20vw] h-[5vh] bg-[#8F122B]" />
                                 <div className="flex flex-col gap-[2px] text-xs">
                                     <p className="light">R: 68</p>
                                     <p className="light">G: 178</p>

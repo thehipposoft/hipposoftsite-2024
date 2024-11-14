@@ -56,15 +56,7 @@ const BrandingDesing = () => {
         .to(['.title', '.info', '.carousel-slide'], {
             opacity: 1,
         })
-
-        .from('.scroll-text > *', {
-            opacity: 0,
-            y: -50,
-            duration: .7,
-            ease: 'back.out',
-            stagger: .2,
-        })
-
+        
         gsap.to('.carousel__wrapper' , {
             x: -900,
             ease: 'power1.inOut',
@@ -87,17 +79,7 @@ const BrandingDesing = () => {
                 <BackButton href={'/'} color='#000000' />
             </div>
             <div className={`bg-white flex justify-center items-center pt-8 relative `}>
-
                 <div className={`carousel__wrapper translate-x-[900px] flex gap-20 items-center`}>
-                    <div className={`scroll-text items-center gap-8 text-xl -left-[5%] absolute`}>
-                        <p className='thin text-black'>S</p>
-                        <p className='thin text-black'>C</p>
-                        <p className='thin text-black'>R</p>
-                        <p className='thin text-black'>O</p>
-                        <p className='thin text-black'>L</p>
-                        <p className='thin text-black'>L</p>
-                        <p className='thin text-black rotate-90'>&#10509;</p>
-                    </div>
                     <div className={`overflow-hidden w-[200px] h-[10px] opacity-0 relative group image-animation rounded-md`} >
                         <Link href={'/logofolio'} className={` absolute w-full h-full z-[11]`} />
                         <div className='info relative z-10 flex opacity-0 pt-12 pl-12 items-center gap-6'>

@@ -47,7 +47,7 @@ const BrandingDesignMobile = () => {
     
     return (
         <div ref={container} className='lg:hidden bg-white'>
-            <div className='title items-center gap-8 flex justify-between w-full pt-16 px-8 pb-4'>
+            <div className='title items-center gap-8 flex justify-between w-full pt-24 px-8 pb-4'>
                 <h1 className='text-black text-5xl light'>Branding & Design</h1>
                 <Link href={'/'}>
                     <svg className='' width="30" height="30" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">

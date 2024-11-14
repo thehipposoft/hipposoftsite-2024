@@ -77,7 +77,7 @@ const WebDevelopmentIndividualComp = ({props}:any) => {
 
     return (
         <div ref={container} className='section flex flex-col text-black lg:h-screen'>
-            <div className='title lg:w-[1300px] w-[80vw] flex mx-auto justify-between items-center pt-12'>
+            <div className='title lg:w-[1300px] w-[80vw] flex mx-auto justify-between items-center lg:pt-12 pt-20'>
                 <h2 className='lg:text-6xl md:text-5xl text-4xl w-3/4 md:w-auto'>{props.title}</h2>
                 <BackButton href='/web-development' />
                 <Link href={'/web-development'} className='lg:hidden block'>

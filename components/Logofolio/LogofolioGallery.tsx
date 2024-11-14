@@ -6,7 +6,7 @@ import { useGSAP } from '@gsap/react';
 
 
 const LogofolioGallery = ({ images, vc }:any) => {
- 
+
     const container = useRef<HTMLDivElement>(null);
 
     let mm = gsap.matchMedia();
@@ -24,7 +24,7 @@ const LogofolioGallery = ({ images, vc }:any) => {
         })
     })
 
-    const { contextSafe } = useGSAP({ scope: container }); 
+    const { contextSafe } = useGSAP({ scope: container });
 
     const onClickOne = contextSafe(() => {
         gsap.to('.gallery__wrapper > *', { x: '-100%', duration: .7, ease: 'power2.inOut' });

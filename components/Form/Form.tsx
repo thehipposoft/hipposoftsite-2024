@@ -74,7 +74,26 @@ const MyCustomForm = ({
             ...values,
             [name]: value
         });
+        console.log('Values:', values)
     };
+
+    const handleChangeBoxes = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const isChecked = e.target.checked;
+        if (isChecked) {
+            setValues({
+                ...values,
+                interest: [...values.interest, e.target.value]
+            })
+        } else {
+            const index = values.interest.indexOf(e.target.value);
+            values.interest.splice(index, 1);
+            setValues({
+                ...values,
+                interest: values.interest
+            })
+        }
+        console.log('Values:', values)
+    }
 
     const handleSubmit = (event:any) => {
         if (event) event.preventDefault();
@@ -140,23 +159,23 @@ const MyCustomForm = ({
                                     <p className='text-black text-lg'>I'm intereseted in...</p>
                                     <div className='flex justify-center md:justify-start gap-4 flex-wrap'>
                                         <div className='relative py-4 px-2 flex justify-center items-center w-44 hover:shadow-lg duration-500'>
-                                            <input onChange={handleChange} type="checkbox" name="interest" id="web-design" value='web-design' className='cursor-pointer appearance-none w-full h-full border-2 checked:border-[#7653E3] absolute rounded duration-500' />
+                                            <input onChange={handleChangeBoxes} type="checkbox" name="interest" id="web-design" value='web-design' className='cursor-pointer appearance-none w-full h-full border-2 checked:border-[#7653E3] absolute rounded duration-500' />
                                             <label htmlFor="web-design" className='text-black'>Web Design</label>
                                         </div>
                                         <div className='relative py-4 px-2 flex justify-center items-center w-44 hover:shadow-lg duration-500'>
-                                            <input onChange={handleChange} type="checkbox" name="interest" id="web-development" value="web-development" className='cursor-pointer appearance-none w-full h-full border-2 checked:border-[#7653E3] absolute rounded duration-500' />
+                                            <input onChange={handleChangeBoxes} type="checkbox" name="interest" id="web-development" value="web-development" className='cursor-pointer appearance-none w-full h-full border-2 checked:border-[#7653E3] absolute rounded duration-500' />
                                             <label htmlFor="web-development" className='text-black'>Web Development</label>
                                         </div>
                                         <div className='relative py-4 px-2 flex justify-center items-center w-44 hover:shadow-lg duration-500'>
-                                            <input onChange={handleChange} type="checkbox" name="interest" id="graphic-design" value="graphic-design" className='cursor-pointer appearance-none w-full h-full border-2 checked:border-[#7653E3] absolute rounded duration-500' />
+                                            <input onChange={handleChangeBoxes} type="checkbox" name="interest" id="graphic-design" value="graphic-design" className='cursor-pointer appearance-none w-full h-full border-2 checked:border-[#7653E3] absolute rounded duration-500' />
                                             <label htmlFor="web-development" className='text-black'>Graphic Design</label>
                                         </div>
                                         <div className='relative py-4 px-2 flex justify-center items-center w-44 hover:shadow-lg duration-500'>
-                                            <input onChange={handleChange} type="checkbox" name="interest" id="branding" value="branding" className='cursor-pointer appearance-none w-full h-full border-2 checked:border-[#7653E3] absolute rounded duration-500' />
+                                            <input onChange={handleChangeBoxes} type="checkbox" name="interest" id="branding" value="branding" className='cursor-pointer appearance-none w-full h-full border-2 checked:border-[#7653E3] absolute rounded duration-500' />
                                             <label htmlFor="web-development" className='text-black'>Branding</label>
                                         </div>
                                         <div className='relative py-4 px-2 flex justify-center items-center w-44 hover:shadow-lg duration-500'>
-                                            <input onChange={handleChange} type="checkbox" name="interest" id="social-media" value='social-media' className='cursor-pointer appearance-none w-full h-full border-2 checked:border-[#7653E3] absolute rounded duration-500' />
+                                            <input onChange={handleChangeBoxes} type="checkbox" name="interest" id="social-media" value='social-media' className='cursor-pointer appearance-none w-full h-full border-2 checked:border-[#7653E3] absolute rounded duration-500' />
                                             <label htmlFor="web-development" className='text-black'>Social Media</label>
                                         </div>
                                     </div>

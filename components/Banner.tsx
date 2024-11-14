@@ -58,7 +58,7 @@ const Banner = () => {
         .to('.layers', {
             delay: -.5,
             opacity: 1,
-            stagger: 0.5,
+            stagger: 0.2,
             ease: 'back.in'
         })
         .from('.first__content > *', {
@@ -72,7 +72,7 @@ const Banner = () => {
         })
         .to('.subTitle' , {
             opacity: 1,
-            stagger: 0.3,
+            stagger: 0.2,
             delay: -.5,
         })
 
@@ -101,21 +101,21 @@ const Banner = () => {
                     className={`
                     layers opacity-0  w-full
                     lg:h-full relative group flex justify-center items-center md:duration-500 duration-700
-                    ${isToggleOne  ? 'lg:w-1/2 h-[70vh] bg-black/70' : 'lg:w-1/4 h-1/4 cursor-pointer'}
-                    ${isToggleTwo  ? ' h-[15vh] bg-black/50 hover:bg-black/55' : ''} 
-                    ${isToggleThree  ? 'h-[15vh] bg-black/45 hover:bg-black/55' : ''} 
+                    ${isToggleOne  ? 'lg:w-1/2 h-[60vh] bg-black/70' : 'lg:w-1/4 h-1/4 cursor-pointer'}
+                    ${isToggleTwo  ? ' h-[20vh] bg-black/50 hover:bg-black/55' : ''} 
+                    ${isToggleThree  ? 'h-[20vh] bg-black/45 hover:bg-black/55' : ''} 
                     `} 
                     onClick={toggleFunctionOne}
                 >
                     <div className=''>
-                        <div className={`first__content ${isToggleOne ? 'opacity-1 block md:-top-12' : ' hidden '} relative duration-1000 w-[400px] flex gap-8 flex-col justify-center items-center md:items-start`}>
+                        <div className={`first__content ${isToggleOne ? 'opacity-1 block md:-top-12' : ' hidden '} relative duration-1000 w-[400px] flex md:gap-8 gap-4 flex-col justify-center items-center md:items-start`}>
                             <Image src={'/assets/logo.png'} width={150} height={250} alt='HippoSoft logo' />
-                            <h4 className='text-cyan tracking-[0.5em]'>WE CREATE TO CONNECT</h4>
-                            <h2 className='md:text-[64px] text-5xl leading-[72px]'>Branding & Design</h2>
+                            <h4 className='text-cyan md:tracking-[0.5em] tracking-[0.25em]'>WE CREATE TO CONNECT</h4>
+                            <h2 className='md:text-[64px] text-4xl leading-[72px]'>Branding & Design</h2>
                             <p>Where it all begins. Identity. innovation. Unique</p>
-                            <div>
+                            <div className='mt-4 md:mt-0'>
                                 <Link 
-                                    className='px-8 tracking-[0.3em] border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
+                                    className='px-8 tracking-[0.3em] mt-4 md:mt-0 border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
                                     href={'/design'}
                                 >
                                     DISCOVER
@@ -134,16 +134,16 @@ const Banner = () => {
                 <div 
                     className={`lg:h-full layers opacity-0 bg-black/50 group flex justify-center items-center
                      origin-right md:duration-500 duration-700 relative  
-                    ${isToggleTwo ? 'lg:w-1/2 bg-black/70 h-[70vh]' : ' cursor-pointer lg:w-1/4 bg-black/50 hover:bg-black/60 h-[15vh]'}`} 
+                    ${isToggleTwo ? 'lg:w-1/2 bg-black/70 h-[60vh]' : ' cursor-pointer lg:w-1/4 bg-black/50 hover:bg-black/60 h-[20vh]'}`} 
                     onClick={toggleFunctionOnTwo}
                 >
                     <div className=''>
-                        <div className={`${isToggleTwo ? 'opacity-1 block' : ' hidden'} w-[400px] gap-8 duration-1000 flex flex-col justify-center items-center md:items-start`}>
-                            <h4 className='text-cyan tracking-[0.5em]'>FROM DESIGN TO CODE</h4>
-                            <h2 className='md:text-[64px] text-5xl leading-[72px]'>Web Development</h2>
+                        <div className={`${isToggleTwo ? 'opacity-1 block' : ' hidden'} w-[400px] md:gap-8 gap-4 duration-1000 flex flex-col justify-center items-center md:items-start`}>
+                            <h4 className='text-cyan md:tracking-[0.5em] tracking-[0.25em]'>FROM DESIGN TO CODE</h4>
+                            <h2 className='md:text-[64px] text-4xl leading-[72px]'>Web Development</h2>
                             <p className='px-10 text-center md:px-0 md:text-left'>Building is important but how is just as essential to us.</p>
                             <Link 
-                                className='px-8 tracking-[0.3em] border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
+                                className='px-8 mt-4 md:mt-0 tracking-[0.3em] border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
                                 href={'/web-development'}
                             >
                                 DISCOVER
@@ -161,15 +161,15 @@ const Banner = () => {
                 <div 
                     className={`lg:h-full layers opacity-0 bg-black/40 group flex justify-center items-center
                      origin-right md:duration-500 duration-700 relative
-                    ${isToggleThree ? 'bg-black/70 lg:w-1/2 h-[70vh]' : 'lg:w-1/4 h-[15vh] cursor-pointer'} 
+                    ${isToggleThree ? 'bg-black/70 lg:w-1/2 h-[60vh]' : 'lg:w-1/4 h-[20vh] cursor-pointer'} 
                     ${isToggleOne  ? ' bg-black/40 hover:bg-black/55' : ''}
                     ${isToggleTwo  ? ' bg-black/50 hover:bg-black/55' : ''}`} 
                     onClick={toggleFunctionThree}
                 >
                     <div className=''>
-                        <div className={`${isToggleThree ? 'opacity-1 block -top-12' : 'opacity-0 hidden'} relative w-[400px] gap-8 duration-1000 flex flex-col justify-center items-center md:items-start`}>
-                            <h4 className='text-cyan tracking-[0.5em]'>WORK IN ACTION</h4>
-                            <h2 className='md:text-[64px] text-5xl leading-[72px] text-center md:text-left'>Portfolio</h2>
+                        <div className={`${isToggleThree ? 'opacity-1 block -top-12' : 'opacity-0 hidden'} relative w-[400px] md:gap-8 gap-4 duration-1000 flex flex-col justify-center items-center md:items-start`}>
+                            <h4 className='text-cyan md:tracking-[0.5em] tracking-[0.25em]'>WORK IN ACTION</h4>
+                            <h2 className='md:text-[64px] text-4xl leading-[72px] text-center md:text-left'>Portfolio</h2>
                             <p className='px-8 text-center md:px-0 md:text-left'>Discover projects where strategic design meets impactful results.</p>
                             <Link href={'/portfolio'} className='px-8 tracking-[0.3em] border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'>
                                 DISCOVER

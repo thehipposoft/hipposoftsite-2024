@@ -5,6 +5,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import SchemaOrg from "./SchemaOrg";
 import GoogleAnalytics from "./GoogleAnalytics";
 import StickyContact from "@/components/commons/StickyContact";
+import Menu from "@/components/Menu";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({
           <SchemaOrg />
           <GoogleAnalytics />
           <SmoothScroll>
+            <Menu />
             {children}
             <StickyContact />
           </SmoothScroll>

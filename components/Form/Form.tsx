@@ -74,7 +74,6 @@ const MyCustomForm = ({
             ...values,
             [name]: value
         });
-        console.log('Values:', values)
     };
 
     const handleChangeBoxes = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,7 +91,6 @@ const MyCustomForm = ({
                 interest: values.interest
             })
         }
-        console.log('Values:', values)
     }
 
     const handleSubmit = (event:any) => {

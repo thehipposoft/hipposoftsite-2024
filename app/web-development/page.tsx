@@ -1,9 +1,9 @@
-import WebDevelopmentComp from "@/components/WebDevelopment";
+import Cards from "@/components/WebDevelopment/Cards";
 
 export default function WebDevelompentPage() {
     return(
         <div>
-            <WebDevelopmentComp />
+            <Cards />
         </div>
     )
 }

@@ -54,7 +54,12 @@ const LOGOFOLIO_DATA = [
         information: ['Rock steady digital', 'AUSTRALIA', 'November 2022'],
         logo: '/assets/images/logofolio/rock-steady.png',
         logoSizes: ['220px', '120px'],
-        gallery: ['/assets/images/logofolio/rs/rock-1.webp', '/assets/images/logofolio/rs/rock-21.webp', '/assets/images/logofolio/rs/rock-3.webp', '/assets/images/logofolio/rs/rock-4.webp'],
+        gallery: [
+            '/assets/images/logofolio/rs/rock-1.webp',
+            '/assets/images/logofolio/rs/rock-2.webp',
+            '/assets/images/logofolio/rs/rock-3.webp',
+            '/assets/images/logofolio/rs/rock-4.webp'
+        ],
         vectorColors: ['#000000', '#000000', '#000000', '#70FFE5',],
     },
     {

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import axios from 'axios';
+import Link from 'next/link';
 
 const initialValues = {
     interest: [],
@@ -144,7 +145,7 @@ const MyCustomForm = ({
                                         value={values[name]}
                                         rows={3}
                                         cols={40}
-                                        className='resize-none border-b-2 focus:border-[#7653E3] border-[#9042C04D] focus:outline-0 w-full px-2 py-4 text-black bg-transparent focus:placeholder:text-black placeholder:text-[#9042c0a8]'
+                                        className='resize-none border-b-2 focus:border-[#7653E3] border-black focus:outline-0 w-full px-2 py-4 text-black bg-transparent focus:placeholder:text-black placeholder:text-black'
                                         placeholder={placeholder}
                                         onChange={handleChange}
                                         required={field.required}
@@ -187,7 +188,7 @@ const MyCustomForm = ({
                                         type={type}
                                         name={name}
                                         id={name}
-                                        className={'border-b-2 focus:border-[#7653E3] border-[#9042C04D] focus:outline-0 w-full px-2 py-4 text-black bg-transparent focus:placeholder:text-black placeholder:text-[#9042c0a8]'}
+                                        className={'border-b-2 focus:border-[#7653E3] border-black focus:outline-0 w-full px-2 py-4 text-black bg-transparent focus:placeholder:text-black placeholder:text-black'}
                                         onChange={handleChange}
                                         value={values[name]}
                                         placeholder={placeholder}
@@ -199,12 +200,12 @@ const MyCustomForm = ({
                 })
             }
             {renderSentMessage()}
-            <div className='flex'>
+            <div className='flex items-center justify-between'>
                 <button
                     disabled={isAPILoading}
                     value={submitButtonLabel ? submitButtonLabel : 'Send'}
                     type="submit"
-                    className={` ${isAPILoading ? 'opacity-50' : ''} group bg-black/30 hover:bg-black/50 hover:text-cyan duration-500 w-72 tracking-[0.3em] py-5 px-5 text-left flex justify-between items-center text-sm mt-2`}
+                    className={` ${isAPILoading ? 'opacity-50' : ''} group bg-black/30 hover:bg-black/50 hover:text-cyan duration-500 w-2/3 md:w-72 tracking-[0.3em] py-3 px-5 text-left flex justify-between items-center text-sm mt-2`}
                 >
                     {submitButtonLabel}
                     <svg width="35" height="35" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className='group-hover:rotate-180 duration-500'>
@@ -212,6 +213,11 @@ const MyCustomForm = ({
                         <path d="M20 1.25V38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
                     </svg>
                 </button>
+                <div className='p-1'>
+                    <Link href={'https://wa.link/j3oqk4'} target='_blank' className='flex gap-4 items-center w-8 text'>
+                        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h20v20H0z"/><path d="M16.8 5.7C14.4 2 9.5.9 5.7 3.2 2 5.5.8 10.5 3.2 14.2l.2.3-.8 3 3-.8.3.2c1.3.7 2.7 1.1 4.1 1.1 1.5 0 3-.4 4.3-1.2 3.7-2.4 4.8-7.3 2.5-11.1zm-2.1 7.7c-.4.6-.9 1-1.6 1.1-.4 0-.9.2-2.9-.6-1.7-.8-3.1-2.1-4.1-3.6-.6-.7-.9-1.6-1-2.5 0-.8.3-1.5.8-2 .2-.2.4-.3.6-.3H7c.2 0 .4 0 .5.4.2.5.7 1.7.7 1.8.1.1.1.3 0 .4.1.2 0 .4-.1.5-.1.1-.2.3-.3.4-.2.1-.3.3-.2.5.4.6.9 1.2 1.4 1.7.6.5 1.2.9 1.9 1.2.2.1.4.1.5-.1s.6-.7.8-.9c.2-.2.3-.2.5-.1l1.6.8c.2.1.4.2.5.3.1.3.1.7-.1 1z"/></svg>
+                    </Link>
+                </div>
             </div>
         </form>
     )

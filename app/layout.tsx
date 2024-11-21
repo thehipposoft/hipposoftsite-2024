@@ -12,6 +12,22 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "HippoSoft | Create to Connect",
   description: "Create to connect. We create and build digital experiences to boost your business. We want to inspire you.",
+  openGraph: {
+    title: 'HippoSoft | Create to Connect',
+    description: 'Create to connect. We create and build digital experiences to boost your business. We want to inspire you.',
+    type: 'website',
+    url: 'https://www.thehipposoft.com/',
+    siteName: 'HippoSoft',
+    images: [
+      {
+        url: 'https://www.thehipposoft.com/assets/hippo-icon.png',
+        width: 512,
+        height: 512,
+        alt: 'HippoSoft | Create to Connect',
+      }
+    ],
+    locale: 'en-AU',
+  },
 };
 
 export default function RootLayout({

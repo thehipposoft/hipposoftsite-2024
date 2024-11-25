@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link';
+import Image from 'next/image';
 import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -17,9 +18,12 @@ const ContactInfo = () => {
     }, {scope: container})
 
     return (
-        <div ref={container} className='flex flex-col gap-10 data__wrapper'>
+        <div ref={container} className='flex flex-col gap-10 lg:gap-7 data__wrapper'>
+            <div className='overflow-hidden'>
+                <Image src={'/assets/logo.png'} alt='HippoSoft logo' width={1144} height={451} className='w-48 text' />
+            </div>
             <div className='overflow-hidden p-1'>
-                <h2 className='md:text-7xl text-5xl text-black text'>Let´s take the<br/> next step!</h2>
+                <h2 className='md:text-6xl text-5xl text-black text'>Let´s take the<br/> next step!</h2>
             </div>
             <div className='flex flex-col gap-10 mt-8'>
                 <div className='p-1 overflow-hidden'>

@@ -6,9 +6,18 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
 const BACKGROUNDS = [
-    '/assets/images/banner/banner-1.webp',
-    '/assets/images/banner/banner-2.webp',
-    '/assets/images/banner/banner-3.webp',
+    {
+        src: '/assets/images/banner/banner-1.webp',
+        alt: 'Design',
+    },
+    {
+        src: '/assets/images/banner/banner-2.webp',
+        alt: 'Web Development',
+    },
+    {
+        src: '/assets/images/banner/banner-3.webp',
+        alt: 'Portfolio',
+    },
 ]
 
 const Banner = () => {
@@ -82,13 +91,14 @@ const Banner = () => {
     return (
         <div className='md:h-full relative opacity-0 -translate-y-full' ref={container}>
             {
-                BACKGROUNDS.map((val, index) => {
+                BACKGROUNDS.map((val, index):any => {
                     return(
                         <div key={index} className={`${currentBackground === index ? 'opacity-100 -z-[1] transition-none' : ' '} opacity-0 absolute top-0 left-0 w-full h-full duration-700`}>
-                            <Image 
-                                src={val} 
-                                layout='fill' 
-                                alt='Desing Background' 
+                            <Image
+                                priority
+                                src={val.src} 
+                                fill
+                                alt={`${val?.alt} background`} 
                                 objectFit='cover' 
                                 objectPosition='center 70%'
                             />

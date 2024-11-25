@@ -8,7 +8,7 @@ import ContactInfo from './ContactInfo';
 const ContactComponent = () => {
     return (
         <div className='lg:h-screen relative flex justify-center items-center py-4 md:py-12 lg:py-8'>
-            <Image src={'/assets/images/contact/contactBg.webp'} alt='Contact section background' fill className='object-cover' />
+            <Image src={'/assets/images/contact/contact-bg.webp'} alt='Contact section background' priority fill className='object-cover object-[100%70%]' />
             <div className='absolute h-full w-full left-0 top-0 z-[5] md:bg-white/25 bg-white/40' />
             <div className='lg:w-[1200px] w-[85vw] flex flex-col mx-auto relative z-10 gap-8 my-8 md:my-0'>
                 <div className='flex justify-end lg:pt-0 md:pt-16 pt-20'>

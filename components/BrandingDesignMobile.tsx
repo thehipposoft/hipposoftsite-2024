@@ -67,7 +67,14 @@ const BrandingDesignMobile = () => {
                                 <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                             </svg>
                         </div>
-                        <Image src={DESIGN_DATA[0].image} fill className='object-cover object-center rounded-xl shadow-lg' alt='Logofolio section background' priority/>
+                        <Image 
+                            src={DESIGN_DATA[0].image} 
+                            fill 
+                            className='object-cover object-center rounded-xl shadow-lg' 
+                            alt='Logofolio section background' 
+                            priority
+                            sizes='95vw'
+                        />
                     </div>
                     <div className='w-[95vw] md:h-[530px] h-[400px] relative carousel-slide'>
                         <Link href={'/web-design'} className='absolute w-full h-full z-[11]' />
@@ -78,7 +85,13 @@ const BrandingDesignMobile = () => {
                                 <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                             </svg>
                         </div>
-                        <Image src={DESIGN_DATA[1].image} fill className='object-cover object-center rounded-xl shadow-lg' alt='Web design section background' />
+                        <Image
+                            src={DESIGN_DATA[1].image} 
+                            fill 
+                            className='object-cover object-center rounded-xl shadow-lg' 
+                            alt='Web design section background'
+                            sizes='95vw'
+                        />
                     </div>
                     <div className='w-[95vw] md:h-[530px] h-[400px] relative carousel-slide'>
                         <Link href={'/social-media'} className='absolute w-full h-full z-[11]' />
@@ -89,7 +102,13 @@ const BrandingDesignMobile = () => {
                                 <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                             </svg>
                         </div>
-                        <Image src={DESIGN_DATA[2].image} fill className='object-cover object-center rounded-xl shadow-lg' alt='Social media section background' />
+                        <Image 
+                            src={DESIGN_DATA[2].image} 
+                            fill 
+                            className='object-cover object-center rounded-xl shadow-lg' 
+                            alt='Social media section background' 
+                            sizes='95vw'
+                        />
                     </div>
                 </div>
             </div>

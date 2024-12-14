@@ -53,6 +53,8 @@ const Banner = () => {
 
     const { contextSafe } = useGSAP({ scope: container });
 
+    let mm = gsap.matchMedia();
+
     const tl = useRef<any>();
     
     useGSAP(() => {
@@ -67,23 +69,25 @@ const Banner = () => {
         .to('.layers', {
             delay: -.5,
             opacity: 1,
-            stagger: 0.2,
+            stagger: 0.1,
             ease: 'back.in'
-        })
-        .from('.first__content > *', {
-            opacity: 0,
-            y: '-50%',
-            rotate: '-12deg',
-            duration: 1,
-            ease: 'back.out',
-            stagger: 0.3,
-            delay: .2,
         })
         .to('.subTitle' , {
             opacity: 1,
             stagger: 0.2,
-            delay: -.5,
         })
+        mm.add("(min-width: 600px)", () => {
+            gsap.from('.first__content', {
+                opacity: 0,
+                y: '-50%',
+                duration: 1,
+                rotate: '12deg',
+                ease: 'back.out',
+                stagger: 0.3,
+                delay: .5,
+            })
+        })
+
 
 
     }, {scope: container});
@@ -96,6 +100,7 @@ const Banner = () => {
                         <div key={index} className={`${currentBackground === index ? 'opacity-100 -z-[1] transition-none' : ' '} opacity-0 absolute top-0 left-0 w-full h-full duration-700`}>
                             <Image
                                 priority
+                                sizes="100vw"
                                 src={val.src} 
                                 fill
                                 alt={`${val?.alt} background`} 
@@ -118,14 +123,14 @@ const Banner = () => {
                     onClick={toggleFunctionOne}
                 >
                     <div className=''>
-                        <div className={`first__content ${isToggleOne ? 'opacity-1 block md:-top-12' : ' hidden '} relative duration-1000 w-[400px] flex md:gap-8 gap-4 flex-col justify-center items-center md:items-start`}>
-                            <Image src={'/assets/logo.png'} width={150} height={250} alt='HippoSoft logo' />
-                            <h4 className='text-cyan md:tracking-[0.5em] tracking-[0.25em]'>WE CREATE TO CONNECT</h4>
-                            <h2 className='md:text-[64px] text-4xl leading-[72px]'>Branding & Design</h2>
-                            <p>Where it all begins. Identity. innovation. Unique</p>
-                            <div className='mt-4 md:mt-0'>
+                        <div className={`${isToggleOne ? 'opacity-1 block md:-top-12' : ' hidden '} relative duration-1000 lg:w-[400px] flex md:gap-8 gap-4 flex-col justify-center items-center md:items-start`}>
+                                <Image src={'/assets/logo.png'} width={150} height={250} alt='HippoSoft logo' className='first__content' />
+                                <h4 className='first__content text-cyan md:tracking-[0.5em] tracking-[0.25em]'>WE CREATE TO CONNECT</h4>
+                                <h2 className='md:text-[64px] text-4xl leading-[72px] first__content '>Branding & Design</h2>
+                                <p className='first__content '>Where it all begins. Identity. innovation. Unique</p>
+                            <div className='mt-4 md:mt-0 first__content'>
                                 <Link 
-                                    className='px-8 tracking-[0.3em] mt-4 md:mt-0 border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
+                                    className=' px-8 tracking-[0.3em] mt-4 md:mt-0 border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
                                     href={'/design'}
                                 >
                                     DISCOVER
@@ -148,7 +153,7 @@ const Banner = () => {
                     onClick={toggleFunctionOnTwo}
                 >
                     <div className=''>
-                        <div className={`${isToggleTwo ? 'opacity-1 block' : ' hidden'} w-[400px] md:gap-8 gap-4 duration-1000 flex flex-col justify-center items-center md:items-start`}>
+                        <div className={`${isToggleTwo ? 'opacity-1 block' : ' hidden'} lg:w-[400px] md:gap-8 gap-4 duration-1000 flex flex-col justify-center items-center md:items-start`}>
                             <h4 className='text-cyan md:tracking-[0.5em] tracking-[0.25em]'>FROM DESIGN TO CODE</h4>
                             <h2 className='md:text-[64px] text-4xl leading-[72px]'>Web Development</h2>
                             <p className='px-10 text-center md:px-0 md:text-left'>Building is important but how is just as essential to us.</p>
@@ -177,7 +182,7 @@ const Banner = () => {
                     onClick={toggleFunctionThree}
                 >
                     <div className=''>
-                        <div className={`${isToggleThree ? 'opacity-1 block -top-12' : 'opacity-0 hidden'} relative w-[400px] md:gap-8 gap-4 duration-1000 flex flex-col justify-center items-center md:items-start`}>
+                        <div className={`${isToggleThree ? 'opacity-1 block -top-12' : 'opacity-0 hidden'} relative lg:w-[400px] md:gap-8 gap-4 duration-1000 flex flex-col justify-center items-center md:items-start`}>
                             <h4 className='text-cyan md:tracking-[0.5em] tracking-[0.25em]'>WORK IN ACTION</h4>
                             <h2 className='md:text-[64px] text-4xl leading-[72px] text-center md:text-left'>Portfolio</h2>
                             <p className='px-8 text-center md:px-0 md:text-left'>Discover projects where strategic design meets impactful results.</p>

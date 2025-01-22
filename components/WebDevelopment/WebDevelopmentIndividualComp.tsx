@@ -31,8 +31,8 @@ const WebDevelopmentIndividualComp = ({props}:any) => {
                 scrollTrigger: {
                     trigger: '.section',
                     start: 'top top',
-                    end: '=+6000',
-                    scrub: 2,
+                    end: '=+5000',
+                    scrub: 3,
                     pin: true,
                 }
             })
@@ -48,7 +48,7 @@ const WebDevelopmentIndividualComp = ({props}:any) => {
                 ease: 'back.out',
                 scrollTrigger: {
                     trigger: '.section',
-                    end: '=+5500',
+                    end: '=+3800',
                     scrub: 2,
                 }
             })

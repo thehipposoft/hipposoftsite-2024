@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { useGSAP } from '@gsap/react';
@@ -74,11 +74,23 @@ const WebDesignComp = () => {
             textColor: 'black',
             vectorColor: '#000000',
         },
+        {
+            name: 'Te.M Architecture',
+            background: '/assets/images/portfolio/te.m_hippo.webp',
+            href: 'https://temarqui.com/',
+            textColor: 'black',
+            vectorColor: '#000000',
+        },
+        {
+            name: 'IVOS',
+            background: '/assets/images/portfolio/mock_ivos.webp',
+            href: 'https://ivos.com.ar/',
+            textColor: 'black',
+            vectorColor: '#000000',
+        },
     ]
 
     const container = useRef<HTMLDivElement>(null);
-
-    const [index, setCurrentIndex] = useState<number>(1);
 
     const sliderMovement = 100 * WEBDESIGN_DATA.length;
 

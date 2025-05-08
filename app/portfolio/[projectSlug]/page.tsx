@@ -1,4 +1,4 @@
-import { PORTFOLIO_DATA, PROJECTS } from "@/components/Portfolio/constants";
+import { PROJECTS } from "@/components/Portfolio/constants";
 import SingleProyect from "@/components/Portfolio/SingleProyect";
 
 type Params = {

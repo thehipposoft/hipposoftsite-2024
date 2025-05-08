@@ -60,9 +60,10 @@ const PortfolioGrid = () => {
                                     <h4 className='text-xl'>{val.data.name}</h4>
                                     <p className='uppercase md:text-sm text-xs text-sora pt-2'>{val.data.industry}</p>
                                     <p className='uppercase md:text-sm text-xs text-sora'>{val.data.work}</p>
-                                    <div className='flex gap-5 pt-2'>
+                                    <div className='flex gap-4 pt-2'>
                                         <h4 className='text-2xl'>{val.data.year}</h4>
                                         <Image src={val.data.flag} alt='country flag' width={35} height={24} />
+                                        {val.data.secondFlag ? <Image src={val.data.secondFlag} alt='country flag' width={35} height={24} /> : <></>}
                                         {val.data.technologies_icons}
                                     </div>
                                 </div>

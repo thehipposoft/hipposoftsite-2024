@@ -5,10 +5,13 @@ import Image from 'next/image';
 
 const SingleProyect = ({project}: any) => {
     return (
-        <div className='min-h-screen flex flex-col justify-between py-12 relative'>
-            <Image src={project.mockBig} alt={`${project.name} mock background`} fill className='object-cover'/>
-            <div className='md:w-[90vw] w-[75vw] flex justify-between items-center mx-auto relative z-10'>
+        <div className={`min-h-screen flex flex-col justify-between py-12 relative bg-[${project.bgColor}]`}>
+            <Image src={project.mockBig} alt={`${project.name} mock background`} fill className={`${project.backgroundSize ? 'object-contain' : 'object-cover'}`}/>
+            <div className={`md:w-[90vw] w-[75vw] flex justify-between items-center mx-auto relative z-10`}>
                 <h1 style={{color: `${project.nameColor}`}}  className={`text-4xl`}>{project.name}</h1>
+                <div className={`${project.logoAbove ? '' : 'hidden'} absolute right-[20%]`}>
+                    {project.logo_full}
+                </div>
                 <BackButton href={'/portfolio'} color={project.nameColor}/>
                 <Link href={'/portfolio'} className='md:hidden'>
                     <svg className='' width="20" height="20" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -17,16 +20,19 @@ const SingleProyect = ({project}: any) => {
                     </svg>
                 </Link>
             </div>
-            <div className='md:w-[90vw] w-[75vw] md:bg-inherit bg-white/70 py-4 md:py-0 rounded-xl flex md:flex-row flex-col justify-between items-center mx-auto relative z-10 gap-2 md:gap-0'>
-                {project.logo_full}
+            <div className={`${project.logoAbove ? 'justify-end' : 'justify-between'} md:w-[90vw] w-[75vw] md:bg-transparent bg-white/70 py-4 md:py-0 rounded-xl flex md:flex-row flex-col  items-center mx-auto relative z-10 gap-2 md:gap-0`}>
+                <div className={`${project.logoAbove ? "hidden" : ""}`}>
+                    {project.logo_full}
+                </div>
                 <div className='flex md:flex-row flex-col md:gap-8 gap-4'>
-                    <div className='flex flex-col md:bg-white/70 bg-transparent rounded-md py-4 px-6'>
+                    <div className='flex flex-col md:bg-white/50 bg-transparent rounded-md py-4 px-6'>
                         <h4 style={{color: `${project.textColor}`}} className={`text-xl `}>{project.name}</h4>
                         <p style={{color: `${project.textColor}`}} className={`uppercase text-sm text-sora pt-2 `}>{project.industry}</p>
                         <p style={{color: `${project.textColor}`}} className={`uppercase text-sm text-sora `}>{project.work}</p>
-                        <div className='flex gap-5 pt-2'>
+                        <div className='flex gap-4 pt-2'>
                             <h4 style={{color: `${project.textColor}`}} className={`text-2xl `}>{project.year}</h4>
                             <Image src={project.flag} alt='country flag' width={35} height={24} />
+                            {project.secondFlag ? <Image src={project.secondFlag} alt='country flag' width={35} height={24} /> : <></>}
                             {project.technologies_icons}
                         </div>
                     </div>

@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const SingleProyect = ({project}: any) => {
     return (
-        <div className={`min-h-screen flex flex-col justify-between py-12 relative bg-[${project.bgColor}]`}>
+        <div className={`${project.bgColor ? 'bg-[#c1c1c1]' : ''} min-h-screen flex flex-col justify-between py-12 relative`}>
             <Image src={project.mockBig} alt={`${project.name} mock background`} fill className={`${project.backgroundSize ? 'object-contain' : 'object-cover'}`}/>
             <div className={`md:w-[90vw] w-[75vw] flex justify-between items-center mx-auto relative z-10`}>
                 <h1 style={{color: `${project.nameColor}`}}  className={`text-4xl`}>{project.name}</h1>

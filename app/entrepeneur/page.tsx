@@ -1,6 +1,11 @@
-import BackButton from "@/components/commons/BackButton";
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from 'next'
+ 
+export const metadata: Metadata = {
+  title: 'HippoSoft | Entrepeneur',
+  description: 'We support the development of your project from the beginning. Contact us to boost your brand and build together.',
+}
 
 export default function EntrepeneurPage () {
     return(

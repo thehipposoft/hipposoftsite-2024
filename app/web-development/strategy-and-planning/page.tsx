@@ -1,5 +1,11 @@
 import WebDevelopmentIndividualComp from '@/components/WebDevelopment/WebDevelopmentIndividualComp';
 import React from 'react';
+import type { Metadata } from 'next'
+ 
+export const metadata: Metadata = {
+  title: 'HippoSoft | Strategy and Planning',
+  description: 'Start Strong. The success of any project begins with careful planning. Together we will define clear objectives, create a detailed plan, and establish a robust foundations.',
+}
 
 export default function StrategyAndPlanning() {
 

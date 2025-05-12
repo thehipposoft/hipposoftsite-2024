@@ -12,7 +12,7 @@ const Cards = () => {
             href: '/web-development/strategy-and-planning',
             image: '/assets/images/logofolio/diversity/diversity-1.webp',
             title: 'Strategy and Planning',
-            description: 'Start Strong. The success of any project begins with careful planning.  Together we will define clear objectives, create a detailed plan, and establish a robust foundations. ',
+            description: 'Start Strong. The success of any project begins with careful planning. Together we will define clear objectives, create a detailed plan, and establish a robust foundations. ',
         },
         {
             href: '/web-development/hosting',

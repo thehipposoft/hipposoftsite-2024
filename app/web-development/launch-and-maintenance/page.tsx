@@ -1,5 +1,12 @@
 import WebDevelopmentIndividualComp from '@/components/WebDevelopment/WebDevelopmentIndividualComp';
 import React from 'react';
+import type { Metadata } from 'next'
+ 
+export const metadata: Metadata = {
+  title: 'HippoSoft | Launch and Maintenance',
+  description: 'We launch your website and commit to its ongoing functionality and performance. Our dedicated support ensures your site runs smoothly, providing a seamless experience for your users now and in the future.',
+}
+
 
 export default function LaunchAndMaintennance() {
 

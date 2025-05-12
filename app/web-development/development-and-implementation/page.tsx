@@ -1,5 +1,12 @@
 import WebDevelopmentIndividualComp from '@/components/WebDevelopment/WebDevelopmentIndividualComp';
 import React from 'react';
+import type { Metadata } from 'next'
+ 
+export const metadata: Metadata = {
+  title: 'HippoSoft | Development and Implementation',
+  description: 'We meticulously construct your website based on a well-crafted strategy and an intentional design. Our approach ensures that every element aligns with your vision and goals, resulting in a powerful online presence that stands out.',
+}
+
 
 export default function Development() {
 

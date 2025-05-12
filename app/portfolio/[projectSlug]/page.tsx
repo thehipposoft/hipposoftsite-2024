@@ -1,5 +1,11 @@
 import { PROJECTS } from "@/components/Portfolio/constants";
 import SingleProyect from "@/components/Portfolio/SingleProyect";
+import type { Metadata } from 'next'
+ 
+export const metadata: Metadata = {
+  title: 'HippoSoft | Projects',
+  description: 'At Hipposoft we are also dedicated to the development of Social Networks to enhance brands. Tailor-made strategies: We design unique strategies adapted to your business. Quality Content: We create visual and written content that captures the essence of your brand.',
+}
 
 type Params = {
     params: {

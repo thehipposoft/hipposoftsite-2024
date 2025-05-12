@@ -1,5 +1,11 @@
 import WebDevelopmentIndividualComp from '@/components/WebDevelopment/WebDevelopmentIndividualComp';
 import React from 'react';
+import type { Metadata } from 'next'
+ 
+export const metadata: Metadata = {
+  title: 'HippoSoft | Hosting',
+  description: 'Ensuring your technical infrastructure is strong and properly set up is our top priority. We take every measure to create a resilient and seamlessly functioning foundation for your project, so you can focus on achieving your goals with confidence.',
+}
 
 export default function Hosting() {
 

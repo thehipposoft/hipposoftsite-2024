@@ -43,10 +43,8 @@ export default function RootLayout({
           <SchemaOrg />
           <GoogleAnalytics />
           <SmoothScroll>
-            <LoaderClient>
               <Menu />
               {children}
-            </LoaderClient>
             <CustomCursor />
             <StickyContact />
           </SmoothScroll>

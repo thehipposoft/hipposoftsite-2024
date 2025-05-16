@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 export default function CustomCursor() {
-    const size = 45;
+
     const circle = useRef(null);
     const mouse = useRef({
         x: 0,
@@ -33,30 +33,29 @@ export default function CustomCursor() {
         const { x, y } = delayedMouse.current;
     
         delayedMouse.current = {
-            x: lerp(x, mouse.current.x, 0.060),
-            y: lerp(y, mouse.current.y, 0.060)
+            x: lerp(x, mouse.current.x, 0.065),
+            y: lerp(y, mouse.current.y, 0.065)
         }
     
         moveCircle(delayedMouse.current.x, delayedMouse.current.y);
         window.requestAnimationFrame(animate);
     }
+
     
     useEffect(() => {
         animate();
         window.addEventListener("mousemove", manageMouseMove)
-        return () => window.removeEventListener("mousemove", manageMouseMove)
+        return () => {
+            window.removeEventListener("mousemove", manageMouseMove)
+        }
+        
     }, [])
 
     return(
         <div 
             ref={circle}
-            className="fixed top-0 left-0 border-purple-400 border-2 rounded-full mix-blend-difference pointer-events-none"
-            style={{
-                width: size,
-                height: size,
-            }}
+            className="fixed top-0 left-0 border-purple-400 border rounded-full mix-blend-difference pointer-events-none custom-cursor w-16 h-16"
         >
-
         </div>
     )
 }

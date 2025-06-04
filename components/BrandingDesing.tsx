@@ -81,36 +81,37 @@ const BrandingDesing = () => {
             <div className={`bg-white flex justify-center items-center pt-8 relative `}>
                 <div className={`carousel__wrapper translate-x-[900px] flex gap-20 items-center`}>
                     <div className={`overflow-hidden w-[200px] h-[10px] opacity-0 relative group image-animation rounded-md`} >
-                        <Link href={'/logofolio'} className={` absolute w-full h-full z-[11]`} />
-                        <div className='info relative z-10 flex opacity-0 pt-12 pl-12 items-center gap-6'>
-                            <h3 className='text-4xl'>{DESIGN_DATA[0].name}</h3>
-                            <svg className='group-hover:rotate-180 group-hover:scale-125 duration-700' width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
-                                <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
-                            </svg>
-                        </div>
+                        <Link href={'/logofolio'} className={`absolute w-full h-full z-[11]`}>
+                            <div className='info relative z-10 flex opacity-0 pt-12 pl-12 items-center gap-6'>
+                                <h3 className='text-4xl'>{DESIGN_DATA[0].name}</h3>
+                                <svg className='group-hover:rotate-180 group-hover:scale-125 duration-700' width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                                    <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                                </svg>
+                            </div>
+                        </Link>    
                         <Image src={DESIGN_DATA[0].image} fill className={`group-hover:scale-110 duration-1000 rounded-md object-cover object-center`} alt='Logofolio section background' priority/>
                     </div>
                     <div className={`overflow-hidden w-[850px] h-[530px] relative group carousel-slide opacity-0 rounded-md`} >
-                        <Link href={'/web-design'} className={` absolute w-full h-full z-[11]`} />
-                        <div className='relative z-10 flex pt-12 pl-12 items-center gap-6'>
-                            <h3 className='text-4xl'>{DESIGN_DATA[1].name}</h3>
-                            <svg className='group-hover:rotate-180 group-hover:scale-125 duration-700' width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
-                                <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
-                            </svg>
-                        </div>
+                        <Link href={'/web-design'} className={`absolute w-full h-full z-[11]`} />
+                            <div className='relative z-10 flex pt-12 pl-12 items-center gap-6'>
+                                <h3 className='text-4xl'>{DESIGN_DATA[1].name}</h3>
+                                <svg className='group-hover:rotate-180 group-hover:scale-125 duration-700' width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                                    <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                                </svg>
+                            </div>
                         <Image src={DESIGN_DATA[1].image} fill className={`group-hover:scale-110 duration-1000 rounded-md object-cover object-center`} alt='Web design section background'/>
                     </div>
                     <div className={`overflow-hidden w-[850px] h-[530px] relative group carousel-slide opacity-0 rounded-md`} >
-                        <Link href={'/social-media'} className={` absolute w-full h-full z-[11]`} />
-                        <div className=' relative z-10 flex pt-12 pl-12 items-center gap-6'>
-                            <h3 className='text-4xl'>{DESIGN_DATA[2].name}</h3>
-                            <svg className='group-hover:rotate-180 group-hover:scale-125 duration-700' width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
-                                <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
-                            </svg>
-                        </div>
+                        <Link href={'/social-media'} className={`absolute w-full h-full z-[11]`} />
+                            <div className=' relative z-10 flex pt-12 pl-12 items-center gap-6'>
+                                <h3 className='text-4xl'>{DESIGN_DATA[2].name}</h3>
+                                <svg className='group-hover:rotate-180 group-hover:scale-125 duration-700' width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                                    <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                                </svg>
+                            </div>
                         <Image src={DESIGN_DATA[2].image} fill className='group-hover:scale-110 duration-1000 rounded-md object-cover object-center' alt='Social Media section background' />
                     </div>
                 </div>

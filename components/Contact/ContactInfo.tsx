@@ -11,16 +11,19 @@ const ContactInfo = () => {
 
     useGSAP(() => {
         gsap.from('.text', {
-            yPercent: 100,
-            duration: .8,
-            stagger: 0.15,
+            y: 40,
+            autoAlpha: 0,
+            duration: 1,
+            ease: 'power4.out',
+            stagger: 0.1,
+            delay: 0.5,
         })
     }, {scope: container})
 
     return (
         <div ref={container} className='flex flex-col gap-10 lg:gap-7 data__wrapper'>
             <div className='overflow-hidden'>
-                <Image src={'/assets/logo.png'} alt='HippoSoft logo' width={1144} height={451} className='w-48 text' />
+                <Image src={'/assets/logo.png'} alt='HippoSoft logo' width={1144} height={451} className='w-56 text' />
             </div>
             <div className='overflow-hidden p-1'>
                 <h2 className='md:text-6xl text-5xl text-black text'>Let´s take the<br/> next step!</h2>

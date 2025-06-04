@@ -53,7 +53,7 @@ const MyCustomForm = ({
     const renderSentMessage = () => {
         if (messageSent === 'succeed') {
             return <div className={`message succeed w-full text-center mb-6`}>
-                <h2 className={'mb-2 text-2xl text-black'}>Thanks! </h2>
+                <h2 className={'mb-2 text-4xl text- uppercase'}>Thanks! </h2>
                 <p className='text-black'>{onSuccessMessage}</p>
             </div>
         }
@@ -200,7 +200,7 @@ const MyCustomForm = ({
                 })
             }
             {renderSentMessage()}
-            <div className='flex items-center justify-between'>
+            <div className={`${messageSent === 'succeed' ? "hidden" : "" }flex items-center justify-between`}>
                 <button
                     disabled={isAPILoading}
                     value={submitButtonLabel ? submitButtonLabel : 'Send'}

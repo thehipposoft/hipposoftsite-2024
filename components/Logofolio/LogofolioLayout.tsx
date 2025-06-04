@@ -47,7 +47,7 @@ const LogofolioLayout = () => {
                         <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                     </svg>
                 </Link>
-                <Link href={'/logofolio/inspir-performance'} className='flex flex-col items-center gap-4 group'>
+                <Link href={'/logofolio/inspir-performance'} className=' flex flex-col items-center gap-4 group'>
                     <div className=' relative opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 -bottom-2 group-hover:bottom-2 duration-500'>
                         <Image 
                             src={'/assets/images/logofolio/inspir.png'} 

@@ -130,7 +130,7 @@ const Banner = () => {
                                 <p className='first__content '>Where it all begins. Identity. innovation. Unique</p>
                             <div className='mt-4 md:mt-0 first__content'>
                                 <Link 
-                                    className=' px-8 tracking-[0.3em] mt-4 md:mt-0 border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
+                                    className='px-8 tracking-[0.3em] mt-4 md:mt-0 border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
                                     href={'/design'}
                                 >
                                     DISCOVER
@@ -186,7 +186,7 @@ const Banner = () => {
                             <h4 className='text-cyan md:tracking-[0.5em] tracking-[0.25em]'>WORK IN ACTION</h4>
                             <h2 className='md:text-[64px] text-4xl leading-[72px] text-center md:text-left'>Portfolio</h2>
                             <p className='px-8 text-center md:px-0 md:text-left'>Discover projects where strategic design meets impactful results.</p>
-                            <Link href={'/portfolio'} className='px-8 tracking-[0.3em] border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'>
+                            <Link href={'/portfolio'} className=' px-8 tracking-[0.3em] border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'>
                                 DISCOVER
                             </Link>
                         </div>

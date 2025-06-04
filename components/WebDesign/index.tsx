@@ -172,7 +172,7 @@ const WebDesignComp = () => {
                                         </div>
                                         <div className='navigation lg:max-w-[1250px] max-w-[80vw] opacity-0 flex flex-col md:flex-row-reverse md:justify-between items-center md:gap-0 gap-12'>
                                             <Link 
-                                                className='px-8 tracking-[0.3em] duration-700 hover:bg-white/50 hover:scale-105 text-sm font-medium py-3 bg-cyan text-black rounded-3xl'
+                                                className=' px-8 tracking-[0.3em] duration-700 hover:bg-white/50 hover:scale-105 text-sm font-medium py-3 bg-cyan text-black rounded-3xl'
                                                 href={value.href}
                                                 target='_blank'
                                                 rel='noreferrer'

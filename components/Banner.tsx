@@ -98,11 +98,12 @@ const Banner = () => {
             {
                 BACKGROUNDS.map((val, index):any => {
                     return(
-                        <div key={index} className={`${currentBackground === index ? 'opacity-100 -z-[1] transition-none' : ' '} object-cover opacity-0 absolute top-0 left-0 w-full h-full duration-700`}>
+                        <div key={index} className={`${currentBackground === index ? 'opacity-100 -z-[1] transition-none' : ' '} opacity-0 absolute top-0 left-0 w-full h-full duration-700`}>
                             <Image
                                 priority
                                 sizes="100vw"
                                 src={val.src} 
+                                className='object-cover'
                                 fill
                                 alt={`${val?.alt} background`} 
                             />

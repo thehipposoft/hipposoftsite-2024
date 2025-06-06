@@ -21,7 +21,7 @@ const Loader = ({ onFinish }: { onFinish: () => void }) => {
 
     // Animate number count
     const countTween = gsap.to({}, {
-      duration: 6,
+      duration: 5,
       onUpdate: () => {
         const val = Math.floor(countTween.progress() * 100);
         setProgress(val);
@@ -57,10 +57,9 @@ const Loader = ({ onFinish }: { onFinish: () => void }) => {
   }, [onFinish]);
 
   return (
-    <div className="loader-wrapper fixed inset-0 bg-[#221b35] text-white flex items-center justify-center z-50">
-      <div className=" flex-col justify-center gap-16 text-center" ref={counterRef}>
-        <Image src={'/assets/hippo.png'} alt='Hippo' width={623} height={300} className='w-3/4 animate-bounce' />
-        <p className='text-[144px] font-bold text-sora'>
+    <div className="loader-wrapper fixed inset-0 bg-[#221b35] text-white flex items-end z-50">
+      <div className="pl-12" ref={counterRef}>
+        <p className='text-[184px] font-bold text-sora animate-pulse'>
             {progress}%
         </p>
       </div>

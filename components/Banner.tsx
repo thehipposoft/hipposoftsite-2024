@@ -1,9 +1,9 @@
 'use client'
 import Image from 'next/image';
-import Link from 'next/link';
 import React, { useState, useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import AnimatedLink from './commons/AnimatedLink';
 
 const BACKGROUNDS = [
     {
@@ -63,8 +63,9 @@ const Banner = () => {
         .to(container.current, {
             opacity: 100,
             y: 0,
-            ease: 'power2.inOut',
-            duration: 1,
+            ease: 'power4.inOut',
+            duration: 1.5,
+            delay: 1,
         })
         .to('.layers', {
             delay: -.5,
@@ -97,15 +98,13 @@ const Banner = () => {
             {
                 BACKGROUNDS.map((val, index):any => {
                     return(
-                        <div key={index} className={`${currentBackground === index ? 'opacity-100 -z-[1] transition-none' : ' '} opacity-0 absolute top-0 left-0 w-full h-full duration-700`}>
+                        <div key={index} className={`${currentBackground === index ? 'opacity-100 -z-[1] transition-none' : ' '} object-cover opacity-0 absolute top-0 left-0 w-full h-full duration-700`}>
                             <Image
                                 priority
                                 sizes="100vw"
                                 src={val.src} 
                                 fill
                                 alt={`${val?.alt} background`} 
-                                objectFit='cover' 
-                                objectPosition='center 70%'
                             />
                         </div>
                     )
@@ -129,18 +128,18 @@ const Banner = () => {
                                 <h2 className='md:text-[64px] text-4xl leading-[72px] first__content '>Branding & Design</h2>
                                 <p className='first__content '>Where it all begins. Identity. innovation. Unique</p>
                             <div className='mt-4 md:mt-0 first__content'>
-                                <Link 
+                                <AnimatedLink 
                                     className='px-8 tracking-[0.3em] mt-4 md:mt-0 border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
                                     href={'/design'}
                                 >
                                     DISCOVER
-                                </Link>
+                                </AnimatedLink>
                             </div>
                         </div>
                         <div className={`${isToggleOne ? 'hidden' : 'block'}  flex gap-4 flex-col justify-center  items-center`}>
                                 <svg width="35" height="35" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className='opacity-0 group-hover:opacity-100 duration-300'>
-                                    <path d="M1.25 20H38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
-                                    <path d="M20 1.25V38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
+                                    <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                                    <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                 </svg>
                                 <h3 className='relative font-medium tracking-[0.5em] -top-4 duration-500 group-hover:top-0'>DESIGN</h3>
                         </div>
@@ -157,17 +156,17 @@ const Banner = () => {
                             <h4 className='text-cyan md:tracking-[0.5em] tracking-[0.25em]'>FROM DESIGN TO CODE</h4>
                             <h2 className='md:text-[64px] text-4xl leading-[72px]'>Web Development</h2>
                             <p className='px-10 text-center md:px-0 md:text-left'>Building is important but how is just as essential to us.</p>
-                            <Link 
+                            <AnimatedLink 
                                 className='px-8 mt-4 md:mt-0 tracking-[0.3em] border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
                                 href={'/web-development'}
                             >
                                 DISCOVER
-                            </Link>
+                            </AnimatedLink>
                         </div>
                         <div className={`${isToggleTwo ? 'hidden' : 'block'} subTitle opacity-0 flex gap-4 flex-col justify-center  items-center`}>
                                 <svg width="35" height="35" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className='opacity-0 group-hover:opacity-100 duration-300'>
-                                    <path d="M1.25 20H38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
-                                    <path d="M20 1.25V38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
+                                    <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                                    <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                 </svg>
                                 <h3 className=' relative font-medium tracking-[0.5em] -top-4 duration-500 group-hover:top-0'>WEB DEVELOPMENT</h3>
                         </div>
@@ -186,14 +185,14 @@ const Banner = () => {
                             <h4 className='text-cyan md:tracking-[0.5em] tracking-[0.25em]'>WORK IN ACTION</h4>
                             <h2 className='md:text-[64px] text-4xl leading-[72px] text-center md:text-left'>Portfolio</h2>
                             <p className='px-8 text-center md:px-0 md:text-left'>Discover projects where strategic design meets impactful results.</p>
-                            <Link href={'/portfolio'} className=' px-8 tracking-[0.3em] border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'>
+                            <AnimatedLink href={'/portfolio'} className=' px-8 tracking-[0.3em] border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'>
                                 DISCOVER
-                            </Link>
+                            </AnimatedLink>
                         </div>
                         <div className={`${isToggleThree ? 'hidden' : 'block'} subTitle opacity-0 flex gap-4 flex-col justify-center  items-center`}>
                                 <svg width="35" height="35" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className='opacity-0 group-hover:opacity-100 duration-300'>
-                                    <path d="M1.25 20H38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
-                                    <path d="M20 1.25V38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
+                                    <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                                    <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                 </svg>
                                 <h3 className=' relative font-medium tracking-[0.5em] -top-4 duration-500 group-hover:top-0'>PORTFOLIO</h3>
                         </div>

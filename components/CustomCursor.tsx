@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 export default function CustomCursor() {
@@ -13,6 +13,7 @@ export default function CustomCursor() {
         x: 0,
         y: 0,
     })
+    const [isEnabled, setIsEnabled] = useState(false);
 
     const manageMouseMove = (e:MouseEvent) => {
         const { clientX, clientY } = e;
@@ -60,9 +61,23 @@ export default function CustomCursor() {
         });
     };
 
+    useEffect(() => {
+        const handleResize = () => {
+            setIsEnabled(window.innerWidth >= 1200);
+        };
+
+        handleResize(); // Set initial value
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
 
 
     useEffect(() => {
+        if (!isEnabled) return;
+
         animate();
         window.addEventListener("mousemove", manageMouseMove);
         bindHoverEvents();
@@ -88,7 +103,9 @@ export default function CustomCursor() {
             gsap.set(circle.current, { scale: 1 });
             observer.disconnect();
         };
-    }, []);
+    }, [isEnabled]);
+
+    if (!isEnabled) return null;
 
     return(
         <div 

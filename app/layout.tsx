@@ -8,6 +8,7 @@ import StickyContact from "@/components/commons/StickyContact";
 import Menu from "@/components/Menu";
 import LoaderClient from "@/components/LoaderClient";
 import CustomCursor from "@/components/CustomCursor";
+import Transitions from "@/components/commons/Transitions";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,10 +44,11 @@ export default function RootLayout({
           <SchemaOrg />
           <GoogleAnalytics />
           <SmoothScroll>
-              <Menu />
-              {children}
-            <CustomCursor />
-            <StickyContact />
+              <Transitions />
+                <Menu />
+                {children}
+              <CustomCursor />
+              <StickyContact />
           </SmoothScroll>
       </body>
     </html>

@@ -16,7 +16,7 @@ const ContactInfo = () => {
             duration: 1,
             ease: 'power4.out',
             stagger: 0.1,
-            delay: 0.5,
+            delay: 0.8,
         })
     }, {scope: container})
 

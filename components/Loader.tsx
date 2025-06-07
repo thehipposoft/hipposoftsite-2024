@@ -1,54 +1,43 @@
 'use client';
-import Image from 'next/image';
-
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 
 const Loader = ({ onFinish }: { onFinish: () => void }) => {
-  const [progress, setProgress] = useState(0);
   const counterRef = useRef<HTMLDivElement>(null);
+  const tl = useRef<any>();
 
   useEffect(() => {
-    let loadedImages = 0;
-    const images = Array.from(document.images);
-    const totalImages = images.length;
-
-    const updateProgress = () => {
-      loadedImages++;
-      const newProgress = Math.floor((loadedImages / totalImages) * 100);
-      setProgress(newProgress);
-    };
 
     // Animate number count
-    const countTween = gsap.to({}, {
-      duration: 5,
-      onUpdate: () => {
-        const val = Math.floor(countTween.progress() * 100);
-        setProgress(val);
-      },
-      onComplete: () => {
-        // Wait for all images to finish loading
-        if (totalImages === 0) onFinish();
-      }
-    });
-
-    images.forEach((img) => {
-      if (img.complete) {
-        updateProgress();
-      } else {
-        img.addEventListener('load', updateProgress);
-        img.addEventListener('error', updateProgress);
-      }
+    tl.current = gsap
+    .timeline()
+    .set(('.loader-text'), {
+      y: 50,
+      autoAlpha: 0,
+    })
+    .to(('.loader-text'), {
+      y: 0,
+      autoAlpha: 1,
+      duration: 1,
+      ease: 'power4.out',
+      stagger: 0.2,
+      delay: 0.5,
+    })
+    .to(('.loader-text'), {
+      y: -50,
+      autoAlpha: 0,
+      ease: 'power4.in',
+      stagger: 0.3,
+      duration: .7,
+      onComplete: () => onFinish(),
     });
 
     const checkLoaded = () => {
-      if (loadedImages >= totalImages) {
         gsap.to('.loader-wrapper', {
           opacity: 0,
           duration: 0.5,
           onComplete: onFinish,
         });
-      }
     };
 
     const interval = setInterval(checkLoaded, 7000);
@@ -58,10 +47,22 @@ const Loader = ({ onFinish }: { onFinish: () => void }) => {
 
   return (
     <div className="loader-wrapper fixed inset-0 bg-[#221b35] text-white flex items-end z-50">
-      <div className="pl-12" ref={counterRef}>
-        <p className='text-[184px] font-bold text-sora animate-pulse'>
-            {progress}%
-        </p>
+      <div className="pl-12 pb-12 gap-2 flex flex-col loader-container" ref={counterRef}>
+        <div className='overflow-hidden'>
+          <h3 className='loader-text bold md:text-[184px] text-6xl md:leading-[160px] uppercase font-bold text-sora '>
+              HERE
+          </h3>
+        </div>
+        <div className='overflow-hidden'>
+          <h3 className='loader-text bold md:text-[184px] text-6xl md:leading-[160px] uppercase font-bold text-sora '>
+              comes
+          </h3>
+        </div>
+        <div className='overflow-hidden'>
+          <h3 className='loader-text md:text-[184px] text-6xl md:leading-[160px] uppercase font-bold text-sora'>
+              the hippo
+          </h3>
+        </div>
       </div>
     </div>
   );

@@ -81,8 +81,8 @@ const Cards = () => {
                                 <AnimatedLink href={val.href} className={`flex flex-col gap-4 text-black lg:max-w-[320px] max-w-[80vw] relative`}>
                                     <div className='relative lg:w-[320px] w-[80vw] h-[240px]'>
                                         <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className='relative z-10 left-[85%] top-[5%] duration-500 group-hover:scale-125'>
-                                            <path d="M1.25 20H38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
-                                            <path d="M20 1.25V38.75" stroke="#70FFE5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
+                                            <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
+                                            <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
                                         </svg>
                                         <Image fill alt={`${val.title} image`} src={val.image} objectFit='cover' />
                                     </div>

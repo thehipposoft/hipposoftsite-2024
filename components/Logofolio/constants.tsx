@@ -228,9 +228,26 @@ const LOGOFOLIO_DATA = [
         href: 'https://destinosalta.com.ar/',
         information: ['Destino salta', 'Argentina', 'October 2023'],
         logo: '/assets/images/logofolio/destino.png',
-        logoSizes: ['200px', '200px'],
+        logoSizes: ['180px', '180px'],
         gallery: ['/assets/images/logofolio/destino/destino-1.webp', '/assets/images/logofolio/destino/destino-2.webp', '/assets/images/logofolio/destino/destino-3.webp', '/assets/images/logofolio/destino/destino-4.webp'],
         vectorColors: ['#70FFE5', '#70FFE5', '#000000', '#000000',],
+    },
+    {
+        name: 'Lumina Technologies',
+        description: ['Lumina Technologies is a cutting-edge start-up specializing in advanced chemistry to drive innovation in the OLED market.', 'Lumina Technologies drive AR/VR and display technology to enhance customer experience.'],
+        concept: ["The Lumina Technologies logo is a visual representation of precision, innovation and seamless integration, key attributes of the brand's patented technology.", "The mark features layered translucent geometricshapes that subtly evoke the ultra-thin, multi-layeredstructure of displays with this technology. The designstrikes a perfect balance between structure and fluidity."],
+        content: <div className="flex md:flex-row flex-col gap-8 md:gap-0 justify-between pt-6">
+                    <div className="flex flex-col gap-2">
+                        <p className=" text-sm">Colour Palette</p>
+                        <Image src={'/assets/images/logofolio/lumina/paleta_lumina.png'} className="w-[475px]" alt="" width={1198} height={430} />
+                    </div>
+                </div>,
+        href: '',
+        information: ['lumina technologies', 'usa', 'april 2025'],
+        logo: '/assets/images/logofolio/lumina.png',
+        logoSizes: ['240px', '100px'],
+        gallery: ['/assets/images/logofolio/lumina/lumina-1.png', '/assets/images/logofolio/lumina/lumina-2.png', '/assets/images/logofolio/lumina/lumina-3.png', '/assets/images/logofolio/lumina/lumina-4.png'],
+        vectorColors: ['#000000', '#000000', '#000000', '#000000',],
     },
 ]
 

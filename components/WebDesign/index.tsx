@@ -90,6 +90,14 @@ const WebDesignComp = () => {
             textColor: 'black',
             vectorColor: '#000000',
         },
+        {
+            name: 'Grupo SIMA',
+            background: '/assets/images/portfolio/mock-sima.webp',
+            href: 'https://grupo-sima.com.ar/',
+            textColor: 'black',
+            vectorColor: '#000000',
+            backgroundPosition: 'top',
+        },
     ]
 
     const container = useRef<HTMLDivElement>(null);
@@ -155,7 +163,7 @@ const WebDesignComp = () => {
                         WEBDESIGN_DATA.map((value, index) => {
                             return(
                                 <div className='min-w-[100vw] min-h-screen relative' key={index}>
-                                    <Image className='background-image' src={value.background} alt={`${value.name} site background`} fill objectFit='cover' />
+                                    <Image className={`background-image object-cover object-${value.backgroundPosition}`} src={value.background} alt={`${value.name} site background`} fill />
                                     <div className='lg:max-w-[1250px] max-w-[80vw] mx-auto flex flex-col justify-between md:h-[90vh] h-[92vh] relative lg:pt-8 md:pt-12 pt-20 z-10'>
                                         <div className={`flex justify-between items-center text-${value.textColor}`}>
                                             <div className='flex flex-col gap-2'>

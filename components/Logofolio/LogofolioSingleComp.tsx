@@ -81,7 +81,7 @@ const LogofolioSingleComp = ({ data }:any) => {
                         <h3 className='light'>{data.information[0]}</h3>
                         <h3 className='light'>{data.information[1]}</h3>
                         <h3 className='light'>{data.information[2]}</h3>
-                        <Link href={data.href} target='_blank' rel='noreferrer' className='relative z-10 mt-2 overflow-hidden duration-500 px-4 tracking-[0.2em] text-xs py-2 border-cyan border-2 text-black w-fit rounded-3xl hover:bg-cyan hover:scale-x-105'>
+                        <Link href={data.href} target='_blank' rel='noreferrer' className={`${data.href === '' ? 'hidden' : ''} relative z-10 mt-2 overflow-hidden duration-500 px-4 tracking-[0.2em] text-xs py-2 border-cyan border-2 text-black w-fit rounded-3xl hover:bg-cyan hover:scale-x-105`}>
                                 DISCOVER SITE
                         </Link>
                         {data.category ? <Link href={data.instagram} rel='noreferrer' target='_blank' className='flex w-fit mt-6'>

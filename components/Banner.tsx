@@ -94,7 +94,7 @@ const Banner = () => {
     }, {scope: container});
 
     return (
-        <div className='md:h-full relative opacity-0 -translate-y-full' ref={container}>
+        <div className='md:h-full relative opacity-0 translate-y-full' ref={container}>
             {
                 BACKGROUNDS.map((val, index):any => {
                     return(

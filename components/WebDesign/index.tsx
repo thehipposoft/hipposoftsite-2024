@@ -7,11 +7,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { useGSAP } from '@gsap/react';
 import BackButton from '../commons/BackButton';
 import AnimatedLink from '../commons/AnimatedLink';
+import {useTranslations} from 'next-intl';
+
 
 gsap.registerPlugin(ScrollTrigger);
 
 const WebDesignComp = () => {
-
+    const t = useTranslations('Design');
     const WEBDESIGN_DATA = [
         {
             name: 'MB Analyst',

@@ -1,0 +1,28 @@
+{
+    "Banner": {
+      "BrandingSubTitle": "Creamos para conectar",
+      "BrandingTitle": "Branding & Diseño",
+      "BrandingDescription": "Donde todo comienza. Identidad. Innovacion. Único",
+      "BrandingMobileSlug": "diseño",
+      "Button": "Descubrir",
+      "DevelopmentSubTitle": "de diseño a código",
+      "DevelopmentTitle": "Desarrollo Web",
+      "DevelopmentDescription": "Construir es importante pero el COMO es esencial para nosotros.",
+      "PortfolioSubTitle": "trabajo en acción",
+      "PortfolioTitle": "Portafolio",
+      "PortfolioDescription": "Descubre proyectos donde el diseño estrategio y resultados impactantes se vuelven uno."
+    },
+    "Menu": {
+        "Home": "Home",
+        "Branding": "Branding & Diseño",
+        "Development": "Desarrollo Web",
+        "Portfolio": "Portafolio",
+        "Contact": "Contacto"
+    },
+    "BrandingAndDesign": {
+        "title": "Branding & Diseño",
+        "Logofolio": "Logofolio",
+        "WebDesign": "Diseño Web",
+        "SocialMedia": "Redes Sociales"
+    }
+}

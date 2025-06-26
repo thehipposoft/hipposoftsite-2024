@@ -4,9 +4,10 @@ import React, {useRef, useState, useEffect} from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import AnimatedLink from './commons/AnimatedLink';
+import {useTranslations} from 'next-intl';
 
 const Menu = () => {
-
+    const t = useTranslations('Menu');
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0');
     const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -65,9 +66,9 @@ const Menu = () => {
                         <AnimatedLink href={'/'} >
                             <div onClick={openMenuFunc} className='flex translate-y-4 items-center gap-4 lg:gap-6 group '>
                                 <div className='bg-white p-3 rounded-full group-hover:scale-110 duration-500'>
-                                    <Image src={'/assets/images/vectors/menu-3.svg'} width={40} height={40} alt='Web designgit status Vector' className='h-8 w-8 group-hover:scale-125 group-hover:rotate-90 duration-700'/>
+                                    <Image src={'/assets/images/vectors/menu-3.svg'} width={40} height={40} alt='Web design status Vector' className='h-8 w-8 group-hover:scale-125 group-hover:rotate-90 duration-700'/>
                                 </div>
-                                <p className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>Home</p>
+                                <p className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>{t("Home")}</p>
                             </div>
                         </AnimatedLink>
                         <AnimatedLink href={'/design'} >
@@ -75,7 +76,7 @@ const Menu = () => {
                                 <div className=' bg-white p-3 rounded-full group-hover:scale-110 duration-500'>
                                     <Image src={'/assets/images/vectors/menu-1.svg'} width={40} height={40} alt='Branding & Design vector' className='h-8 w-8 group-hover:scale-125 group-hover:rotate-90 duration-700'/>
                                 </div>
-                                <p className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse '>Branding & Design</p>
+                                <p className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>{t("Branding")}</p>
                             </div>
                         </AnimatedLink>
                         <AnimatedLink href={'/web-development'}>
@@ -83,7 +84,7 @@ const Menu = () => {
                             <div className='bg-white  p-3 rounded-full group-hover:scale-110 duration-500'>
                                     <Image src={'/assets/images/vectors/menu-2.svg'} width={40} height={40} alt='Web development vector' className='h-8 w-8 group-hover:scale-125 group-hover:rotate-90 duration-700'/>
                                 </div>
-                                <p  className=' thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>Web Development</p>
+                                <p  className=' thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>{t("Development")}</p>
                             </div>
                         </AnimatedLink>
                         <AnimatedLink href={'/portfolio'}>
@@ -91,7 +92,7 @@ const Menu = () => {
                                 <div className='bg-white p-3 rounded-full group-hover:scale-110 duration-500'>
                                     <Image src={'/assets/images/vectors/menu-4.svg'} width={40} height={40} alt='Portfolio vector' className='h-8 w-8  group-hover:scale-125 group-hover:rotate-90 duration-700'/>
                                 </div>
-                                <p className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>Portfolio</p>
+                                <p className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>{t("Portfolio")}</p>
                             </div>
                         </AnimatedLink>
                         <AnimatedLink href={'/contact'}>
@@ -99,7 +100,7 @@ const Menu = () => {
                                 <div className='bg-white p-3 rounded-full group-hover:scale-110 duration-500'>
                                     <Image src={'/assets/images/vectors/menu-5.svg'} width={40} height={40} alt='Contact vector' className='h-8  w-8  group-hover:scale-125 group-hover:rotate-90 duration-700'/>
                                 </div>
-                                <p  className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>Contact</p>
+                                <p  className='thin uppercase md:text-4xl text-2xl group-hover:animate-pulse'>{t("Contact")}</p>
                             </div>
                         </AnimatedLink>
                         <div className='flex justify-between mt-8'>

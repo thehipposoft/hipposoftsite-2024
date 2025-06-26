@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import AnimatedLink from './commons/AnimatedLink';
+import {useTranslations} from 'next-intl';
 
 const BACKGROUNDS = [
     {
@@ -21,7 +22,7 @@ const BACKGROUNDS = [
 ]
 
 const Banner = () => {
-
+    const t = useTranslations('Banner');
     const [isToggleOne, setIsToggleOne] = useState(true);
     const [isToggleTwo, setIsToggleTwo] = useState(false);
     const [isToggleThree, setIsToggleThree] = useState(false);
@@ -125,15 +126,15 @@ const Banner = () => {
                     <div className=''>
                         <div className={`${isToggleOne ? 'opacity-1 block md:-top-12' : ' hidden '} relative duration-1000 lg:w-[400px] flex md:gap-8 gap-4 flex-col justify-center items-center md:items-start`}>
                                 <Image src={'/assets/logo.png'} width={150} height={250} alt='HippoSoft logo' className='first__content' />
-                                <h4 className='first__content text-cyan md:tracking-[0.5em] tracking-[0.25em]'>WE CREATE TO CONNECT</h4>
-                                <h2 className='md:text-[64px] text-4xl leading-[72px] first__content '>Branding & Design</h2>
-                                <p className='first__content '>Where it all begins. Identity. innovation. Unique</p>
+                                <h4 className='first__content uppercase text-cyan md:tracking-[0.5em] tracking-[0.25em]'>{t('BrandingSubTitle')}</h4>
+                                <h2 className='md:text-[64px] text-4xl leading-[72px] first__content '>{t('BrandingTitle')}</h2>
+                                <p className='first__content '>{t('BrandingDescription')}</p>
                             <div className='mt-4 md:mt-0 first__content'>
                                 <AnimatedLink 
-                                    className='px-8 tracking-[0.3em] mt-4 md:mt-0 border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
+                                    className='px-8 tracking-[0.3em] uppercase mt-4 md:mt-0 border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
                                     href={'/design'}
                                 >
-                                    DISCOVER
+                                    {t('Button')}
                                 </AnimatedLink>
                             </div>
                         </div>
@@ -142,7 +143,7 @@ const Banner = () => {
                                     <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                     <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                 </svg>
-                                <h3 className='relative font-medium tracking-[0.5em] -top-4 duration-500 group-hover:top-0'>DESIGN</h3>
+                                <h3 className='relative uppercase font-medium tracking-[0.5em] -top-4 duration-500 group-hover:top-0'>{t('BrandingMobileSlug')}</h3>
                         </div>
                     </div>
                 </div>
@@ -154,14 +155,14 @@ const Banner = () => {
                 >
                     <div className=''>
                         <div className={`${isToggleTwo ? 'opacity-1 block' : ' hidden'} lg:w-[400px] md:gap-8 gap-4 duration-1000 flex flex-col justify-center items-center md:items-start`}>
-                            <h4 className='text-cyan md:tracking-[0.5em] tracking-[0.25em]'>FROM DESIGN TO CODE</h4>
-                            <h2 className='md:text-[64px] text-4xl leading-[72px]'>Web Development</h2>
-                            <p className='px-10 text-center md:px-0 md:text-left'>Building is important but how is just as essential to us.</p>
+                            <h4 className='text-cyan md:tracking-[0.5em] tracking-[0.25em] uppercase'>{t('DevelopmentSubTitle')}</h4>
+                            <h2 className='md:text-[64px] text-4xl leading-[72px]'>{t('DevelopmentTitle')}</h2>
+                            <p className='px-10 text-center md:px-0 md:text-left'>{t('DevelopmentDescription')}</p>
                             <AnimatedLink 
-                                className='px-8 mt-4 md:mt-0 tracking-[0.3em] border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
+                                className='px-8 mt-4 md:mt-0 uppercase tracking-[0.3em] border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
                                 href={'/web-development'}
                             >
-                                DISCOVER
+                                {t('Button')}
                             </AnimatedLink>
                         </div>
                         <div className={`${isToggleTwo ? 'hidden' : 'block'} subTitle opacity-0 flex gap-4 flex-col justify-center  items-center`}>
@@ -169,7 +170,7 @@ const Banner = () => {
                                     <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                     <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                 </svg>
-                                <h3 className=' relative font-medium tracking-[0.5em] -top-4 duration-500 group-hover:top-0'>WEB DEVELOPMENT</h3>
+                                <h3 className='uppercase relative font-medium tracking-[0.5em] -top-4 duration-500 group-hover:top-0'>{t('DevelopmentTitle')}</h3>
                         </div>
                     </div>
                 </div>
@@ -183,11 +184,11 @@ const Banner = () => {
                 >
                     <div className=''>
                         <div className={`${isToggleThree ? 'opacity-1 block -top-12' : 'opacity-0 hidden'} relative lg:w-[400px] md:gap-8 gap-4 duration-1000 flex flex-col justify-center items-center md:items-start`}>
-                            <h4 className='text-cyan md:tracking-[0.5em] tracking-[0.25em]'>WORK IN ACTION</h4>
-                            <h2 className='md:text-[64px] text-4xl leading-[72px] text-center md:text-left'>Portfolio</h2>
-                            <p className='px-8 text-center md:px-0 md:text-left'>Discover projects where strategic design meets impactful results.</p>
+                            <h4 className='text-cyan md:tracking-[0.5em] tracking-[0.25em] uppercase'>{t('PortfolioSubTitle')}</h4>
+                            <h2 className='md:text-[64px] text-4xl leading-[72px] text-center md:text-left'>{t('PortfolioTitle')}</h2>
+                            <p className='px-8 text-center md:px-0 md:text-left'>{t('PortfolioDescription')}</p>
                             <AnimatedLink href={'/portfolio'} className=' px-8 tracking-[0.3em] border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'>
-                                DISCOVER
+                            {t('Button')}
                             </AnimatedLink>
                         </div>
                         <div className={`${isToggleThree ? 'hidden' : 'block'} subTitle opacity-0 flex gap-4 flex-col justify-center  items-center`}>
@@ -195,7 +196,7 @@ const Banner = () => {
                                     <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                     <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                 </svg>
-                                <h3 className=' relative font-medium tracking-[0.5em] -top-4 duration-500 group-hover:top-0'>PORTFOLIO</h3>
+                                <h3 className=' relative font-medium tracking-[0.5em] -top-4 duration-500 group-hover:top-0'>{t('PortfolioTitle')}</h3>
                         </div>
                     </div>
                 </div>

@@ -9,6 +9,10 @@ import Menu from "@/components/Menu";
 import LoaderClient from "@/components/LoaderClient";
 import CustomCursor from "@/components/CustomCursor";
 import Transitions from "@/components/commons/Transitions";
+import {NextIntlClientProvider, hasLocale} from 'next-intl';
+import {notFound} from 'next/navigation';
+import {routing} from '@/i18n/routing';
+import { getMessages } from "next-intl/server";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,14 +37,26 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: Readonly<{
+  params
+}:{
   children: React.ReactNode;
-}>) {
+  params: Promise<{locale: string}>;
+}) {
+
+    // Ensure that the incoming `locale` is valid
+    const {locale} = await params;
+    if (!hasLocale(routing.locales, locale)) {
+      notFound();
+    }
+
+    const messages = await getMessages()
+    
   return (
     <html lang="en">
       <body className={inter.className}>
+        <NextIntlClientProvider messages={messages}>
           <SchemaOrg />
           <GoogleAnalytics />
           <SmoothScroll>
@@ -52,6 +68,7 @@ export default function RootLayout({
                 <StickyContact />
               </LoaderClient>
           </SmoothScroll>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

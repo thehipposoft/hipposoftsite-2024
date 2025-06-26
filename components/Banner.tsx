@@ -70,7 +70,7 @@ const Banner = () => {
         .to('.layers', {
             delay: -.5,
             opacity: 1,
-            stagger: 0.1,
+            stagger: 0.2,
             ease: 'back.in'
         })
         .to('.subTitle' , {
@@ -84,8 +84,8 @@ const Banner = () => {
                 duration: 1,
                 rotate: '12deg',
                 ease: 'back.out',
-                stagger: 0.3,
-                delay: .5,
+                stagger: 0.2,
+                delay: 2.5,
             })
         })
 
@@ -114,7 +114,7 @@ const Banner = () => {
             <div className='layers__container relative z-20 h-screen flex flex-col lg:flex-row'>
                 <div 
                     className={`
-                    layers opacity-0  w-full
+                    layers opacity-0  w-full 
                     lg:h-full relative group flex justify-center items-center md:duration-500 duration-700
                     ${isToggleOne  ? 'lg:w-1/2 h-[60vh] bg-black/70' : 'lg:w-1/4 h-1/4 cursor-pointer'}
                     ${isToggleTwo  ? ' h-[20vh] bg-black/50 hover:bg-black/55' : ''} 
@@ -126,8 +126,8 @@ const Banner = () => {
                         <div className={`${isToggleOne ? 'opacity-1 block md:-top-12' : ' hidden '} relative duration-1000 lg:w-[400px] flex md:gap-8 gap-4 flex-col justify-center items-center md:items-start`}>
                                 <Image src={'/assets/logo.png'} width={150} height={250} alt='HippoSoft logo' className='first__content' />
                                 <h4 className='first__content text-cyan md:tracking-[0.5em] tracking-[0.25em]'>WE CREATE TO CONNECT</h4>
-                                <h2 className='md:text-[64px] text-4xl leading-[72px] first__content '>Branding & Design</h2>
-                                <p className='first__content '>Where it all begins. Identity. innovation. Unique</p>
+                                <h2 className='md:text-[64px] text-4xl leading-[64px] first__content '>Branding & Design</h2>
+                                <p className='first__content '>Where it all begins. Identity. Innovation. Unique</p>
                             <div className='mt-4 md:mt-0 first__content'>
                                 <AnimatedLink 
                                     className='px-8 tracking-[0.3em] mt-4 md:mt-0 border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
@@ -147,7 +147,7 @@ const Banner = () => {
                     </div>
                 </div>
                 <div 
-                    className={`lg:h-full layers opacity-0 bg-black/50 group flex justify-center items-center
+                    className={`lg:h-full layers  opacity-0 bg-black/50 group flex justify-center items-center
                      origin-right md:duration-500 duration-700 relative  
                     ${isToggleTwo ? 'lg:w-1/2 bg-black/70 h-[60vh]' : ' cursor-pointer lg:w-1/4 bg-black/50 hover:bg-black/60 h-[20vh]'}`} 
                     onClick={toggleFunctionOnTwo}

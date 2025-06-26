@@ -35,24 +35,12 @@ const BrandingDesing = () => {
     useGSAP(() => {
         tl.current = gsap
         .timeline({ defaults: {ease: 'power2.inOut'} })
+
         .to('.image-animation', {
-            transformOrigin: 'bottom',
-            width: 180,
-            height: 220,
-            duration: 1,
-            opacity: 100,
-            delay: .5,
-        })
-        .to('.image-animation', {
-            transformOrigin: 'bottom',
-            width: 300,
-            duration: 1
-        })
-        .to('.image-animation', {
-            transformOrigin: 'bottom',
             width: 850,
             height: 530,
             duration: 2,
+            opacity: 100,
         })
         .to(['.title', '.info', '.carousel-slide'], {
             opacity: 1,

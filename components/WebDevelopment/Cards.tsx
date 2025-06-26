@@ -49,6 +49,7 @@ const Cards = () => {
             y: '-120%',
             rotate: '-12deg',
             duration: 1.2,
+            delay: .7,
             ease: 'back.out'
         })
         gsap.from('.card', {

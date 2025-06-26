@@ -19,7 +19,7 @@ const LogofolioLayout = () => {
             yPercent: 35,
             ease: 'power1.inOut',
             stagger: 0.2,
-            delay: 1,
+            delay: .5,
         })
         .from('.layout__two > *', {
             opacity: 0,

@@ -13,6 +13,7 @@ import {NextIntlClientProvider, hasLocale} from 'next-intl';
 import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing';
 import { getMessages } from "next-intl/server";
+import LocaleSwitcherButton from "@/components/commons/LocaleSwitcherButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -62,6 +63,7 @@ export default async function RootLayout({
           <SmoothScroll>
               {/* <LoaderClient> */}
                 <Transitions />
+                  <LocaleSwitcherButton />
                   <Menu />
                   {children}
                 <CustomCursor />

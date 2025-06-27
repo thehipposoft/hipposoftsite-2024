@@ -50,7 +50,7 @@ const Menu = () => {
     return (
         <div ref={container} className=''>
             <button 
-                className='fixed md:top-4 top-7 md:right-6 right-7 hover:bg-white/30 rounded-xl px-2 py-2 duration-500 cursor-pointer z-40'
+                className='fixed md:top-4 top-7 md:right-6 right-7 hover:bg-white/20 bg-black/15 rounded-xl px-2 py-2 duration-500 cursor-pointer z-40'
                 onClick={openMenuFunc}
             >
                 <svg width="35" height="35" viewBox="0 0 30 15" fill="none" xmlns="http://www.w3.org/2000/svg">

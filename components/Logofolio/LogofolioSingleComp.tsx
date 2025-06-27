@@ -4,8 +4,13 @@ import LogofolioGallery from './LogofolioGallery';
 import Link from 'next/link';
 import AnimatedLink from '../commons/AnimatedLink';
 import BackButton from '../commons/BackButton';
+import {useTranslations} from 'next-intl';
+
 
 const LogofolioSingleComp = ({ data }:any) => {
+
+    const t = useTranslations('LogofolioRockSteady');
+
     return (
         <div className='flex flex-col lg:h-screen text-black lg:gap-12'>
             <div className='flex justify-between pt-20 lg:pt-12 2xl:pt-16 lg:w-[1300px] w-[85vw] mx-auto'>
@@ -56,7 +61,7 @@ const LogofolioSingleComp = ({ data }:any) => {
                                 </div>
                                 :
                                 <div>
-                                    <h4>Concept:</h4>
+                                    <h4>{t("Concept")}</h4>
                                     {
                                         data.concept.length > 1 ? 
                                         <div>
@@ -78,11 +83,11 @@ const LogofolioSingleComp = ({ data }:any) => {
                 </div>
                 <div className='flex lg:flex-col flex-col-reverse gap-6 justify-between lg:h-[350px] mt-8 md:mb-8 lg:my-0'>
                     <div className='uppercase text-[15px] flex flex-col lg:items-end md:gap-1 gap-4'>
-                        <h3 className='light'>{data.information[0]}</h3>
-                        <h3 className='light'>{data.information[1]}</h3>
-                        <h3 className='light'>{data.information[2]}</h3>
-                        <Link href={data.href} target='_blank' rel='noreferrer' className='relative z-10 mt-2 overflow-hidden duration-500 px-4 tracking-[0.2em] text-xs py-2 border-cyan border-2 text-black w-fit rounded-3xl hover:bg-cyan hover:scale-x-105'>
-                                DISCOVER SITE
+                        <h3 className='light uppercase'>{data.information[0]}</h3>
+                        <h3 className='light uppercase'>{data.information[1]}</h3>
+                        <h3 className='light uppercase'>{data.information[2]}</h3>
+                        <Link href={data.href} target='_blank' rel='noreferrer' className={`${data.href === '' ? 'hidden' : ''} relative z-10 mt-2 overflow-hidden duration-500 px-4 tracking-[0.2em] text-xs py-2 border-cyan border-2 text-black w-fit rounded-3xl hover:bg-cyan hover:scale-x-105 uppercase`}>
+                               {t("Button")}
                         </Link>
                         {data.category ? <Link href={data.instagram} rel='noreferrer' target='_blank' className='flex w-fit mt-6'>
                                             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clipPath="url(#a)" stroke="#41EAD4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5Z"/><path d="M16 11.37a4 4 0 1 1-7.914 1.173A4 4 0 0 1 16 11.37Z"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h24v24H0z"/></clipPath></defs></svg>

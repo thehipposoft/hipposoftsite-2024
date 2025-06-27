@@ -5,32 +5,34 @@ import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import BackButton from '../commons/BackButton';
+import {useTranslations} from 'next-intl';
 
 const Cards = () => {
+    const t = useTranslations('WebDevelopment');
     const CARDS_DATA = [
         {
             href: '/web-development/strategy-and-planning',
             image: '/assets/images/logofolio/diversity/diversity-1.webp',
-            title: 'Strategy and Planning',
-            description: 'Start Strong. The success of any project begins with careful planning. Together we will define clear objectives, create a detailed plan, and establish a robust foundations. ',
+            title: t("item1"),
+            description: t("description1"),
         },
         {
             href: '/web-development/hosting',
             image: '/assets/images/webdesign/steelart.webp',
-            title: 'Hosting, Domain Search and Configuration',
-            description: 'Ensuring your technical infrastructure is strong and properly set up is our top priority. We take every measure to create a resilient and seamlessly functioning foundation for your project, so you can focus on achieving your goals with confidence.',
+            title: t("item2"),
+            description: t("description2"),
         },
         {
             href: '/web-development/development-and-implementation',
             image: '/assets/images/web-development/web-development-3.jpeg',
-            title: 'Development and implementation',
-            description: 'We meticulously construct your website based on a well-crafted strategy and an intentional design. Our approach ensures that every element aligns with your vision and goals, resulting in a powerful online presence that stands out.',
+            title: t("item3"),
+            description: t("description3"),
         },
         {
             href: '/web-development/launch-and-maintenance',
             image: '/assets/images/design/design-2.webp',
-            title: 'Launch and Maintenance',
-            description: 'We launch your website and commit to its ongoing functionality and performance. Our dedicated support ensures your site runs smoothly, providing a seamless experience for your users now and in the future.',
+            title: t("item4"),
+            description: t("description4"),
         },
     ]
 
@@ -49,6 +51,7 @@ const Cards = () => {
             y: '-120%',
             rotate: '-12deg',
             duration: 1.2,
+            delay: .7,
             ease: 'back.out'
         })
         gsap.from('.card', {
@@ -64,7 +67,7 @@ const Cards = () => {
     return (
         <div>
             <div className='title flex lg:w-[1250px] w-[80vw] mx-auto lg:pt-12 pt-20 justify-between items-center text-black'>
-                <h2 className='md:text-5xl text-4xl w-3/4 md:w-auto'>Web Development</h2>
+                <h2 className='md:text-5xl text-4xl w-3/4 md:w-auto'>{t("title")}</h2>
                 <BackButton href={'/'} />
                 <AnimatedLink href={'/'} className='lg:hidden block '>
                     <svg className='' width="20" height="20" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">

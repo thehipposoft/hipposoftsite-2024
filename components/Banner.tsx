@@ -71,7 +71,7 @@ const Banner = () => {
         .to('.layers', {
             delay: -.5,
             opacity: 1,
-            stagger: 0.1,
+            stagger: 0.2,
             ease: 'back.in'
         })
         .to('.subTitle' , {
@@ -85,8 +85,8 @@ const Banner = () => {
                 duration: 1,
                 rotate: '12deg',
                 ease: 'back.out',
-                stagger: 0.3,
-                delay: .5,
+                stagger: 0.2,
+                delay: 2.5,
             })
         })
 
@@ -115,7 +115,7 @@ const Banner = () => {
             <div className='layers__container relative z-20 h-screen flex flex-col lg:flex-row'>
                 <div 
                     className={`
-                    layers opacity-0  w-full
+                    layers opacity-0  w-full 
                     lg:h-full relative group flex justify-center items-center md:duration-500 duration-700
                     ${isToggleOne  ? 'lg:w-1/2 h-[60vh] bg-black/70' : 'lg:w-1/4 h-1/4 cursor-pointer'}
                     ${isToggleTwo  ? ' h-[20vh] bg-black/50 hover:bg-black/55' : ''} 
@@ -148,7 +148,7 @@ const Banner = () => {
                     </div>
                 </div>
                 <div 
-                    className={`lg:h-full layers opacity-0 bg-black/50 group flex justify-center items-center
+                    className={`lg:h-full layers  opacity-0 bg-black/50 group flex justify-center items-center
                      origin-right md:duration-500 duration-700 relative  
                     ${isToggleTwo ? 'lg:w-1/2 bg-black/70 h-[60vh]' : ' cursor-pointer lg:w-1/4 bg-black/50 hover:bg-black/60 h-[20vh]'}`} 
                     onClick={toggleFunctionOnTwo}
@@ -187,8 +187,8 @@ const Banner = () => {
                             <h4 className='text-cyan md:tracking-[0.5em] tracking-[0.25em] uppercase'>{t('PortfolioSubTitle')}</h4>
                             <h2 className='md:text-[64px] text-4xl leading-[72px] text-center md:text-left'>{t('PortfolioTitle')}</h2>
                             <p className='px-8 text-center md:px-0 md:text-left'>{t('PortfolioDescription')}</p>
-                            <AnimatedLink href={'/portfolio'} className=' px-8 tracking-[0.3em] border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'>
-                            {t('Button')}
+                            <AnimatedLink href={'/portfolio'} className='uppercase px-8 tracking-[0.3em] border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'>
+                                {t('Button')}
                             </AnimatedLink>
                         </div>
                         <div className={`${isToggleThree ? 'hidden' : 'block'} subTitle opacity-0 flex gap-4 flex-col justify-center  items-center`}>
@@ -196,7 +196,7 @@ const Banner = () => {
                                     <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                     <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                 </svg>
-                                <h3 className=' relative font-medium tracking-[0.5em] -top-4 duration-500 group-hover:top-0'>{t('PortfolioTitle')}</h3>
+                                <h3 className=' relative uppercase font-medium tracking-[0.5em] -top-4 duration-500 group-hover:top-0'>{t('PortfolioTitle')}</h3>
                         </div>
                     </div>
                 </div>

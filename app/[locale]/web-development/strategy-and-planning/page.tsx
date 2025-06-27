@@ -1,6 +1,7 @@
 import WebDevelopmentIndividualComp from '@/components/WebDevelopment/WebDevelopmentIndividualComp';
 import React from 'react';
 import type { Metadata } from 'next'
+import { useTranslations } from 'next-intl';
  
 export const metadata: Metadata = {
   title: 'HippoSoft | Strategy and Planning',
@@ -9,24 +10,25 @@ export const metadata: Metadata = {
 
 export default function StrategyAndPlanning() {
 
+    const t = useTranslations('StrategyAndPlanning');
     const DATA = {
-        title: 'Strategy and planning',
+        title: t('title'),
         boxes: [
             {
-                title: 'Client Consultation',
-                paragraph: "To Understand the client's business goals, target audience, and requirements.",
+                title: t("item1"),
+                paragraph: t("text1"),
             },
             {
-                title: 'Market Research',
-                paragraph: "We analyze competitors, industry trends, and best practices.",
+                title: t("item2"),
+                paragraph: t("text2"),
             },
             {
-                title: 'Project Planning',
-                paragraph: "Define the project scope, objectives, timelines, and deliverables",
+                title: t("item3"),
+                paragraph: t("text3"),
             },
             {
-                title: 'Content Strategy',
-                paragraph: "Plan the structure and types of content needed for the site.",
+                title: t("item4"),
+                paragraph: t("text4"),
             }
         ]
     } 

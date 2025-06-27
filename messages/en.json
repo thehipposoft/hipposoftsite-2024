@@ -25,7 +25,133 @@
         "WebDesign": "Web Design",
         "SocialMedia": "Social Media"
     },
-    "LogofolioSingle": {
-        
+    "LogofolioRockSteady": {
+        "description1": "Rock Steady assists organizations in their digital transformation and implements their requirements.",
+        "description2": "Its mission is to enhance companies existing digital capabilities through website and social media development, e-commerce implementations and digital transformations.",
+        "description3": "Rock Steady brings people, processes, tools and data together in a creative way that helps companies achieve success through continuous improvement.",
+        "RockSteadyConcept": "The logo is bold and playful, a symbol of the company's attitude. It represents its rebellious and innovative character. The accompanying elements (stars) symbolize the digital transformation journey, which aims to connect the past with the future of the companies.",
+        "RockSteadyDate": "November 2022",
+        "Button": "Discover Site",
+        "Concept": "Concept:"
+    },
+    "LogofolioInspir": {
+        "description1": "Inspir is an elite performance expert that helps elite athletes and executives in competitive fields tounleash the power of the mind and create the mental toughness needed to perform at their best.",
+        "description2": "It provides an innovative and efficient solution for associations, and responds to all requests: help, advice and support to athletes, teams or organizations.",
+        "InspirConcept": "“The mind is not a vessel to be filled, but a fire to be ignited.”, Plutarch, ancient Greece.",
+        "InspirDate": "March 2023"
+    },
+    "LogofolioDiversity": {
+        "description1": "Diversity Employment helps companies in the Nelson/Tasman region recruit to retain employees in hard-to-fill short-skill occupations.",
+        "description2": "Recruitment for retention combines the process of carefully selecting an individual to obtain a lasting and satisfying relationship with the employee.",
+        "DiversityConcept": "Rope, conexion, abstract monogram “D E”. The construction of the brand was generated from the circle, one of the most flexible and meaningful geometric shapes.",
+        "DiversityConcept2": "In this case, both semicircles joined by an inner circle seek to reflect the aim of the company, which is to intermediate between the employer and the immigrant. Its circular shape makes it emotionally more positive and close, other values that conveys are: movement, globality, protection, reliability.",
+        "DiversityDate": "October 2023",
+        "PrimaryColors": "Primary Colors",
+        "Accent": "Accent"
+    },
+    "LogofolioLumina": {
+        "description1": "Lumina Technologies is a cutting-edge start-up specializing in advanced chemistry to drive innovation in the OLED market.",
+        "description2": "Lumina Technologies drive AR/VR and display technology to enhance customer experience.",
+        "Concept": "The Lumina Technologies logo is a visual representation of precision, innovation and seamless integration, key attributes of the brand's patented technology.",
+        "Concept2": "The mark features layered translucent geometricshapes that subtly evoke the ultra-thin, multi-layeredstructure of displays with this technology. The designstrikes a perfect balance between structure and fluidity.        ",
+        "Date": "April 2025",
+        "Palette": "Color Palette"
+    },
+    "LogofolioDestinoSalta": {
+        "description1": "Destino Salta is a temporary rental project that seeks to offer a unique lodging experience in the city of Salta, the Northwest of Argentina, in a simple and reliable way.",
+        "Concept": "Destino Salta is a brand that honors the cultural and scenic richness of the province of Salta. The logo seeks to capture its essence, its earthy colors evoke the regional chromatic palette, highlighting the burgundy tone of the Salta poncho as the primary color.        ",
+        "Concept2": "Recognized elements of the local flora and fauna were chosen for the design to convey the concept of the province's vast biodiversity. Salta's landscape is one of its most famous attributes and that is why thousands of tourists visit it every year.",
+        "Date": "October 2023",
+        "PrimaryColors": "Primary Colors",
+        "SecondaryColors": "Secondary Colors"
+    },
+    "Design": {
+        "title": "Web Design",
+        "button": "Discover Site"
+    },
+    "WebDevelopment": {
+        "title": "Web Development",
+        "item1": "Strategy And Planning",
+        "description1": "Start Strong. The success of any project begins with careful planning. Together we will define clear objectives, create a detailed plan, and establish a robust foundations.",
+        "item2": "Hosting, Domain Search and Configuration",
+        "description2": "Ensuring your technical infrastructure is strong and properly set up is our top priority. We take every measure to create a resilient and seamlessly functioning foundation for your project, so you can focus on achieving your goals with confidence.",
+        "item3": "Development and implementation",
+        "description3": "We meticulously construct your website based on a well-crafted strategy and an intentional design. Our approach ensures that every element aligns with your vision and goals, resulting in a powerful online presence that stands out.",
+        "item4": "Launch and Maintenance",
+        "description4": "We launch your website and commit to its ongoing functionality and performance. Our dedicated support ensures your site runs smoothly, providing a seamless experience for your users now and in the future."
+    },
+    "StrategyAndPlanning": {
+        "title": "Strategy And Planning",
+        "item1": "Client Consultation",
+        "text1": "To Understand the client's business goals, target audience, and requirements.",
+        "item2": "Market Research",
+        "text2": "We analyze competitors, industry trends, and best practices.",
+        "item3": "Project Planning",
+        "text3": "Define the project scope, objectives, timelines, and deliverables",
+        "item4": "Content Strategy",
+        "text4": "Plan the structure and types of content needed for the site."
+    },
+    "Hosting": {
+        "title": "Hosting, Domain search and Configuration",
+        "item1": "Domain Search and Registration",
+        "text1": "We Assist clients in selecting and registering a domain name.",
+        "item2": "Hosting Solutions",
+        "text2": "We recommend and set up appropriate hosting plans based on the site’s needs.",
+        "item3": "Server Configuration",
+        "text3": "Configure servers for optimal performance, security, and reliability.",
+        "item4": "SSL Certificates",
+        "text4": "Implement SSL certificates to ensure secure connections",
+        "item5": "DNS Settings",
+        "text5": "Configure DNS settings to link the domain to the hosting server"
+    },
+    "Development": {
+        "title": "Development and Implementation",
+        "item1": "Front-End Development",
+        "text1": "Code the visual and interactive parts of the website.",
+        "item2": "Hosting Solutions",
+        "text2": "We recommend and set up appropriate hosting plans based on the site’s needs.",
+        "item3": "Responsive Design",
+        "text3": "Ensure the website is mobile-friendly and looks good on all devices.",
+        "item4": "Third-Party Integrations",
+        "text4": "Integrate external services like payment gateways, analytics, and CRM systems",
+        "item5": "Quality Assurance (QA) and Testing:",
+        "text5": "Test for bugs, compatibility, performance, and security vulnerabilities."
+    },
+    "Launch": {
+        "title": "Launch and Maintenance",
+        "item1": "Deployment",
+        "text1": "Launch the website on the client’s server or hosting platform.",
+        "item2": "Seo Optimization",
+        "text2": "Implement on-page SEO practices to enhance search engine visibility.",
+        "item3": "Performance Monitoring",
+        "text3": "Set up tools to monitor site performance and user behavior.",
+        "item4": "Regular Updates",
+        "text4": "Apply software updates, security patches, and performance enhancements.",
+        "item5": "Backups",
+        "text5": "Implement regular backup solutions to prevent data loss",
+        "item6": "Support and training'",
+        "text6": "Provide training for the client to manage their site and offer ongoing technical support."
+    },
+    "Portfolio": {
+        "title": "Our Projects",
+        "button":"Discover"
+    },
+    "Contact": {
+        "title1": "Let's take the",
+        "title2": "Next Step"
+    },
+    "Form": {
+        "name": "Your Name",
+        "email": "Your Email",
+        "message": "Your Message",
+        "submit": "SEND MESSAGE",
+        "success": "Thank you for your message! We will get back to you soon.",
+        "error": "There was an error sending your message. Please try again later.",
+        "interest": "Im interested in...",
+        "design": "Web Design",
+        "development": "Web Development",
+        "graphic-design": "Graphic Design",
+        "branding": "Branding",
+        "social-media": "Social Media"
     }
 }

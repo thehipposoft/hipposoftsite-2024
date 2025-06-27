@@ -21,6 +21,7 @@ const WebDevelopmentIndividualComp = ({props}:any) => {
             y: '-120%',
             rotate: '-12deg',
             duration: 1.2,
+            delay: .7,
             ease: 'back.out'
         })
 

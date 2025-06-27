@@ -4,8 +4,11 @@ import AnimatedLink from '../commons/AnimatedLink';
 import BackButton from '../commons/BackButton';
 import { Form } from '../Form';
 import ContactInfo from './ContactInfo';
+import { useTranslations } from 'next-intl';
 
 const ContactComponent = () => {
+    const t = useTranslations('Form');
+
     return (
         <div className='lg:h-screen relative flex justify-center items-center py-4 md:py-12 lg:py-8'>
             <Image src={'/assets/images/contact/contact-bg.webp'} alt='Contact section background' priority fill className='object-cover object-[100%70%]' />
@@ -36,27 +39,27 @@ const ContactComponent = () => {
                                     name: 'name',
                                     type: 'text',
                                     label: '',
-                                    placeholder: 'Your Name',
+                                    placeholder: t("name"),
                                     required: true,
                                 },
                                 {
                                     name: 'customerEmail',
                                     type: 'email',
                                     label: '',
-                                    placeholder: 'You Email',
+                                    placeholder: t("email"),
                                     required: true,
                                 },
                                 {
                                     name: 'message',
                                     type: 'textArea',
                                     label: '',
-                                    placeholder: 'Your Message',
+                                    placeholder: t("message"),
                                     required: true,
                                 },
                             ]}
-                            onSuccessMessage={'Your message was submited succesfully. We will contact you soon.'}
-                            onErrorMessage={'Please, try again in some minutes'}
-                            submitButtonLabel={'SEND MESSAGE'}
+                            onSuccessMessage={t("success")}
+                            onErrorMessage={t("error")}
+                            submitButtonLabel={t("submit")}
                             emailServiceURL={'https://thehippoapi.netlify.app/.netlify/functions/api/hipposoft-email'}
                         />
                     </div>

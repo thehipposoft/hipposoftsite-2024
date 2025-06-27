@@ -1,7 +1,8 @@
 import WebDevelopmentIndividualComp from '@/components/WebDevelopment/WebDevelopmentIndividualComp';
 import React from 'react';
 import type { Metadata } from 'next'
- 
+import { useTranslations } from 'next-intl';
+
 export const metadata: Metadata = {
   title: 'HippoSoft | Development and Implementation',
   description: 'We meticulously construct your website based on a well-crafted strategy and an intentional design. Our approach ensures that every element aligns with your vision and goals, resulting in a powerful online presence that stands out.',
@@ -10,28 +11,29 @@ export const metadata: Metadata = {
 
 export default function Development() {
 
+    const t = useTranslations('Development');
     const DATA = {
-        title: 'Development and Implementation',
+        title: t("title"),
         boxes: [
             {
-                title: 'Domain Search and Registration',
-                paragraph: "Code the visual and interactive parts of the website.",
+                title: t("item1"),
+                paragraph: t("text1"),
             },
             {
-                title: 'Hosting Solutions',
-                paragraph: "We recommend and set up appropriate hosting plans based on the site’s needs.",
+                title: t("item2"),
+                paragraph: t("text2"),
             },
             {
-                title: 'Responsive Design',
-                paragraph: "Ensure the website is mobile-friendly and looks good on all devices.",
+                title: t("item3"),
+                paragraph: t("text3"),
             },
             {
-                title: 'Third-Party Integrations',
-                paragraph: "Integrate external services like payment gateways, analytics, and CRM systems",
+                title: t("item4"),
+                paragraph: t("text4"),
             },
             {
-                title: 'Quality Assurance (QA) and Testing:',
-                paragraph: "Test for bugs, compatibility, performance, and security vulnerabilities.",
+                title: t("item5"),
+                paragraph: t("text5"),
             },
         ]
     } 

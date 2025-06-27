@@ -21,24 +21,11 @@ const BrandingDesing = () => {
     useGSAP(() => {
         tl.current = gsap
         .timeline({ defaults: {ease: 'power2.inOut'} })
-        .to('.image-animation', {
-            transformOrigin: 'bottom',
-            width: 180,
-            height: 220,
-            duration: 1,
-            opacity: 100,
-            delay: .5,
-        })
-        .to('.image-animation', {
-            transformOrigin: 'bottom',
-            width: 300,
-            duration: 1
-        })
-        .to('.image-animation', {
-            transformOrigin: 'bottom',
-            width: 850,
-            height: 530,
-            duration: 2,
+
+        .from('.image-animation', {
+            yPercent: 100,
+            duration: 1.5,
+            opacity: 0,
         })
         .to(['.title', '.info', '.carousel-slide'], {
             opacity: 1,
@@ -66,17 +53,19 @@ const BrandingDesing = () => {
             </div>
             <div className={`bg-white flex justify-center items-center pt-8 relative `}>
                 <div className={`carousel__wrapper translate-x-[900px] flex gap-20 items-center`}>
-                    <div className={`overflow-hidden w-[200px] h-[10px] opacity-0 relative group image-animation rounded-md`} >
-                        <AnimatedLink href={'/logofolio'} className={`absolute w-full h-full z-[11]`}>
-                            <div className='info relative z-10 flex opacity-0 pt-12 pl-12 items-center gap-6'>
-                                <h3 className='text-4xl'>{t("Logofolio")}</h3>
-                                <svg className='group-hover:rotate-180 group-hover:scale-125 duration-700' width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
-                                    <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
-                                </svg>
-                            </div>
-                        </AnimatedLink>    
-                        <Image src={"/assets/images/design/design-1.webp"} fill className={`group-hover:scale-110 duration-1000 rounded-md object-cover object-center`} alt='Logofolio section background' priority/>
+                    <div className='overflow-hidden w-[850px] h-[530px]'>
+                        <div className={`overflow-hidden w-[850px] h-[530px] opacity-100 relative group image-animation rounded-md`} >
+                            <AnimatedLink href={'/logofolio'} className={`absolute w-full h-full z-[11]`}>
+                                <div className='info relative z-10 flex opacity-0 pt-12 pl-12 items-center gap-6'>
+                                    <h3 className='text-4xl'>{t("Logofolio")}</h3>
+                                    <svg className='group-hover:rotate-180 group-hover:scale-125 duration-700' width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                                        <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                                    </svg>
+                                </div>
+                            </AnimatedLink>    
+                            <Image src={"/assets/images/design/design-1.webp"} fill className={`group-hover:scale-110 duration-1000 rounded-md object-cover object-center`} alt='Logofolio section background' priority/>
+                        </div>
                     </div>
                     <div className={`overflow-hidden w-[850px] h-[530px] relative group carousel-slide opacity-0 rounded-md`} >
                         <AnimatedLink href={'/web-design'} className={`absolute w-full h-full z-[11]`} />

@@ -1,6 +1,7 @@
 import WebDevelopmentIndividualComp from '@/components/WebDevelopment/WebDevelopmentIndividualComp';
 import React from 'react';
 import type { Metadata } from 'next'
+import { useTranslations } from 'next-intl';
  
 export const metadata: Metadata = {
   title: 'HippoSoft | Launch and Maintenance',
@@ -9,33 +10,33 @@ export const metadata: Metadata = {
 
 
 export default function LaunchAndMaintennance() {
-
+    const t = useTranslations('Launch');
     const DATA = {
-        title: 'Development and Implementation',
+        title: t('title'),
         boxes: [
             {
-                title: 'Deployment',
-                paragraph: "Launch the website on the client’s server or hosting platform.",
+                title: t("item1"),
+                paragraph: t("text1"),
             },
             {
-                title: 'Seo Optimization',
-                paragraph: "Implement on-page SEO practices to enhance search engine visibility.",
+                title: t("item2"),
+                paragraph: t("text2"),
             },
             {
-                title: 'Performance Monitoring',
-                paragraph: "Set up tools to monitor site performance and user behavior.",
+                title: t("item3"),
+                paragraph: t("text3"),
             },
             {
-                title: 'Regular Updates',
-                paragraph: "Apply software updates, security patches, and performance enhancements.",
+                title: t("item4"),
+                paragraph: t("text4"),
             },
             {
-                title: 'Backups',
-                paragraph: "Implement regular backup solutions to prevent data loss.",
+                title: t("item5"),
+                paragraph: t("text5"),
             },
             {
-                title: 'Support and training',
-                paragraph: "Provide training for the client to manage their site and offer ongoing technical support.",
+                title: t("item6"),
+                paragraph: t("text6"),
             },
             
         ]

@@ -13,6 +13,7 @@ import {useTranslations} from 'next-intl';
 gsap.registerPlugin(ScrollTrigger);
 
 const WebDesignComp = () => {
+
     const t = useTranslations('Design');
     const WEBDESIGN_DATA = [
         {
@@ -92,6 +93,14 @@ const WebDesignComp = () => {
             textColor: 'black',
             vectorColor: '#000000',
         },
+        {
+            name: 'Grupo SIMA',
+            background: '/assets/images/portfolio/mock-sima.webp',
+            href: 'https://grupo-sima.com.ar/',
+            textColor: 'black',
+            vectorColor: '#000000',
+            backgroundPosition: 'top',
+        },
     ]
 
     const container = useRef<HTMLDivElement>(null);
@@ -157,11 +166,11 @@ const WebDesignComp = () => {
                         WEBDESIGN_DATA.map((value, index) => {
                             return(
                                 <div className='min-w-[100vw] min-h-screen relative' key={index}>
-                                    <Image className='background-image' src={value.background} alt={`${value.name} site background`} fill objectFit='cover' />
+                                    <Image className={`background-image object-cover object-${value.backgroundPosition}`} src={value.background} alt={`${value.name} site background`} fill />
                                     <div className='lg:max-w-[1250px] max-w-[80vw] mx-auto flex flex-col justify-between md:h-[90vh] h-[92vh] relative lg:pt-8 md:pt-12 pt-20 z-10'>
                                         <div className={`flex justify-between items-center text-${value.textColor}`}>
                                             <div className='flex flex-col gap-2'>
-                                                <h2 className='title text-5xl'>Web Design</h2>
+                                                <h2 className='title text-5xl'>{t("title")}</h2>
                                                 <h4 className='slide__name text-2xl thin'>{value.name}</h4>
                                             </div>
                                             <div className='back opacity-0'>
@@ -176,12 +185,12 @@ const WebDesignComp = () => {
                                         </div>
                                         <div className='navigation lg:max-w-[1250px] max-w-[80vw] opacity-0 flex flex-col md:flex-row-reverse md:justify-between items-center md:gap-0 gap-12'>
                                             <Link 
-                                                className=' px-8 tracking-[0.3em] duration-700 hover:bg-white/50 hover:scale-105 text-sm font-medium py-3 bg-cyan text-black rounded-3xl'
+                                                className='uppercase px-8 tracking-[0.3em] duration-700 hover:bg-white/50 hover:scale-105 text-sm font-medium py-3 bg-cyan text-black rounded-3xl'
                                                 href={value.href}
                                                 target='_blank'
                                                 rel='noreferrer'
                                             >
-                                                DISCOVER SITE
+                                                {t("button")}
                                             </Link>
                                             <div className={`${index === 0 ? 'md:flex' : 'hidden'} hidden scroll-text items-center gap-4 text-xl`}>
                                                 <p className='thin text-black'>S</p>

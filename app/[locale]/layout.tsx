@@ -60,13 +60,13 @@ export default async function RootLayout({
           <SchemaOrg />
           <GoogleAnalytics />
           <SmoothScroll>
-              <LoaderClient>
+              {/* <LoaderClient> */}
                 <Transitions />
                   <Menu />
                   {children}
                 <CustomCursor />
                 <StickyContact />
-              </LoaderClient>
+              {/* </LoaderClient> */}
           </SmoothScroll>
         </NextIntlClientProvider>
       </body>

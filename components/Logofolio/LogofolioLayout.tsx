@@ -19,7 +19,7 @@ const LogofolioLayout = () => {
             yPercent: 35,
             ease: 'power1.inOut',
             stagger: 0.2,
-            delay: 1,
+            delay: .5,
         })
         .from('.layout__two > *', {
             opacity: 0,
@@ -31,8 +31,8 @@ const LogofolioLayout = () => {
     }, {scope: container})
 
     return (
-        <div ref={container} className='h-full flex md:pt-[7%] pt-10 lg:gap-20 gap-16 flex-col md:w-[80vw] lg:max-w-[1250px] mx-auto'>
-            <div className='layout__one flex flex-col gap-12 md:gap-16 lg:gap-0 lg:flex-row flex-wrap justify-between items-center lg:w-[1100px] mx-auto '>
+        <div ref={container} className='h-full flex md:pt-[7%] pt-10 lg:gap-20 gap-16 flex-col md:w-[90vw] lg:max-w-[1250px] mx-auto'>
+            <div className='layout__one flex flex-col gap-12 md:gap-16 lg:gap-0 lg:flex-row flex-wrap justify-between items-center lg:w-[1250px] mx-auto '>
                 <AnimatedLink href={'/logofolio/rock-steady-digital'} className='flex flex-col items-center gap-4 group'>
                     <div className='relative opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 -bottom-2 group-hover:bottom-2 duration-500'>
                         <Image 
@@ -71,6 +71,21 @@ const LogofolioLayout = () => {
                             alt='Diversity & Employment logo'
                             width={1189}
                             height={330}
+                         />
+                    </div>
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                        <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                    </svg>
+                </AnimatedLink>
+                <AnimatedLink href={'/logofolio/lumina-technologies'} className='flex flex-col items-center gap-4 group'>
+                    <div className=' relative opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 -bottom-2 group-hover:bottom-2 duration-500'>
+                        <Image 
+                            src={'/assets/images/logofolio/lumina.png'} 
+                            className='object-center w-[270px] h-[110px]'  
+                            alt='Lumina Technologies logo'
+                            width={882}
+                            height={370}
                          />
                     </div>
                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">

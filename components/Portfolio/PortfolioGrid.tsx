@@ -7,9 +7,11 @@ import { PORTFOLIO_DATA } from './constants';
 import Link from 'next/link';
 import AnimatedLink from '../commons/AnimatedLink';
 import BackButton from '../commons/BackButton';
+import { useTranslations } from 'next-intl';
 
 const PortfolioGrid = () => {
 
+    const t = useTranslations('Portfolio');
     const container = useRef<HTMLDivElement>(null)
 
     const tl = useRef<any>(null)
@@ -20,7 +22,8 @@ const PortfolioGrid = () => {
             y: '-120%',
             rotate: '-12deg',
             duration: 1.2,
-            ease: 'back.out'
+            ease: 'back.out',
+            delay: 0.7,
         })
         gsap.from('item', {
             opacity: 0,
@@ -30,7 +33,7 @@ const PortfolioGrid = () => {
     return (
         <div ref={container} className='flex flex-col py-12 gap-12 justify-between items-center md:max-w-[1250px] mx-auto text-black'>
             <div className="title flex justify-between items-center md:w-[85vw] w-[80vw] md:max-w-[1250px] mx-auto gap-12 md:gap-0 lg:pt-0 pt-16">
-                <h1 className="text-5xl">Our Projects</h1>
+                <h1 className="text-5xl">{t("title")}</h1>
                 <BackButton href="/" />
                 <AnimatedLink href={'/'} className='lg:hidden '>
                     <svg className='' width="20" height="20" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -45,7 +48,7 @@ const PortfolioGrid = () => {
                         <div className='flex flex-col gap-4 item' key={index}>
                             <AnimatedLink href={`/portfolio/${val.slug}`}  className=' w-[80vw] md:w-[600px] lg:w-[340px] h-[520px] relative group cursor-pointer pointer-events-none lg:pointer-events-auto' key={index}>
                                 <div className='w-full h-full absolute top-0 left-0 bg-black/40 flex justify-center items-center opacity-0 group-hover:opacity-100 duration-500 z-10'>
-                                    <h4 className='px-8 tracking-[0.2em] font-medium py-3 text-white text-2xl'>DISCOVER</h4>
+                                    <h4 className='px-8 tracking-[0.2em] uppercase font-medium py-3 text-white text-2xl'>{t("button")}</h4>
                                 </div>
                                 <Image src={val.data.mockGrid} alt={`${val.data.name} background`} fill className={`object-cover ${val.data.objectPosition} `} />
                                 <div className='absolute bottom-4 left-4'>
@@ -70,12 +73,12 @@ const PortfolioGrid = () => {
                                 </div>
                                 <div className='flex items-center lg:hidden'>
                                     <Link 
-                                        className='px-3 duration-700 text-center hover:bg-white/50 hover:scale-105 text-xs font-medium py-3 bg-cyan text-black rounded-3xl'
+                                        className='px-3 duration-700 uppercase text-center hover:bg-white/50 hover:scale-105 text-xs font-medium py-3 bg-cyan text-black rounded-3xl'
                                         href={val.data.href}
                                         target='_blank'
                                         rel='noreferrer'
                                     >
-                                        DISCOVER SITE
+                                        {t("button")}
                                     </Link>
                                 </div>
                             </div>

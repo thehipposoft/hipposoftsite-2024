@@ -4,7 +4,7 @@
 import { useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
 import { playTransitionIn } from './Transitions'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 
 type Props = {
   href: string

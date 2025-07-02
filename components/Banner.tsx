@@ -85,7 +85,7 @@ const Banner = () => {
                 rotate: '12deg',
                 ease: 'back.out',
                 stagger: 0.2,
-                delay: 2.5,
+                delay: 1,
             })
         })
 

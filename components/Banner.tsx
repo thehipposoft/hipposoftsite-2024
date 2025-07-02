@@ -65,8 +65,7 @@ const Banner = () => {
             opacity: 100,
             y: 0,
             ease: 'power4.inOut',
-            duration: 1.5,
-            delay: 1,
+            duration: 1,
         })
         .to('.layers', {
             delay: -.5,

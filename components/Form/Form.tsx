@@ -212,8 +212,8 @@ const MyCustomForm = ({
                 >
                     {submitButtonLabel}
                     <svg width="35" height="35" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className='group-hover:rotate-180 duration-500'>
-                        <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
-                        <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3"/>
+                        <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" stroke-dasharray="3 3"/>
+                        <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" stroke-dasharray="3 3"/>
                     </svg>
                 </button>
                 <div className='p-1'>

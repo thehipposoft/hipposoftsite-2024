@@ -1,0 +1,158 @@
+{
+    "Banner": {
+      "BrandingSubTitle": "Creamos para conectar",
+      "BrandingTitle": "Branding & Diseño",
+      "BrandingDescription": "Donde todo comienza. Identidad. Innovacion. Único",
+      "BrandingMobileSlug": "diseño",
+      "Button": "Descubrir",
+      "DevelopmentSubTitle": "de diseño a código",
+      "DevelopmentTitle": "Desarrollo Web",
+      "DevelopmentDescription": "Construir es importante pero el COMO es esencial para nosotros.",
+      "PortfolioSubTitle": "trabajo en acción",
+      "PortfolioTitle": "Portafolio",
+      "PortfolioDescription": "Descubre proyectos donde el diseño estrategio y resultados impactantes se vuelven uno."
+    },
+    "Menu": {
+        "Home": "Home",
+        "Branding": "Branding & Diseño",
+        "Development": "Desarrollo Web",
+        "Portfolio": "Portafolio",
+        "Contact": "Contacto"
+    },
+    "BrandingAndDesign": {
+        "title": "Branding & Diseño",
+        "Logofolio": "Logofolio",
+        "WebDesign": "Diseño Web",
+        "SocialMedia": "Redes Sociales"
+    },
+    "LogofolioRockSteady": {
+        "description1": "Rock Steady ayuda a las organizaciones en su transformación digital e implementa sus requisitos.",
+        "description2": "Su misión es mejorar las capacidades digitales existentes de las empresas a través del desarrollo de sitios web y redes sociales, implementaciones de comercio electrónico y transformaciones digitales. ",
+        "description3": "Rock Steady reúne personas, procesos, herramientas y datos de una manera creativa que ayuda a las empresas a alcanzar el éxito a través de la mejora continua.",
+        "RockSteadyConcept": "El logotipo es audaz y divertido, símbolo de la actitud de la empresa. Representa su carácter rebelde e innovador. Los elementos que lo acompañan (estrellas) simbolizan la transformación digital, que busca conectar el pasado con el futuro de las empresas.",
+        "RockSteadyDate": "Noviembre 2022",
+        "Button": "Descubrir Sitio",
+        "Concept": "Concepto:"
+
+    },
+    "LogofolioInspir": {
+        "description1": "Inspir es un experto en rendimiento de élite que ayuda a atletas y ejecutivos de élite en campos competitivos a liberar el poder de la mente y crear la fortaleza mental necesaria para rendir al máximo.",
+        "description2": "Proporciona una solución innovadora y eficaz para las asociaciones, y responde a todas las solicitudes: ayuda, asesoramiento y apoyo a deportistas, equipos u organizaciones.",
+        "InspirConcept": "“La mente no es un recipiente que debe llenarse, sino un fuego que debe encenderse.”, Plutarco, Grecia antigua.",
+        "InspirDate": "Marzo 2023"
+    },
+    "LogofolioDiversity": {
+        "description1": "Diversity Employment ayuda a las empresas de la región Nelson/Tasman a contratar para retener empleados en ocupaciones con escasez de habilidades y difíciles de cubrir.",
+        "description2": "El reclutamiento para retención combina el proceso de seleccionar cuidadosamente a un individuo para obtener una relación duradera y satisfactoria con el empleado.",
+        "DiversityConcept": "Cuerda, conexión, monograma abstracto «D E». La construcción de la marca se generó a partir del círculo, una de las formas geométricas más flexibles y significativas.",
+        "DiversityConcept2": "En este caso, ambos semicírculos, unidos por un círculo interior, buscan reflejar el objetivo de la empresa: intermediar entre el empleador y el inmigrante. Su forma circular la hace emocionalmente más positiva y cercana. Otros valores que transmite son: movilidad, globalidad, protección y fiabilidad.",
+        "DiversityDate": "Octubre 2023",
+        "PrimaryColors": "Colores Primarios",
+        "Accent": "Acento"
+    },
+    "LogofolioLumina": {
+        "description1": "Lumina Technologies es una empresa emergente de vanguardia especializada en química avanzada para impulsar la innovación en el mercado OLED.",
+        "description2": "Lumina Technologies impulsa la tecnología de visualización y AR/VR para mejorar la experiencia del cliente.",
+        "Concept": "El logotipo de Lumina Technologies es una representación visual de precisión, innovación e integración perfecta, atributos clave de la tecnología patentada de la marca.",
+        "Concept2": "La marca presenta formas geométricas translúcidas en capas que evocan sutilmente la estructura ultrafina y multicapa de las pantallas con esta tecnología. El diseño logra un equilibrio perfecto entre estructura y fluidez.",
+        "Date": "Abril 2025",
+        "Palette": "Paleta de Colores"
+    },
+    "LogofolioDestinoSalta": {
+        "description1": "Destino Salta es un proyecto de alquiler temporario que busca ofrecer una experiencia de alojamiento única en la ciudad de Salta, Noroeste de Argentina, de forma sencilla y confiable.",
+        "Concept": "Destino Salta es una marca que rinde homenaje a la riqueza cultural y paisajística de la provincia de Salta. El logotipo busca capturar su esencia; sus colores terrosos evocan la paleta cromática regional, destacando el tono borgoña del poncho salteño como color principal.",
+        "Concept2": "Se eligieron elementos reconocidos de la flora y fauna local para el diseño, con el fin de transmitir el concepto de la vasta biodiversidad de la provincia. El paisaje de Salta es uno de sus atributos más famosos, razón por la cual miles de turistas la visitan cada año.",
+        "Date": "Octubre 2023",
+        "PrimaryColors": "Colores Primarios",
+        "SecondaryColors": "Colores Secundarios"
+    },
+    "Design": {
+        "title": "Diseño Web",
+        "button": "Descubrir Web"
+    },
+    "WebDevelopment": {
+        "title": "Desarrollo Web",
+        "item1": "Estrategia y Planificación",
+        "description1": "Empieza con fuerza. El éxito de cualquier proyecto comienza con una planificación minuciosa. Juntos definiremos objetivos claros, crearemos un plan detallado y estableceremos una base sólida.",
+        "item2": "Hosting, Busqueda de dominio y Configuración",
+        "description2": "Garantizar la solidez y la correcta configuración de su infraestructura técnica es nuestra máxima prioridad. Tomamos todas las medidas necesarias para crear una base sólida y eficiente para su proyecto, para que pueda centrarse en alcanzar sus objetivos con confianza.",
+        "item3": "Desarrollo e Implementacion",
+        "description3": "Construimos meticulosamente su sitio web con base en una estrategia bien diseñada y un diseño intencional. Nuestro enfoque garantiza que cada elemento se alinee con su visión y objetivos, dando como resultado una presencia en línea impactante y que destaque.",
+        "item4": "Lanzamiento y Mantenimiento",
+        "description4": "Lanzamos su sitio web y nos comprometemos a garantizar su funcionalidad y rendimiento continuos. Nuestro soporte dedicado garantiza el correcto funcionamiento de su sitio, ofreciendo una experiencia fluida a sus usuarios ahora y en el futuro."
+    },
+    "StrategyAndPlanning": {
+        "title": "Estrategia y Planificación",
+        "item1": "Consulta con el cliente",
+        "text1": "Comprender los objetivos del negocio del cliente, el público al que apunta y los requisitos.",
+        "item2": "Investigación de mercado",
+        "text2": "Analizamos competidores, tendencias de la industria y mejores prácticas.",
+        "item3": "Planeamiento del Proyecto",
+        "text3": "Definir el alcance, los objetivos, los plazos y los resultados del proyecto.",
+        "item4": "Estrategia del contenido",
+        "text4": "Planifique la estructura y los tipos de contenido necesarios para el sitio."
+    },
+    "Hosting": {
+        "title": "Hosting, Busqueda de dominio y Configuración",
+        "item1": "Busqueda de dominio y registro",
+        "text1": "Ayudamos a los clientes a seleccionar y registrar un nombre de dominio.",
+        "item2": "Soluciones de Hosting",
+        "text2": "Recomendamos y configuramos planes de alojamiento adecuados según las necesidades del sitio.",
+        "item3": "Configuracion del servidor",
+        "text3": "Configure servidores para obtener un rendimiento, seguridad y confiabilidad óptimos.",
+        "item4": "Certificados SSL",
+        "text4": "Implementar certificados SSL para garantizar conexiones seguras",
+        "item5": "Configuración de DNS",
+        "text5": "Configurar los ajustes de DNS para vincular el dominio al servidor de alojamiento"
+    },
+    "Development": {
+        "title": "Desarrollo e Implementación",
+        "item1": "Desarrollo Front-End",
+        "text1": "Codificar las partes visuales e interactivas del sitio web.",
+        "item2": "Soluciones de Hosting",
+        "text2": "Recomendamos y configuramos planes de alojamiento adecuados según las necesidades del sitio.",
+        "item3": "Diseño Responsive",
+        "text3": "Asegúrese de que el sitio web sea compatible con dispositivos móviles y se vea bien en todos ellos.",
+        "item4": "Integraciones Externas",
+        "text4": "Servicios externos como pasarelas de pago, análisis y sistemas CRM",
+        "item5": "Garantía de calidad (QA) y pruebas:",
+        "text5": "Prueba de errores, compatibilidad, rendimiento y vulnerabilidades de seguridad."
+    },
+    "Launch": {
+        "title": "Lanzamiento y Mantenimiento",
+        "item1": "Despliegue",
+        "text1": "Inicio del sitio web en el servidor o plataforma de alojamiento del cliente.",
+        "item2": "Optimización SEO",
+        "text2": "Implementación de prácticas de SEO en la página para mejorar la visibilidad en los motores de búsqueda.",
+        "item3": "Monitoreo de Rendimiento",
+        "text3": "Configurar herramientas para supervisar el rendimiento del sitio y el comportamiento del usuario.",
+        "item4": "Actualizaciones y Mantenimiento",
+        "text4": "Aplicar actualizaciones de software, parches de seguridad y mejoras de rendimiento.",
+        "item5": "Backups",
+        "text5": "Implemente soluciones de respaldo periódicas para evitar la pérdida de datos.",
+        "item6": "Soporte y Capacitación",
+        "text6": "Brindar capacitación al cliente para administrar su sitio y ofrecer soporte técnico continuo."
+    },
+    "Portfolio": {
+        "title": "Nuestros Proyectos",
+        "button":"Descubrir"
+    },
+    "Contact": {
+        "title1": "Demos el",
+        "title2": "siguiente paso!"
+    },
+    "Form": {
+        "name": "Tu Nombre",
+        "email": "Tu Email",
+        "message": "Tu Mensaje",
+        "submit": "ENVIAR MENSAJE",
+        "success": "Tu mensaje ha sido enviado con éxito. Nos pondremos en contacto contigo pronto.",
+        "error": "Lo sentimos, ha ocurrido un error al enviar tu mensaje. Por favor, inténtalo de nuevo más tarde.",
+        "interest": "Estoy interesado en...",
+        "design": "Diseño Web",
+        "development": "Desarrollo Web",
+        "graphic-design": "Diseño Gráfico",
+        "branding": "Branding",
+        "social-media": "Redes Sociales"
+    }
+}

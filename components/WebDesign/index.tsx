@@ -101,6 +101,13 @@ const WebDesignComp = () => {
             vectorColor: '#000000',
             backgroundPosition: 'top',
         },
+        {
+            name: 'Ferreteria Gay',
+            background: '/assets/images/portfolio/ferreteria-mock.jpg',
+            href: 'https://ferreteriagay.com.ar/',
+            textColor: 'white',
+            vectorColor: '#000000',
+        },
     ]
 
     const container = useRef<HTMLDivElement>(null);

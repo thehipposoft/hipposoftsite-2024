@@ -42,11 +42,11 @@ const PortfolioGrid = () => {
                     </svg>
                 </AnimatedLink>
             </div>
-            <div className='grid  lg:grid-cols-3 grid-cols-1 gap-12 lg:w-[85vw] md:w-[600px] w-[80vw] md:max-w-[1250px] md:self-baseline mx-auto'>
+            <div className='grid lg:grid-cols-3 grid-cols-1 gap-12 lg:w-[85vw] md:w-[600px] w-[80vw]  md:max-w-[1250px] md:self-baseline mx-auto'>
                 {
                     PORTFOLIO_DATA.map((val, index) => (
                         <div className='flex flex-col gap-4 item' key={index}>
-                            <AnimatedLink href={`/portfolio/${val.slug}`}  className=' w-[80vw] md:w-[600px] lg:w-[340px] h-[520px] relative group cursor-pointer pointer-events-none lg:pointer-events-auto' key={index}>
+                            <AnimatedLink href={`/portfolio/${val.slug}`}  className=' w-[80vw] md:w-[600px] lg:w-[340px] md:h-[520px] h-96 relative group cursor-pointer pointer-events-none lg:pointer-events-auto' key={index}>
                                 <div className='w-full h-full absolute top-0 left-0 bg-black/40 flex justify-center items-center opacity-0 group-hover:opacity-100 duration-500 z-10'>
                                     <h4 className='px-8 tracking-[0.2em] uppercase font-medium py-3 text-white text-2xl'>{t("button")}</h4>
                                 </div>

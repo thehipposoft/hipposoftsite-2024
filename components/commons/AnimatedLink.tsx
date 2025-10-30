@@ -1,4 +1,3 @@
-// components/AnimatedLink.tsx
 'use client'
 
 import { useRouter } from 'next/navigation'

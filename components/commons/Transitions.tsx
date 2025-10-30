@@ -35,7 +35,6 @@ export default function Transitions() {
   )
 }
 
-// ✅ Exportamos con acceso directo a los elementos para la animación de entrada
 export const playTransitionIn = (): Promise<void> => {
   return new Promise((resolve) => {
     const layers = document.querySelectorAll('.transition-layer') as NodeListOf<HTMLElement>

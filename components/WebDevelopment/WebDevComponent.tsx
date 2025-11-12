@@ -6,31 +6,33 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import BackButton from '../commons/BackButton';
 import {useTranslations} from 'next-intl';
+import CollapseComponent from './CollapseComponent';
+import Expertise from './Expertise';
 
-const Cards = () => {
+const WebDevComponent = () => {
     const t = useTranslations('WebDevelopment');
     const CARDS_DATA = [
         {
             href: '/web-development/strategy-and-planning',
-            image: '/assets/images/logofolio/diversity/diversity-1.webp',
+            image: '/assets/images/web-development/web-development-1.jpg',
             title: t("item1"),
             description: t("description1"),
         },
         {
             href: '/web-development/hosting',
-            image: '/assets/images/webdesign/steelart.webp',
+            image: '/assets/images/web-development/web-development-2.jpg',
             title: t("item2"),
             description: t("description2"),
         },
         {
             href: '/web-development/development-and-implementation',
-            image: '/assets/images/web-development/web-development-3.jpeg',
+            image: '/assets/images/web-development/web-development-3.jpg',
             title: t("item3"),
             description: t("description3"),
         },
         {
             href: '/web-development/launch-and-maintenance',
-            image: '/assets/images/design/design-2.webp',
+            image: '/assets/images/web-development/web-development-4.jpg',
             title: t("item4"),
             description: t("description4"),
         },
@@ -41,9 +43,6 @@ const Cards = () => {
     const tl = useRef<any>(null)
 
     useGSAP(() => {
-        gsap.set('.card-1', {bottom: 50})
-        gsap.set('.card-2', {bottom: 100})
-        gsap.set('.card-3', {bottom: 150})
         tl.current = gsap
         .timeline()
         .from('.title', {
@@ -54,18 +53,22 @@ const Cards = () => {
             delay: .7,
             ease: 'back.out'
         })
-        gsap.from('.card', {
+        gsap.from(".firstText", {
             delay: 1,
             opacity: 0,
+        })
+        gsap.from('.card', {
+            opacity: 0,
+            delay: 1,
             yPercent: 15,
             ease: 'back.out',
-            stagger: .3,
+            stagger: .2,
             duration: .7,
         })
-    })
+    }, {scope: container})
 
     return (
-        <div>
+        <div ref={container} className=''>
             <div className='title flex lg:w-[1250px] w-[80vw] mx-auto lg:pt-12 pt-20 justify-between items-center text-black'>
                 <h2 className='md:text-5xl text-4xl w-3/4 md:w-auto'>{t("title")}</h2>
                 <BackButton href={'/'} />
@@ -76,29 +79,42 @@ const Cards = () => {
                     </svg>
                 </AnimatedLink>
             </div>
-            <div ref={container} className='lg:max-w-[1400px] max-w-[80vw] mx-auto flex flex-col lg:flex-row justify-between lg:items-end gap-20 md:gap-32 lg:gap-0 pt-12 lg:pt-0 lg:h-[600px] overflow-hidden'>
+            <div className='lg:max-w-[1350px] md:max-w-[90vw] max-w-[80vw] mx-auto flex lg:flex-row flex-col justify-between pt-12'>
+                <div className='bg-slate-200 h-[600px] md:w-[400px] hidden'>bim</div>
+                <p className='text-black lg:w-[750px] firstText text-2xl light'>{t("firstText")}</p>
+            </div>
+            <div  className='lg:max-w-[1350px] md:max-w-[90vw] max-w-[80vw] gap-8 lg:gap-0 mx-auto grid lg:grid-cols-4 grid-cols-1 md:grid-cols-2 overflow-hidden pt-12'>
                 {
                     CARDS_DATA.map((val, index) => {
                         return(
-                            <div className={`card card-${index} group relative`} key={index}>
-                                <AnimatedLink href={val.href} className={`flex flex-col gap-4 text-black lg:max-w-[320px] max-w-[80vw] relative`}>
-                                    <div className='relative lg:w-[320px] w-[80vw] h-[240px]'>
+                            <div className={`card group relative text-black lg:w-[320px] md:w-full w-[80vw]`} key={index}>
+                                    <div className='relative lg:w-[320px] md:w-full w-[80vw] h-[280px]'>
                                         <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className='relative z-10 left-[85%] top-[5%] duration-500 group-hover:scale-125'>
-                                            <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" stroke-dasharray="3 3"/>
-                                            <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" stroke-dasharray="3 3"/>
+                                            <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                                            <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                         </svg>
-                                        <Image fill alt={`${val.title} image`} src={val.image} objectFit='cover' />
+                                        <Image fill alt={`${val.title} image`} src={val.image} className='object-cover' />
                                     </div>
-                                    <h4 className='group-hover:pt-3 group-hover:mb-3 duration-500'>{val.title}</h4>
-                                    <p className='text-sm  duration-500'>{val.description}</p>
-                                </AnimatedLink>
+                                    <h4 className='text-lg'>{val.title}</h4>
+                                    <p className='leading-6 text-sm duration-500'>{val.description}</p>
                              </div>
                         )
                     })
                 }
             </div>
+            <CollapseComponent />
+            <Expertise />
+            <div className='flex flex-col-reverse lg:max-w-[1350px] md:max-w-[90vw] max-w-[80vw] mx-auto lg:py-24 py-12 md:gap-12 gap-6'>
+                <h2 className='bg-gradient-to-r from-brand-purple via-blue-600 to-cyan text-transparent md:text-8xl text-5xl animate-gradient bg-300% md:tracking-wide bg-clip-text text-black font-bold'>{t("ContactText1")}<br /> {t("ContactText2")}</h2>
+                <AnimatedLink 
+                    className='px-8 tracking-[0.1em] hover:tracking-[0.15em] uppercase mt-4 md:mt-0 border hover:bg-transparent border-cyan hover:scale-x-105 duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'
+                    href={'/contact'}
+                >
+                    {t("Contact")}
+                </AnimatedLink>
+            </div>
         </div>
     );
 };
 
-export default Cards;
+export default WebDevComponent;

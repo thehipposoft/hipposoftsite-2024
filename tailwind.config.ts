@@ -11,6 +11,20 @@ const config: Config = {
     extend: {
       colors: {
         'cyan': '#70FFE5',
+        'brand-purple': "#221b35",
+      },
+      animation: {
+        gradient: 'animatedgradient 10s ease infinite alternate',
+      },
+      keyframes: {
+        animatedgradient: {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
+      },
+      backgroundSize: {
+        '300%': '300%', // Esto hace que el gradiente sea más ancho y se pueda mover
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

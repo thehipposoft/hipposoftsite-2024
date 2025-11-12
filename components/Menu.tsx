@@ -60,7 +60,7 @@ const Menu = () => {
                 </svg>
             </button>
             <div className={`menu translate-x-[100%] opacity-100
-                fixed top-0 right-0 flex flex-col justify-center items-center md:items-start bg-[#221b35] z-30 md:px-32 h-screen w-screen py-4`} >
+                fixed top-0 right-0 flex flex-col justify-center items-center md:items-start bg-brand-purple z-30 md:px-32 h-screen w-screen py-4`} >
                     <ul className='links-list flex flex-col gap-6 md:gap-10 2xl:gap-14 md:mx-auto lg:mx-0'>
                         <Image src={'/assets/logo.png'} alt='' width={1144} height={541} className='w-40' />
                         <AnimatedLink href={'/'} >

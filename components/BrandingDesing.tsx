@@ -25,6 +25,7 @@ const BrandingDesing = () => {
         .from('.image-animation', {
             yPercent: 100,
             duration: 1.5,
+            scale: 0.8,
             opacity: 0,
         })
         .to(['.title', '.info', '.carousel-slide'], {

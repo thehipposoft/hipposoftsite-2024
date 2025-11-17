@@ -9,21 +9,6 @@ const LogofolioGallery = ({ images, vc }:any) => {
 
     const container = useRef<HTMLDivElement>(null);
 
-    let mm = gsap.matchMedia();
-
-    useGSAP(() => {
-        mm.add("(min-width: 1300px)", () => {
-            gsap.from('.gallery__wrapper', {
-                opacity: 0,
-                scaleY: 0.6,
-                left: 300,
-                duration: 1.2,
-                delay: .2,
-                ease: 'power2.inOut'
-            })
-        })
-    })
-
     const { contextSafe } = useGSAP({ scope: container });
 
     const onClickOne = contextSafe(() => {

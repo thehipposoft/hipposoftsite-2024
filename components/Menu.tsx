@@ -50,7 +50,7 @@ const Menu = () => {
     return (
         <div ref={container} className=''>
             <button 
-                className='fixed md:top-4 top-5 md:right-6 right-7 hover:bg-white/20 bg-black/15 rounded-xl px-2 py-2 duration-500 cursor-pointer z-40'
+                className='fixed md:top-4 top-5 md:right-6 right-7 hover:bg-white/20 bg-black/15 rounded-xl px-2 py-2 duration-500 cursor-pointer z-50'
                 onClick={openMenuFunc}
             >
                 <svg width="35" height="35" viewBox="0 0 30 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -60,7 +60,7 @@ const Menu = () => {
                 </svg>
             </button>
             <div className={`menu translate-x-[100%] opacity-100
-                fixed top-0 right-0 flex flex-col justify-center items-center md:items-start bg-brand-purple z-30 md:px-32 h-screen w-screen py-4`} >
+                fixed top-0 right-0 flex flex-col justify-center items-center md:items-start bg-brand-purple z-40 md:px-32 h-screen w-screen py-4`} >
                     <ul className='links-list flex flex-col gap-6 md:gap-10 2xl:gap-14 md:mx-auto lg:mx-0'>
                         <Image src={'/assets/logo.png'} alt='' width={1144} height={541} className='w-40' />
                         <AnimatedLink href={'/'} >

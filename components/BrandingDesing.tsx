@@ -65,7 +65,7 @@ const BrandingDesing = () => {
                                     </svg>
                                 </div>
                             </AnimatedLink>    
-                            <Image src={"/assets/images/design/design-1.webp"} fill className={`group-hover:scale-110 duration-1000 rounded-md object-cover object-center`} alt='Logofolio section background' priority/>
+                            <Image sizes='850px' src={"/assets/images/design/design-1.webp"} fill className={`group-hover:scale-110 duration-1000 rounded-md object-cover object-center`} alt='Logofolio section background' priority/>
                         </div>
                     </div>
                     <div className={`overflow-hidden w-[850px] h-[530px] relative group carousel-slide opacity-0 rounded-md`} >
@@ -77,7 +77,7 @@ const BrandingDesing = () => {
                                     <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                 </svg>
                             </div>
-                        <Image src={'/assets/images/design/design-2.webp'} fill className={`group-hover:scale-110 duration-1000 rounded-md object-cover object-center`} alt='Web design section background'/>
+                        <Image sizes='850px' src={'/assets/images/design/design-2.webp'} fill className={`group-hover:scale-110 duration-1000 rounded-md object-cover object-center`} alt='Web design section background'/>
                     </div>
                     <div className={`overflow-hidden w-[850px] h-[530px] relative group carousel-slide opacity-0 rounded-md`} >
                         <AnimatedLink href={'/social-media'} className={`absolute w-full h-full z-[11]`} />
@@ -88,7 +88,7 @@ const BrandingDesing = () => {
                                     <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                 </svg>
                             </div>
-                        <Image src={'/assets/images/design/design-3.webp'} fill className='group-hover:scale-110 duration-1000 rounded-md object-cover object-center' alt='Social Media section background' />
+                        <Image sizes='850px' src={'/assets/images/design/design-3.webp'} fill className='group-hover:scale-110 duration-1000 rounded-md object-cover object-center' alt='Social Media section background' />
                     </div>
                 </div>
             </div>

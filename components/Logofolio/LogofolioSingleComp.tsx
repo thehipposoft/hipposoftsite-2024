@@ -104,7 +104,7 @@ const LogofolioSingleComp = ({ data }:any) => {
                     {
                         data.logo ?
                         <div className={`relative w-[${data.logoSizes[0]}] h-[${data.logoSizes[1]}]`}>
-                            <Image src={data.logo} alt={`${data.name} logo`} fill className='object-contain' />
+                            <Image sizes={data.logoSizes[0]} src={data.logo} alt={`${data.name} logo`} fill className='object-contain' />
                         </div>
                         :
                         <></>

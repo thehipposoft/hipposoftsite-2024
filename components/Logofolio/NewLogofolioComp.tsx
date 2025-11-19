@@ -3,7 +3,6 @@ import React, {useRef} from 'react'
 import AnimatedLink from '../commons/AnimatedLink'
 import BackButton from '../commons/BackButton'
 import Image from 'next/image'
-import Link from 'next/link'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -69,6 +68,14 @@ const NewLogofolioComp = ({
             backgroundColor: "#FFFFFF30"
             })
         })
+        gsap.from('.title', {
+            opacity: 0,
+            y: '-120%',
+            rotate: '-12deg',
+            duration: 1.2,
+            delay: 1,
+            ease: 'back.out'
+        })
         gsap.from(".svg", {
             opacity: 0,
             duration: 1,
@@ -102,7 +109,7 @@ const NewLogofolioComp = ({
             },
             opacity: 0,
             y: 25,
-            scale: .9
+            scale: .8
         })
 
         const tl = gsap.timeline({
@@ -129,7 +136,7 @@ const NewLogofolioComp = ({
             <h1 className='text-5xl text-black title'>
                 {data.name}
             </h1>
-            <div className='flex items-center gap-8'>
+            <div className='flex items-center gap-8 title'>
                 <h4 className='text-base hidden md:block text-black'>Logofolio</h4>
                 <BackButton href='/logofolio' color='#000000' />
                 <AnimatedLink href={'/logofolio'} className='lg:hidden block'>
@@ -141,15 +148,15 @@ const NewLogofolioComp = ({
             </div>
         </div>
         <div className='h-[150vh] flex justify-center sticky top-0 pt-[35vh]'>
-            <Image fill src={data.backgroundOne} alt='Background' className='-z-10' />
-            <Image src={data.logo} alt={`${data.name} Logo`} width={375} height={200} className='object-contain logo max-h-[250px] ' />
+            <Image sizes='100vw' fill src={data.backgroundOne} alt='Background' className='-z-10' />
+            <Image src={data.logo} alt={`${data.name} Logo`} sizes='375px' width={375} height={200} className='object-contain logo max-h-[250px] ' />
         </div>
         <div className='h-screen sticky top-0'>
-            <Image src={data.backgroundTwo} fill className='object-cover' alt={`${data.name} image 2`} />
+            <Image sizes='100vw' src={data.backgroundTwo} fill className='object-cover' alt={`${data.name} image 2`} />
         </div>
         <div className='h-screen flex flex-col lg:flex-row relative'>
             <div className={`${data.contain ? "bg-white" : ""} lg:w-1/2 relative h-screen`}>
-                <Image src={data.itemImage} fill className={`${data.contain ? "object-contain" : "object-cover"} ${data.left && "object-left"}`} alt='' />
+                <Image sizes='50vw' src={data.itemImage} fill className={`${data.contain ? "object-contain" : "object-cover"} ${data.left && "object-left"}`} alt='Object image' />
             </div>
             <div style={{gridTemplateColumns: `repeat(${data.colorSecondary.length}, minmax(0, 1fr))`}} className={'lg:w-1/2 grid grid-rows-2 h-screen'}>
                 <div style={{backgroundColor: data.colorPrimary}} className={` col-span-full flex justify-end items-end p-4 w-full`}>
@@ -167,7 +174,7 @@ const NewLogofolioComp = ({
         <div className='flex flex-col relative'>
             <div className='flex lg:flex-row flex-col h-screen legend-container sticky top-0'>
                 <div style={{backgroundColor: data.backgroundLegend}} className='lg:w-1/2 flex justify-center items-center relative h-screen lg:h-auto'>
-                    {data.backgroundLegendImage && <Image src={data.backgroundLegendImage} alt='' fill className='object-cover' />}
+                    {data.backgroundLegendImage && <Image sizes='50vw' src={data.backgroundLegendImage} alt='Legend background Image' fill className='object-cover' />}
                     <div className='flex flex-wrap justify-center gap-1 max-w-xl text-center text-2xl light relative z-20 px-8 md:px-0 w-3/5'>
                         {
                             data.legend.split(" ").map((char:any, index:any) => (
@@ -177,7 +184,7 @@ const NewLogofolioComp = ({
                     </div>
                 </div>
                 <div className='lg:w-1/2 relative' style={{backgroundColor: data.backgroundLegend}}>
-                    <Image src={data.backgroundThree} fill className={`${data.contain ? "object-contain" : "object-cover"} legend-image`} alt='' />
+                    <Image sizes='50vw' src={data.backgroundThree} fill className={`${data.contain ? "object-contain" : "object-cover"} legend-image`} alt='Background three' />
                 </div>
             </div>
             <div style={{backgroundColor: data.backgroundLegend}} className='h-[50vh]' />

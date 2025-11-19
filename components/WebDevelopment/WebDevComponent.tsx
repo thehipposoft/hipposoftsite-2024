@@ -93,7 +93,13 @@ const WebDevComponent = () => {
                                             <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                             <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                         </svg>
-                                        <Image fill alt={`${val.title} image`} src={val.image} className='object-cover' />
+                                        <Image 
+                                            fill 
+                                            alt={`${val.title} image`} 
+                                            src={val.image} 
+                                            className='object-cover'
+                                            sizes="(max-width: 768px) 80vw, (max-width: 1200px) 50vw, 22vw"
+                                        />
                                     </div>
                                     <h4 className='text-lg'>{val.title}</h4>
                                     <p className='leading-6 text-sm duration-500'>{val.description}</p>

@@ -73,7 +73,7 @@ const Expertise = () => {
             <h3 className={` uppercase text-black h-10 duration-500 flex items-center`}>cms case studies</h3>
             <div className='flex gap-6 lg:w-[800px] '>
                 <Link href={"/portfolio/TeMStudio"} className='relative h-64 w-full group overflow-hidden'>
-                    <Image src="/assets/images/portfolio/te.m_hippo.webp" alt='' fill className='object-cover group-hover:scale-105 duration-500' />
+                    <Image sizes='250px' src="/assets/images/portfolio/te.m_hippo.webp" alt='Te M. Architecture mock image' fill className='object-cover group-hover:scale-105 duration-500' />
                     <div className='flex relative z-10 items-center justify-end px-4 gap-2'>
                         <h4 className='tracking-widest uppercase font-medium py-3 text-black'>discover</h4>
                         <svg className='group-hover:rotate-90 duration-500' width="25" height="25" viewBox="0 0 40 40" fill="" xmlns="http://www.w3.org/2000/svg"  >
@@ -82,8 +82,8 @@ const Expertise = () => {
                         </svg>
                     </div>
                 </Link>
-                <Link href={"/portfolio/JamesConradArchitect"} className='relative h-64 w-full group overflow-hidden'>
-                    <Image src="/assets/images/webdesign/conrad.webp" alt='' fill className='object-cover group-hover:scale-105 duration-500' />
+                <Link  href={"/portfolio/JamesConradArchitect"} className='relative h-64 w-full group overflow-hidden'>
+                    <Image sizes='250px' src="/assets/images/webdesign/conrad.webp" alt='Conrad Mock Image' fill className='object-cover group-hover:scale-105 duration-500' />
                     <div className='flex relative z-10 items-center justify-end px-4 gap-2'>
                         <h4 className='tracking-[0.1em] uppercase font-medium py-3 text-black'>discover</h4>
                         <svg className='group-hover:rotate-90 duration-500' width="25" height="25" viewBox="0 0 40 40" fill="" xmlns="http://www.w3.org/2000/svg"  >
@@ -93,7 +93,7 @@ const Expertise = () => {
                     </div>
                 </Link>
                 <Link href={"/portfolio/SPEKTRUM"} className='relative h-64 w-full group overflow-hidden'>
-                    <Image src="/assets/images/portfolio/spektrum-mockg.webp" alt='' fill className='object-cover group-hover:scale-105 duration-500' />
+                    <Image sizes='250px' src="/assets/images/portfolio/spektrum-mockg.webp" alt='Spektrum Mock Image' fill className='object-cover group-hover:scale-105 duration-500' />
                     <div className='flex relative z-10 items-center justify-end px-4 gap-2'>
                         <h4 className='tracking-[0.2em] uppercase font-medium py-3 text-black'>discover</h4>
                         <svg className='group-hover:rotate-90 duration-500' width="25" height="25" viewBox="0 0 40 40" fill="" xmlns="http://www.w3.org/2000/svg"  >

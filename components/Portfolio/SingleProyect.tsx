@@ -14,8 +14,9 @@ const SingleProyect = ({project}: any) => {
                 fill 
                 className={`${project.backgroundSize ? 'object-contain' : 'object-cover'} ${project.objectPosition}`}
             />
-            <div className={`md:w-[90vw] w-[75vw] flex justify-between items-center mx-auto relative z-10`}>
-                <h1 style={{color: `${project.nameColor}`}}  className={"text-4xl bg-white/50 rounded-md py-1 px-4"}>{project.name}</h1>
+            <div className='h-full w-full absolute left-0 top-0 bg-black/25' />
+            <div className={`md:w-[90vw] w-[75vw] flex justify-end items-center mx-auto relative z-10`}>
+               {/*  <h1 style={{color: `${project.nameColor}`}}  className={"text-4xl bg-white/50 rounded-md py-1 px-4"}>{project.name}</h1> */}
                 <div className={`${project.logoAbove ? '' : 'hidden'} absolute right-[20%]`}>
                     {project.logo_full}
                 </div>

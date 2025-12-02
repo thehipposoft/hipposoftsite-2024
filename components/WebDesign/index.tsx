@@ -108,6 +108,13 @@ const WebDesignComp = () => {
             textColor: 'white',
             vectorColor: '#000000',
         },
+        {
+            name: 'Reynoso Bienes Raices',
+            background: '/assets/images/portfolio/reynoso-mock.jpg',
+            href: 'https://reynosobienesraices.com.ar/',
+            textColor: 'black',
+            vectorColor: '#000000',
+        },
     ]
 
     const container = useRef<HTMLDivElement>(null);

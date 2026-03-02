@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import React from 'react';
 import AnimatedLink from '../commons/AnimatedLink';
 import BackButton from '../commons/BackButton';
 import { Form } from '../Form';
@@ -10,7 +9,7 @@ const ContactComponent = () => {
     const t = useTranslations('Form');
 
     return (
-        <div className='lg:h-screen relative flex justify-center items-center py-4 md:py-12 lg:py-8'>
+        <div className='lg:min-h-screen relative flex justify-center items-center py-4 md:py-12 lg:py-8'>
             <Image src={'/assets/images/contact/contact-bg.webp'} alt='Contact section background' priority fill className='object-cover object-[100%70%]' />
             <div className='absolute h-full w-full left-0 top-0 z-[5] md:bg-white/25 bg-white/40' />
             <div className='lg:w-[1200px] w-[85vw] flex flex-col mx-auto relative z-10 gap-8 my-8 md:my-0'>
@@ -60,7 +59,8 @@ const ContactComponent = () => {
                             onSuccessMessage={t("success")}
                             onErrorMessage={t("error")}
                             submitButtonLabel={t("submit")}
-                            emailServiceURL={'https://thehippoapi.netlify.app/.netlify/functions/api/hipposoft-email'}
+                            emailServiceURL={'https://wp.thehipposoft.com/wp-json/hippo-api/v1/contact'}
+                            //emailServiceURL={'https://propiedades.reynosobienesraices.com.ar/wp-json/reynoso/v1/contact'}
                         />
                     </div>
                 </div>

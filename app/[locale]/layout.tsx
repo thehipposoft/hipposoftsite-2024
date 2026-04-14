@@ -6,7 +6,6 @@ import SchemaOrg from "./SchemaOrg";
 import GoogleAnalytics from "./GoogleAnalytics";
 import StickyContact from "@/components/commons/StickyContact";
 import Menu from "@/components/Menu";
-import LoaderClient from "@/components/LoaderClient";
 import CustomCursor from "@/components/CustomCursor";
 import Transitions from "@/components/commons/Transitions";
 import {NextIntlClientProvider, hasLocale} from 'next-intl';

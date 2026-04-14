@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from 'react';
-import axios from 'axios';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
@@ -100,27 +99,26 @@ const MyCustomForm = ({
         if (event) event.preventDefault();
 
         setIsAPILoading(true);
-        axios.post(
-            emailServiceURL,
-            {
+        fetch(emailServiceURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json, text/plain, */*',
+            },
+            body: JSON.stringify({
                 interest: values.interest,
                 message: values.message,
                 name: values.name,
                 customerEmail: values.customerEmail,
-            },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'accept': 'application/json, text/plain, */*',
-                },
-            }
-        )
-            .then(function (response) {
+            }),
+        })
+            .then((response) => {
+                if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
                 setValues(initialValues);
                 setMessageSent('succeed');
                 setIsAPILoading(false);
             })
-            .catch(function (error) {
+            .catch((error: Error) => {
                 setMessageDescription(error.toString());
                 setMessageSent('error');
                 setIsAPILoading(false);

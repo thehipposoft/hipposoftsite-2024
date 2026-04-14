@@ -55,7 +55,6 @@ const MyCustomForm = ({
         if (messageSent === 'succeed') {
             return <div className={`message succeed w-full text-center mb-6`}>
                 <h2 className={'mb-2 text-4xl text- uppercase text-black '}>{t("success")}</h2>
-                <p className='text-black'>{onSuccessMessage}</p>
             </div>
         }
         if (messageSent === 'error') {

@@ -14,8 +14,6 @@ const PortfolioGrid = () => {
     const t = useTranslations('Portfolio');
     const container = useRef<HTMLDivElement>(null)
 
-    const tl = useRef<any>(null)
-
     useGSAP(() => {
         gsap.from('.title', {
             opacity: 0,
@@ -42,15 +40,15 @@ const PortfolioGrid = () => {
                     </svg>
                 </AnimatedLink>
             </div>
-            <div className='grid  lg:grid-cols-3 grid-cols-1 gap-12 lg:w-[85vw] md:w-[600px] w-[80vw] md:max-w-[1250px] md:self-baseline mx-auto'>
+            <div className='grid lg:grid-cols-3 grid-cols-1 gap-12 lg:w-[85vw] md:w-[600px] w-[80vw]  md:max-w-[1250px] md:self-baseline mx-auto'>
                 {
                     PORTFOLIO_DATA.map((val, index) => (
                         <div className='flex flex-col gap-4 item' key={index}>
-                            <AnimatedLink href={`/portfolio/${val.slug}`}  className=' w-[80vw] md:w-[600px] lg:w-[340px] h-[520px] relative group cursor-pointer pointer-events-none lg:pointer-events-auto' key={index}>
+                            <AnimatedLink href={`/portfolio/${val.slug}`}  className=' w-[80vw] md:w-[600px] lg:w-[340px] md:h-[520px] h-96 relative group cursor-pointer pointer-events-none lg:pointer-events-auto' key={index}>
                                 <div className='w-full h-full absolute top-0 left-0 bg-black/40 flex justify-center items-center opacity-0 group-hover:opacity-100 duration-500 z-10'>
                                     <h4 className='px-8 tracking-[0.2em] uppercase font-medium py-3 text-white text-2xl'>{t("button")}</h4>
                                 </div>
-                                <Image src={val.data.mockGrid} alt={`${val.data.name} background`} fill className={`object-cover ${val.data.objectPosition} `} />
+                                <Image sizes="(max-width: 768px) 80vw, (max-width: 1200px) 600px, 340px" src={val.data.mockGrid} alt={`${val.data.name} background`} fill className={`object-cover ${val.data.objectPosition} `} />
                                 <div className='absolute bottom-4 left-4'>
                                     {val.data.logo_content}
                                 </div>
@@ -66,8 +64,8 @@ const PortfolioGrid = () => {
                                     <p className='uppercase md:text-sm text-xs text-sora'>{val.data.work}</p>
                                     <div className='flex gap-4 pt-2'>
                                         <h4 className='text-2xl'>{val.data.year}</h4>
-                                        <Image src={val.data.flag} alt='country flag' width={35} height={24} />
-                                        {val.data.secondFlag ? <Image src={val.data.secondFlag} alt='country flag' width={35} height={24} /> : <></>}
+                                        <Image className='w-auto h-auto' src={val.data.flag} alt='country flag' width={35} height={24} />
+                                        {val.data.secondFlag ? <Image src={val.data.secondFlag} className='w-auto h-auto' alt='country flag' width={35} height={24} /> : <></>}
                                         {val.data.technologies_icons}
                                     </div>
                                 </div>

@@ -13,6 +13,7 @@ export default function DiversityEmploymentPage() {
     const t = useTranslations('LogofolioDiversity');
 
     const DIVERSITY_DATA = {
+        isOld: true,
         name: 'Diversity Employment',
         description: [t("description1"), t("description2")],
         concept: [t("DiversityConcept"), t("DiversityConcept2")],

@@ -1,4 +1,4 @@
-import Cards from "@/components/WebDevelopment/Cards";
+import WebDevComponent from "@/components/WebDevelopment/WebDevComponent";
 import type { Metadata } from 'next'
  
 export const metadata: Metadata = {
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function WebDevelompentPage() {
     return(
         <div>
-            <Cards />
+            <WebDevComponent />
         </div>
     )
 }

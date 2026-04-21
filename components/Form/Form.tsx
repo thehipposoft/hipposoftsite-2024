@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from 'react';
-import axios from 'axios';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
@@ -55,15 +54,14 @@ const MyCustomForm = ({
     const renderSentMessage = () => {
         if (messageSent === 'succeed') {
             return <div className={`message succeed w-full text-center mb-6`}>
-                <h2 className={'mb-2 text-4xl text- uppercase'}>{t("success")}</h2>
-                <p className='text-black'>{onSuccessMessage}</p>
+                <h2 className={'mb-2 text-4xl text- uppercase text-black '}>{t("success")}</h2>
             </div>
         }
         if (messageSent === 'error') {
             return <div className={`message error w-full text-center mb-6`}>
                 <h2 className={'mb-4 text-red-500'}>{t("error")}</h2>
-                <p>{onErrorMessage}</p>
-                <p>{messageDescription}</p>
+                <p className='text-red-500'>{onErrorMessage}</p>
+                <p className='text-red-500'>{messageDescription}</p>
             </div>
         }
         return null;
@@ -100,27 +98,26 @@ const MyCustomForm = ({
         if (event) event.preventDefault();
 
         setIsAPILoading(true);
-        axios.post(
-            emailServiceURL,
-            {
+        fetch(emailServiceURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json, text/plain, */*',
+            },
+            body: JSON.stringify({
                 interest: values.interest,
                 message: values.message,
                 name: values.name,
                 customerEmail: values.customerEmail,
-            },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'accept': 'application/json, text/plain, */*',
-                },
-            }
-        )
-            .then(function (response) {
+            }),
+        })
+            .then((response) => {
+                if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
                 setValues(initialValues);
                 setMessageSent('succeed');
                 setIsAPILoading(false);
             })
-            .catch(function (error) {
+            .catch((error: Error) => {
                 setMessageDescription(error.toString());
                 setMessageSent('error');
                 setIsAPILoading(false);
@@ -157,7 +154,7 @@ const MyCustomForm = ({
                             );
                         case 'select':
                             return (
-                                <section className='flex flex-col gap-4 mb-6'>
+                                <section className='flex flex-col gap-4 mb-6' key={name}>
                                     <p className='text-black text-lg'>{t("interest")}</p>
                                     <div className='flex justify-center md:justify-start gap-4 flex-wrap'>
                                         <div className='relative py-4 px-2 flex justify-center items-center w-44 hover:shadow-lg duration-500'>
@@ -185,7 +182,7 @@ const MyCustomForm = ({
                             )
                         default:
                             return (
-                                <section className='mb-4'>
+                                <section className='mb-4' key={name}>
                                     <label className={'contact-label'}>{label}</label>
                                     <input
                                         type={type}
@@ -212,8 +209,8 @@ const MyCustomForm = ({
                 >
                     {submitButtonLabel}
                     <svg width="35" height="35" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className='group-hover:rotate-180 duration-500'>
-                        <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" stroke-dasharray="3 3"/>
-                        <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" stroke-dasharray="3 3"/>
+                        <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                        <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                     </svg>
                 </button>
                 <div className='p-1'>

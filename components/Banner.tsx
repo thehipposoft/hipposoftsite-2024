@@ -88,9 +88,6 @@ const Banner = () => {
                 delay: 1,
             })
         })
-
-
-
     }, {scope: container});
 
     return (
@@ -124,7 +121,7 @@ const Banner = () => {
                 >
                     <div className=''>
                         <div className={`${isToggleOne ? 'opacity-1 block md:-top-12' : ' hidden '} relative duration-1000 lg:w-[400px] flex md:gap-8 gap-4 flex-col justify-center items-center md:items-start`}>
-                                <Image src={'/assets/logo.png'} width={150} height={250} alt='HippoSoft logo' className='first__content' />
+                                <Image src={'/assets/logo.png'} width={150} height={250} alt='HippoSoft logo' className='first__content w-auto' />
                                 <h4 className='first__content uppercase text-cyan md:tracking-[0.5em] tracking-[0.25em]'>{t('BrandingSubTitle')}</h4>
                                 <h2 className='md:text-[64px] text-4xl leading-[72px] first__content '>{t('BrandingTitle')}</h2>
                                 <p className='first__content '>{t('BrandingDescription')}</p>

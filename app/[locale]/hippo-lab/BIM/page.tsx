@@ -3,7 +3,7 @@ import ViewerWrapper from './ViewerWrapper';
 
 export const metadata: Metadata = {
   title: 'HippoSoft | Hippo Lab | BIM',
-  description: 'BIM Page for Hippo Lab section.',
+    description: 'Interactive BIM showcase with embeddable IFC viewers for client websites.',
 }
 
 const HippoLab = () => {

@@ -1,108 +1,653 @@
 'use client';
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import * as OBC from "@thatopen/components";
+import * as FRAGS from "@thatopen/fragments";
 import * as THREE from 'three';
 
-function IFCViewer({ifcUrl}: {ifcUrl: string}) {
-    const containerRef = useRef(null);
+type IFCViewerProps = {
+    ifcUrl: string;
+    onProgress?: (progress: number) => void;
+    onLoadStateChange?: (isLoading: boolean) => void;
+    onError?: (message: string | null) => void;
+};
+
+type SelectedElement = {
+    modelId: string;
+    localId: number;
+    itemId: number;
+    name: string;
+    globalId: string;
+    category: string;
+    data: FRAGS.ItemData | null;
+};
+
+const defaultHighlightMaterial: FRAGS.MaterialDefinition = {
+    color: new THREE.Color('#ffd166'),
+    renderedFaces: FRAGS.RenderedFaces.TWO,
+    opacity: 1,
+    transparent: false,
+    preserveOriginalMaterial: false,
+};
+
+const getItemAttribute = (data: FRAGS.ItemData | null, key: string) => {
+    if (!data) return undefined;
+
+    const value = data[key];
+    if (!value || Array.isArray(value) || typeof value !== 'object') return undefined;
+    if (!('value' in value)) return undefined;
+
+    return value.value;
+};
+
+const toDisplayValue = (value: unknown) => {
+    if (value === null || value === undefined) return '-';
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+        return String(value);
+    }
+
+    try {
+        return JSON.stringify(value);
+    } catch {
+        return '[complex value]';
+    }
+};
+
+const createModelIdMap = (modelId: string, localId: number): OBC.ModelIdMap => ({
+    [modelId]: new Set([localId]),
+});
+
+const getSelectionKey = (modelId: string, localId: number) => `${modelId}:${localId}`;
+
+const buildSelectionMap = (items: Pick<SelectedElement, 'modelId' | 'localId'>[]): OBC.ModelIdMap => {
+    const map: OBC.ModelIdMap = {};
+
+    for (const item of items) {
+        if (!map[item.modelId]) {
+            map[item.modelId] = new Set<number>();
+        }
+
+        (map[item.modelId] as Set<number>).add(item.localId);
+    }
+
+    return map;
+};
+
+function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewerProps) {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const fragmentsRef = useRef<OBC.FragmentsManager | null>(null);
+    const worldRef = useRef<
+        OBC.SimpleWorld<OBC.SimpleScene, OBC.SimpleCamera, OBC.SimpleRenderer> | null
+    >(null);
+
+    const [selectedItems, setSelectedItems] = useState<SelectedElement[]>([]);
+    const [activeSelectionKey, setActiveSelectionKey] = useState<string | null>(null);
+    const [overrideColor, setOverrideColor] = useState('#ff6b6b');
+    const [isApplyingColor, setIsApplyingColor] = useState(false);
+    const [colorOverrides, setColorOverrides] = useState<Record<string, string>>({});
+    const [detailsTab, setDetailsTab] = useState<'quick' | 'json'>('quick');
+
+    const activeElement = useMemo(() => {
+        if (!selectedItems.length) return null;
+        if (!activeSelectionKey) return selectedItems[0];
+
+        return selectedItems.find((item) => getSelectionKey(item.modelId, item.localId) === activeSelectionKey) ?? selectedItems[0];
+    }, [activeSelectionKey, selectedItems]);
+
+    const selectedDataRows = useMemo(() => {
+        if (!activeElement?.data) return [];
+
+        return Object.entries(activeElement.data)
+            .filter(([, value]) => value && !Array.isArray(value) && typeof value === 'object' && 'value' in value)
+            .slice(0, 12)
+            .map(([key, value]) => ({
+                key,
+                value: toDisplayValue((value as FRAGS.ItemAttribute).value),
+            }));
+    }, [activeElement]);
+
+    const selectedCount = selectedItems.length;
+
+    const applyColorOverridesToModels = async (
+        overrides: Record<string, string>,
+        shouldUpdate = true,
+    ) => {
+        const fragments = fragmentsRef.current;
+        if (!fragments) return;
+
+        const byModelAndColor = new Map<string, number[]>();
+        for (const [key, color] of Object.entries(overrides)) {
+            const splitIndex = key.lastIndexOf(':');
+            if (splitIndex < 0) continue;
+
+            const modelId = key.slice(0, splitIndex);
+            const localId = Number(key.slice(splitIndex + 1));
+            if (Number.isNaN(localId)) continue;
+
+            const groupKey = `${modelId}|${color}`;
+            const current = byModelAndColor.get(groupKey) ?? [];
+            current.push(localId);
+            byModelAndColor.set(groupKey, current);
+        }
+
+        for (const [groupKey, localIds] of byModelAndColor) {
+            const separator = groupKey.lastIndexOf('|');
+            const modelId = groupKey.slice(0, separator);
+            const color = groupKey.slice(separator + 1);
+            const model = fragments.list.get(modelId);
+
+            if (!model) continue;
+            await model.highlight(localIds, {
+                color: new THREE.Color(color),
+                renderedFaces: FRAGS.RenderedFaces.TWO,
+                opacity: 1,
+                transparent: false,
+                preserveOriginalMaterial: false,
+            });
+        }
+
+        if (shouldUpdate) {
+            fragments.core.update(true);
+        }
+    };
+
+    const applySelectionHighlight = async (
+        items: SelectedElement[],
+        overrides: Record<string, string> = colorOverrides,
+    ) => {
+        const fragments = fragmentsRef.current;
+        if (!fragments) return;
+
+        await fragments.resetHighlight();
+        await applyColorOverridesToModels(overrides, false);
+
+        if (items.length > 0) {
+            await fragments.highlight(defaultHighlightMaterial, buildSelectionMap(items));
+        }
+
+        fragments.core.update(true);
+    };
 
     useEffect(() => {
+        let isMounted = true;
+
         const initModelLoading = async () => {
+            if (!containerRef.current) return;
+
+            onLoadStateChange?.(true);
+            onError?.(null);
+            onProgress?.(0);
+            setSelectedItems([]);
+            setActiveSelectionKey(null);
+            setColorOverrides({});
+
             const components = new OBC.Components();
-            const worlds = components.get(OBC.Worlds);
 
-            const world = worlds.create<
-                OBC.SimpleScene,
-                OBC.SimpleCamera,
-                OBC.SimpleRenderer
-            >();
+            try {
+                const worlds = components.get(OBC.Worlds);
+                const world = worlds.create<
+                    OBC.SimpleScene,
+                    OBC.SimpleCamera,
+                    OBC.SimpleRenderer
+                >();
 
-            world.scene = new OBC.SimpleScene(components);
-            world.renderer = new OBC.SimpleRenderer(components, containerRef.current!);
-            world.camera = new OBC.SimpleCamera(components);
+                world.scene = new OBC.SimpleScene(components);
+                world.renderer = new OBC.SimpleRenderer(components, containerRef.current);
+                world.camera = new OBC.SimpleCamera(components);
+                worldRef.current = world;
 
-            // Attempting to set up the camera and scene
-            components.init();
-            world.camera.controls.setLookAt(10, 10, 10, 0, 0, 0);
+                components.init();
+                world.camera.controls.setLookAt(10, 10, 10, 0, 0, 0);
 
-            world.camera.controls.minPolarAngle = 0;               // don’t allow looking from below horizon
-            world.camera.controls.maxPolarAngle = Math.PI / 2;
-            world.scene.setup();
-            world.scene.three.background = new THREE.Color(0xf6f7f9);
-            //const grids = components.get(OBC.Grids);
-            //grids.create(world);
+                world.camera.controls.minPolarAngle = 0;
+                world.camera.controls.maxPolarAngle = Math.PI / 2;
+                world.scene.setup();
+                world.scene.three.background = new THREE.Color(0xf6f7f9);
 
-            const fragments = components.get(OBC.FragmentsManager);
-            const fragmentIfcLoader = await components.get(OBC.IfcLoader);
-            await fragmentIfcLoader.setup({
-                autoSetWasm: false,
-                wasm: {
-                    path: "/wasm/",
-                    absolute: true,
-                },
-            });
+                const fragments = components.get(OBC.FragmentsManager);
+                fragmentsRef.current = fragments;
+                const fragmentIfcLoader = await components.get(OBC.IfcLoader);
+                await fragmentIfcLoader.setup({
+                    autoSetWasm: false,
+                    wasm: {
+                        path: "/wasm/",
+                        absolute: true,
+                    },
+                });
 
-            const workerUrl = '/worker.mjs';
-            fragments.init(workerUrl);
+                const workerUrl = await OBC.FragmentsManager.getWorker();
+                fragments.init(workerUrl);
 
-            world.camera.controls.addEventListener("rest", () => {
+                world.camera.controls.addEventListener("rest", () => {
+                    fragments.core.update();
+                });
 
-                fragments.core.update();
-                //const pos = world.camera.controls.getPosition();
-                //const tgt = world.camera.controls.getTarget();
+                fragments.list.onItemSet.add(({ value: model }) => {
+                    model.useCamera(world.camera.three);
+                    world.scene.three.add(model.object);
+                    fragments.core.update(true);
 
-                //console.log("Camera Position:", pos.x, pos.y, pos.z);
-                //console.log("Camera Target:", tgt.x, tgt.y, tgt.z);
+                    setTimeout(() => {
+                        world.camera.three.position.set(0, 10, 40);
+                        world.camera.three.lookAt(new THREE.Vector3(0, 0, 50));
+
+                        world.camera.controls.setLookAt(
+                            -14.932953878543646, 3.9172822989963167, 39.98790554193692,
+                            -5.6126231611163115, 3.7992060582434033, 1.5608709226067827,
+                            true
+                        );
+                    }, 100);
+                });
+
+                const file = await fetch(ifcUrl);
+                if (!file.ok) {
+                    throw new Error(`Failed to fetch IFC model (${file.status})`);
+                }
+                const data = await file.arrayBuffer();
+                const buffer = new Uint8Array(data);
+
+                await fragmentIfcLoader.load(buffer, true, 'example', {
+                    processData: {
+                        progressCallback: (progress) => {
+                            if (!isMounted) return;
+                            onProgress?.(progress);
+                        },
+                    },
+                });
+
+                onProgress?.(1);
+                onLoadStateChange?.(false);
+            } catch (error) {
+                if (!isMounted) return;
+
+                const message = error instanceof Error ? error.message : 'Failed to load IFC model';
+                onError?.(message);
+                onLoadStateChange?.(false);
+                console.error('IFC viewer error:', error);
             }
-            );
 
-            fragments.list.onItemSet.add(({ value: model }) => {
-                model.useCamera(world.camera.three);
-                world.scene.three.add(model.object);
-                fragments.core.update(true);
-
-                // 👇 Custom camera positioning after model loads
-                setTimeout(() => {
-                    // Position camera like in your example
-                    world.camera.three.position.set(0, 10, 40);
-
-                    // Ensure it looks at the model center
-                    world.camera.three.lookAt(new THREE.Vector3(0, 0, 50));
-
-                    // Sync with OrbitControls
-                    world.camera.controls.setLookAt(
-                        -14.932953878543646 , 3.9172822989963167, 39.98790554193692,   // camera position
-                        -5.6126231611163115, 3.7992060582434033, 1.5608709226067827,     // target
-                        true         // smooth transition
-                    );
-                }, 100);
-            });
-
-            const file = await fetch(ifcUrl);
-            const data = await file.arrayBuffer();
-            const buffer = new Uint8Array(data);
-
-            await fragmentIfcLoader.load(buffer, true, 'example', {
-                processData: {
-                    progressCallback: (progress) => console.log(">>>>", progress),
-                },
-            });
+            return () => {
+                components.dispose();
+            };
         };
 
-        initModelLoading();
-    }, []);
+        let disposeComponents: (() => void) | undefined;
 
-    const ifcOnDoubleClick = async () => {
-        // Placeholder for double-click interaction logic
-        console.log(">>IFC model double-clicked");
+        initModelLoading().then((dispose) => {
+            disposeComponents = dispose;
+        });
+
+        return () => {
+            isMounted = false;
+            onLoadStateChange?.(false);
+            fragmentsRef.current = null;
+            worldRef.current = null;
+            setSelectedItems([]);
+            setActiveSelectionKey(null);
+
+            if (disposeComponents) {
+                disposeComponents();
+            }
+
+            if (containerRef.current) {
+                containerRef.current.innerHTML = '';
+            }
+        };
+    }, [ifcUrl, onError, onLoadStateChange, onProgress]);
+
+    const selectElement = async (event: React.MouseEvent<HTMLDivElement>) => {
+        const fragments = fragmentsRef.current;
+        const world = worldRef.current;
+
+        if (!fragments || !world) return;
+        if (!world.renderer) return;
+
+        const canvas = world.renderer.three.domElement;
+        const mouse = new THREE.Vector2(event.clientX, event.clientY);
+
+        try {
+            const result = await fragments.raycast({
+                camera: world.camera.three,
+                mouse,
+                dom: canvas,
+            });
+
+            if (!result) {
+                if (!event.shiftKey) {
+                    await applySelectionHighlight([]);
+                    setSelectedItems([]);
+                    setActiveSelectionKey(null);
+                }
+                return;
+            }
+
+            const modelId = result.fragments.modelId;
+            const localId = result.localId;
+            const selectionMap = createModelIdMap(modelId, localId);
+
+            const dataByModel = await fragments.getData(selectionMap);
+            const itemData = dataByModel[modelId]?.[0] ?? null;
+
+            const clickedElement: SelectedElement = {
+                modelId,
+                localId,
+                itemId: result.itemId,
+                name: String(getItemAttribute(itemData, 'Name') ?? 'Unnamed element'),
+                globalId: String(getItemAttribute(itemData, 'GlobalId') ?? '-'),
+                category: String(getItemAttribute(itemData, 'type') ?? getItemAttribute(itemData, 'Entity') ?? '-'),
+                data: itemData,
+            };
+
+            const clickedKey = getSelectionKey(modelId, localId);
+
+            setSelectedItems((previous) => {
+                const exists = previous.some((item) => getSelectionKey(item.modelId, item.localId) === clickedKey);
+
+                if (event.shiftKey) {
+                    if (exists) {
+                        const next = previous.filter((item) => getSelectionKey(item.modelId, item.localId) !== clickedKey);
+                        applySelectionHighlight(next);
+                        setActiveSelectionKey(next[0] ? getSelectionKey(next[0].modelId, next[0].localId) : null);
+                        return next;
+                    }
+
+                    const next = [...previous, clickedElement];
+                    applySelectionHighlight(next);
+                    setActiveSelectionKey(clickedKey);
+                    return next;
+                }
+
+                const next = [clickedElement];
+                applySelectionHighlight(next);
+                setActiveSelectionKey(clickedKey);
+                return next;
+            });
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Failed to select IFC element';
+            onError?.(message);
+            console.error('Selection error:', error);
+        }
+    };
+
+    const applyColorOverride = async () => {
+        if (!selectedItems.length || !fragmentsRef.current) return;
+
+        setIsApplyingColor(true);
+        try {
+            const byModel = new Map<string, number[]>();
+            for (const item of selectedItems) {
+                const current = byModel.get(item.modelId) ?? [];
+                current.push(item.localId);
+                byModel.set(item.modelId, current);
+            }
+
+            for (const [modelId, localIds] of byModel) {
+                const model = fragmentsRef.current.list.get(modelId);
+                if (!model) continue;
+                await model.highlight(localIds, {
+                    color: new THREE.Color(overrideColor),
+                    renderedFaces: FRAGS.RenderedFaces.TWO,
+                    opacity: 1,
+                    transparent: false,
+                    preserveOriginalMaterial: false,
+                });
+            }
+
+            const nextOverrides = { ...colorOverrides };
+            for (const item of selectedItems) {
+                nextOverrides[getSelectionKey(item.modelId, item.localId)] = overrideColor;
+            }
+            setColorOverrides(nextOverrides);
+
+            await fragmentsRef.current.resetHighlight();
+            await fragmentsRef.current.highlight(
+                {
+                    ...defaultHighlightMaterial,
+                    color: new THREE.Color(overrideColor),
+                },
+                buildSelectionMap(selectedItems),
+            );
+            fragmentsRef.current.core.update(true);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Failed to apply element color';
+            onError?.(message);
+            console.error('Color override error:', error);
+        } finally {
+            setIsApplyingColor(false);
+        }
+    };
+
+    const resetElementColor = async () => {
+        if (!selectedItems.length || !fragmentsRef.current) return;
+
+        setIsApplyingColor(true);
+        try {
+            const byModel = new Map<string, number[]>();
+            for (const item of selectedItems) {
+                const current = byModel.get(item.modelId) ?? [];
+                current.push(item.localId);
+                byModel.set(item.modelId, current);
+            }
+
+            for (const [modelId, localIds] of byModel) {
+                const model = fragmentsRef.current.list.get(modelId);
+                if (!model) continue;
+                await model.resetHighlight(localIds);
+            }
+
+            const nextOverrides = { ...colorOverrides };
+            for (const item of selectedItems) {
+                delete nextOverrides[getSelectionKey(item.modelId, item.localId)];
+            }
+            setColorOverrides(nextOverrides);
+
+            await applySelectionHighlight(selectedItems, nextOverrides);
+            fragmentsRef.current.core.update(true);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Failed to reset element color';
+            onError?.(message);
+            console.error('Reset color error:', error);
+        } finally {
+            setIsApplyingColor(false);
+        }
+    };
+
+    const clearVisualState = async () => {
+        if (!fragmentsRef.current) return;
+
+        await fragmentsRef.current.resetHighlight();
+        fragmentsRef.current.core.update(true);
+
+        setSelectedItems([]);
+        setActiveSelectionKey(null);
+        setColorOverrides({});
     };
 
     return (
-        <div
-            ref={containerRef} style={{ width: "100%", height: "600px" }}
-            onDoubleClick={ifcOnDoubleClick}
-        />
+        <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+            <div
+                ref={containerRef}
+                style={{ width: '100%', height: '100%', cursor: 'crosshair' }}
+                onClick={selectElement}
+            />
+
+            <aside
+                style={{
+                    position: 'absolute',
+                    right: 12,
+                    top: 12,
+                    width: 'min(360px, calc(100% - 24px))',
+                    maxHeight: 'calc(100% - 24px)',
+                    overflow: 'auto',
+                    borderRadius: 12,
+                    border: '1px solid #d5e4e8',
+                    background: 'rgba(255,255,255,0.94)',
+                    boxShadow: '0 12px 30px rgba(16,44,52,0.15)',
+                    backdropFilter: 'blur(2px)',
+                    padding: '0.8rem',
+                }}
+            >
+                {!activeElement && (
+                    <div style={{ color: '#32535b', fontSize: '0.88rem', lineHeight: 1.45 }}>
+                        Click an IFC element to inspect metadata. Use Shift + Click to multi-select and apply batch colors.
+                    </div>
+                )}
+
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10 }}>
+                    <button
+                        type='button'
+                        onClick={clearVisualState}
+                        style={{ border: '1px solid #b8d0d6', borderRadius: 8, padding: '0.28rem 0.52rem', color: '#15404a' }}
+                    >
+                        Reset all
+                    </button>
+                </div>
+
+                <div style={{ marginBottom: 8, color: '#2f5560', fontSize: '0.82rem' }}>
+                    Selected elements: {selectedCount}
+                </div>
+
+                {selectedItems.length > 0 && (
+                    <div style={{ display: 'grid', gap: 5, marginBottom: 10, maxHeight: 120, overflowY: 'auto' }}>
+                        {selectedItems.map((item) => {
+                            const key = getSelectionKey(item.modelId, item.localId);
+                            const isActive = key === activeSelectionKey;
+                            const swatch = colorOverrides[key] ?? 'transparent';
+
+                            return (
+                                <button
+                                    key={key}
+                                    type='button'
+                                    onClick={() => setActiveSelectionKey(key)}
+                                    style={{
+                                        textAlign: 'left',
+                                        border: `1px solid ${isActive ? '#78b8c5' : '#d9e6ea'}`,
+                                        borderRadius: 8,
+                                        padding: '0.42rem',
+                                        background: isActive ? '#edf9fc' : '#ffffff',
+                                        color: '#123841',
+                                        display: 'grid',
+                                        gap: 2,
+                                    }}
+                                >
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+                                        <strong style={{ fontSize: '0.78rem' }}>{item.name}</strong>
+                                        <span
+                                            style={{
+                                                width: 12,
+                                                height: 12,
+                                                borderRadius: 999,
+                                                border: '1px solid #bdd2d8',
+                                                background: swatch,
+                                            }}
+                                        />
+                                    </div>
+                                    <span style={{ fontSize: '0.72rem', color: '#54727a' }}>#{item.itemId} ({item.category})</span>
+                                </button>
+                            );
+                        })}
+                    </div>
+                )}
+
+                {activeElement && (
+                    <div>
+                        <h4 style={{ margin: 0, color: '#0f2f36' }}>{activeElement.name}</h4>
+                        <p style={{ margin: '0.35rem 0', color: '#3c5f67', fontSize: '0.82rem' }}>
+                            IFC id: {activeElement.itemId} | Local id: {activeElement.localId}
+                        </p>
+                        <p style={{ margin: '0.2rem 0', color: '#294951', fontSize: '0.82rem' }}>
+                            GlobalId: {activeElement.globalId}
+                        </p>
+                        <p style={{ margin: '0.2rem 0 0.55rem', color: '#294951', fontSize: '0.82rem' }}>
+                            Category: {activeElement.category}
+                        </p>
+
+                        <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 10 }}>
+                            <input
+                                type='color'
+                                value={overrideColor}
+                                onChange={(e) => setOverrideColor(e.target.value)}
+                                aria-label='Choose color override'
+                            />
+                            <button
+                                type='button'
+                                onClick={applyColorOverride}
+                                disabled={isApplyingColor || selectedItems.length === 0}
+                                style={{ border: '1px solid #b8d0d6', borderRadius: 8, padding: '0.3rem 0.55rem', color: '#15404a' }}
+                            >
+                                Apply to {selectedCount}
+                            </button>
+                            <button
+                                type='button'
+                                onClick={resetElementColor}
+                                disabled={isApplyingColor || selectedItems.length === 0}
+                                style={{ border: '1px solid #b8d0d6', borderRadius: 8, padding: '0.3rem 0.55rem', color: '#15404a' }}
+                            >
+                                Reset
+                            </button>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
+                            <button
+                                type='button'
+                                onClick={() => setDetailsTab('quick')}
+                                style={{
+                                    border: '1px solid #b8d0d6',
+                                    borderRadius: 8,
+                                    padding: '0.26rem 0.45rem',
+                                    background: detailsTab === 'quick' ? '#eaf6f9' : '#fff',
+                                    color: '#1a4953',
+                                }}
+                            >
+                                Properties
+                            </button>
+                            <button
+                                type='button'
+                                onClick={() => setDetailsTab('json')}
+                                style={{
+                                    border: '1px solid #b8d0d6',
+                                    borderRadius: 8,
+                                    padding: '0.26rem 0.45rem',
+                                    background: detailsTab === 'json' ? '#eaf6f9' : '#fff',
+                                    color: '#1a4953',
+                                }}
+                            >
+                                Raw JSON
+                            </button>
+                        </div>
+
+                        {detailsTab === 'quick' && selectedDataRows.length > 0 && (
+                            <div style={{ display: 'grid', gap: 6 }}>
+                                {selectedDataRows.map((row) => (
+                                    <div key={row.key} style={{ border: '1px solid #e0ecef', borderRadius: 8, padding: '0.45rem' }}>
+                                        <div style={{ fontSize: '0.72rem', color: '#54727a' }}>{row.key}</div>
+                                        <div style={{ fontSize: '0.83rem', color: '#153d46' }}>{row.value}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {detailsTab === 'json' && (
+                            <pre
+                                style={{
+                                    margin: 0,
+                                    border: '1px solid #e0ecef',
+                                    borderRadius: 8,
+                                    padding: '0.55rem',
+                                    background: '#f8fbfc',
+                                    color: '#173e47',
+                                    fontSize: '0.7rem',
+                                    overflowX: 'auto',
+                                    whiteSpace: 'pre-wrap',
+                                }}
+                            >
+                                {JSON.stringify(activeElement.data, null, 2)}
+                            </pre>
+                        )}
+                    </div>
+                )}
+            </aside>
+        </div>
      );
 }
 

@@ -158,101 +158,98 @@ const ViewerWrapper = () => {
                     </p>
                 </header>
 
-                <div className="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
-                    <aside>
-                        <div className={`${panelClass} p-5`}>
-                            <p className="mb-3 text-xs uppercase tracking-[0.18em] text-[#c8b6df]">Choose a demo model</p>
-                            <div className="mb-3 flex gap-2">
+                <div className={`${panelClass} p-5 md:p-6`}>
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                        <p className="text-xs uppercase tracking-[0.18em] text-[#c8b6df]">Choose a demo model</p>
+                        <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="rounded-xl border border-[#c8a46a]/50 bg-[#c8a46a]/10 px-3 py-2 text-xs font-medium uppercase tracking-[0.12em] text-[#dcc395] transition hover:border-[#c8a46a] hover:bg-[#c8a46a]/20"
+                        >
+                            Add IFC demo
+                        </button>
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept=".ifc"
+                            className="hidden"
+                            onChange={handleAddIfc}
+                        />
+                    </div>
+
+                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                        {models.map((model) => {
+                            const isActive = selectedModelId === model.id;
+
+                            return (
                                 <button
+                                    key={model.id}
                                     type="button"
-                                    onClick={() => fileInputRef.current?.click()}
-                                    className="rounded-xl border border-[#c8a46a]/50 bg-[#c8a46a]/10 px-3 py-2 text-xs font-medium uppercase tracking-[0.12em] text-[#dcc395] transition hover:border-[#c8a46a] hover:bg-[#c8a46a]/20"
+                                    className={`${modelButtonBase} ${
+                                        isActive
+                                            ? 'border-[#c8a46a]/60 bg-[#c8a46a]/10 shadow-[0_0_0_1px_rgba(200,164,106,0.2)]'
+                                            : 'border-white/10 bg-black/10 hover:border-[#8c7ab8]/60 hover:bg-white/[0.06]'
+                                    }`}
+                                    onClick={() => {
+                                        setSelectedModelId(model.id);
+                                        setError(null);
+                                        setProgress(0);
+                                    }}
                                 >
-                                    Add IFC demo
+                                    <span className="mb-1 block text-[0.65rem] uppercase tracking-[0.18em] text-[#dcc395]">{model.tag}</span>
+                                    <span className="block text-base font-semibold text-white">{model.title}</span>
+                                    <span className="mt-1 block text-sm text-[#d3cadf]">{model.description}</span>
                                 </button>
-                                <input
-                                    ref={fileInputRef}
-                                    type="file"
-                                    accept=".ifc"
-                                    className="hidden"
-                                    onChange={handleAddIfc}
+                            );
+                        })}
+                    </div>
+
+                    {error && (
+                        <div className="mt-4 rounded-2xl border border-red-400/25 bg-red-400/10 px-4 py-3 text-sm text-red-100">
+                            {error}
+                        </div>
+                    )}
+                </div>
+
+                <div className={`${panelClass} mt-6 overflow-hidden`}>
+                    <div className="flex flex-col gap-4 border-b border-white/10 bg-black/15 px-5 py-4 md:flex-row md:items-center md:justify-between">
+                        <div>
+                            <div className="text-base font-semibold text-white">{selectedModel.title}</div>
+                            <div className="mt-1 flex items-center gap-2 text-[0.68rem] uppercase tracking-[0.16em] text-[#cabfd7]">
+                                <span className={`h-2 w-2 rounded-full ${loading ? 'bg-[#dcc395] shadow-[0_0_10px_rgba(220,195,149,0.8)]' : 'bg-[#8c7ab8] shadow-[0_0_10px_rgba(140,122,184,0.8)]'}`} />
+                                {loading ? 'Loading model' : 'Model ready'}
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-3" aria-label="Model loading progress">
+                            <div className="h-1.5 w-36 overflow-hidden rounded-full bg-white/10">
+                                <div
+                                    className="h-full rounded-full bg-[linear-gradient(90deg,#c8a46a_0%,#f0dec0_100%)] transition-[width] duration-200"
+                                    style={{ width: `${Math.max(4, progressPercent)}%` }}
                                 />
                             </div>
-                            <div className="space-y-3">
-                                {models.map((model) => {
-                                    const isActive = selectedModelId === model.id;
-
-                                    return (
-                                        <button
-                                            key={model.id}
-                                            type="button"
-                                            className={`${modelButtonBase} ${
-                                                isActive
-                                                    ? 'border-[#c8a46a]/60 bg-[#c8a46a]/10 shadow-[0_0_0_1px_rgba(200,164,106,0.2)]'
-                                                    : 'border-white/10 bg-black/10 hover:border-[#8c7ab8]/60 hover:bg-white/[0.06]'
-                                            }`}
-                                            onClick={() => {
-                                                setSelectedModelId(model.id);
-                                                setError(null);
-                                                setProgress(0);
-                                            }}
-                                        >
-                                            <span className="mb-1 block text-[0.65rem] uppercase tracking-[0.18em] text-[#dcc395]">{model.tag}</span>
-                                            <span className="block text-base font-semibold text-white">{model.title}</span>
-                                            <span className="mt-1 block text-sm text-[#d3cadf]">{model.description}</span>
-                                        </button>
-                                    );
-                                })}
-                            </div>
-
-                            {error && (
-                                <div className="mt-4 rounded-2xl border border-red-400/25 bg-red-400/10 px-4 py-3 text-sm text-red-100">
-                                    {error}
-                                </div>
-                            )}
-                        </div>
-                    </aside>
-
-                    <div className={`${panelClass} overflow-hidden`}>
-                        <div className="flex flex-col gap-4 border-b border-white/10 bg-black/15 px-5 py-4 md:flex-row md:items-center md:justify-between">
-                            <div>
-                                <div className="text-base font-semibold text-white">{selectedModel.title}</div>
-                                <div className="mt-1 flex items-center gap-2 text-[0.68rem] uppercase tracking-[0.16em] text-[#cabfd7]">
-                                    <span className={`h-2 w-2 rounded-full ${loading ? 'bg-[#dcc395] shadow-[0_0_10px_rgba(220,195,149,0.8)]' : 'bg-[#8c7ab8] shadow-[0_0_10px_rgba(140,122,184,0.8)]'}`} />
-                                    {loading ? 'Loading model' : 'Model ready'}
-                                </div>
-                            </div>
-
-                            <div className="flex items-center gap-3" aria-label="Model loading progress">
-                                <div className="h-1.5 w-36 overflow-hidden rounded-full bg-white/10">
-                                    <div
-                                        className="h-full rounded-full bg-[linear-gradient(90deg,#c8a46a_0%,#f0dec0_100%)] transition-[width] duration-200"
-                                        style={{ width: `${Math.max(4, progressPercent)}%` }}
-                                    />
-                                </div>
-                                <span className="min-w-8 text-right text-xs uppercase tracking-[0.14em] text-[#cabfd7]">
-                                    {progressPercent}%
-                                </span>
-                            </div>
-                        </div>
-
-                        <div className="h-[58vh] lg:h-[70vh] lg:max-h-[680px]">
-                            <IFCViewer
-                                ifcUrl={selectedModel.url}
-                                onProgress={setProgress}
-                                onLoadStateChange={setLoading}
-                                onError={setError}
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-2 border-t border-white/10 bg-black/15 px-5 py-3 text-sm text-[#d3cadf] md:flex-row md:items-center">
-                            <span className="inline-flex w-fit items-center rounded-full border border-[#c8a46a]/25 bg-[#c8a46a]/10 px-3 py-1 text-[0.65rem] uppercase tracking-[0.16em] text-[#dcc395]">
-                                Live demo
-                            </span>
-                            <span>
-                                Shift + click multi-select, inspect IFC properties, batch color elements, and reset all changes in one step.
+                            <span className="min-w-8 text-right text-xs uppercase tracking-[0.14em] text-[#cabfd7]">
+                                {progressPercent}%
                             </span>
                         </div>
+                    </div>
+
+                    <div className="h-[58vh] lg:h-[70vh] lg:max-h-[680px]">
+                        <IFCViewer
+                            ifcUrl={selectedModel.url}
+                            onProgress={setProgress}
+                            onLoadStateChange={setLoading}
+                            onError={setError}
+                        />
+                    </div>
+
+                    <div className="flex flex-col gap-2 border-t border-white/10 bg-black/15 px-5 py-3 text-sm text-[#d3cadf] md:flex-row md:items-center">
+                        <span className="inline-flex w-fit items-center rounded-full border border-[#c8a46a]/25 bg-[#c8a46a]/10 px-3 py-1 text-[0.65rem] uppercase tracking-[0.16em] text-[#dcc395]">
+                            Live demo
+                        </span>
+                        <span>
+                            Shift + click multi-select, inspect IFC properties, create measurements, and reset all changes in one step.
+                        </span>
                     </div>
                 </div>
 

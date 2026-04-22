@@ -22,6 +22,13 @@ type SelectedElement = {
     data: FRAGS.ItemData | null;
 };
 
+type Measurement = {
+    id: string;
+    start: THREE.Vector3;
+    end: THREE.Vector3;
+    distance: number;
+};
+
 const defaultHighlightMaterial: FRAGS.MaterialDefinition = {
     color: new THREE.Color('#ffd166'),
     renderedFaces: FRAGS.RenderedFaces.TWO,
@@ -53,6 +60,47 @@ const toDisplayValue = (value: unknown) => {
     }
 };
 
+const normalizeAttributeKey = (key: string) => key.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+const getAttributeValueByCandidates = (data: FRAGS.ItemData | null, candidates: string[]) => {
+    if (!data) return undefined;
+
+    const safeEntries = Object.entries(data).filter(([, value]) => {
+        return value && !Array.isArray(value) && typeof value === 'object' && 'value' in value;
+    }) as [string, FRAGS.ItemAttribute][];
+
+    const normalizedCandidates = candidates.map(normalizeAttributeKey);
+
+    for (const [key, value] of safeEntries) {
+        const normalizedKey = normalizeAttributeKey(key);
+        if (normalizedCandidates.includes(normalizedKey)) {
+            return value.value;
+        }
+    }
+
+    for (const [key, value] of safeEntries) {
+        const normalizedKey = normalizeAttributeKey(key);
+        if (normalizedCandidates.some((candidate) => normalizedKey.includes(candidate))) {
+            return value.value;
+        }
+    }
+
+    return undefined;
+};
+
+const formatAreaValue = (value: unknown) => {
+    if (typeof value === 'number' && Number.isFinite(value)) {
+        return `${value.toFixed(2)} m2`;
+    }
+
+    const numeric = Number(value);
+    if (!Number.isNaN(numeric) && Number.isFinite(numeric)) {
+        return `${numeric.toFixed(2)} m2`;
+    }
+
+    return toDisplayValue(value);
+};
+
 const createModelIdMap = (modelId: string, localId: number): OBC.ModelIdMap => ({
     [modelId]: new Set([localId]),
 });
@@ -74,7 +122,6 @@ const buildSelectionMap = (items: Pick<SelectedElement, 'modelId' | 'localId'>[]
 };
 
 const actionButtonClass = 'rounded-xl border border-[#5f507f] bg-[#221b35] px-3 py-1.5 text-sm text-[#f5efe6] transition hover:border-[#c8a46a] hover:text-[#dcc395] disabled:cursor-not-allowed disabled:opacity-50';
-const tabButtonClass = 'rounded-xl border border-[#5f507f] px-3 py-1 text-sm transition';
 
 function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewerProps) {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -82,13 +129,14 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
     const worldRef = useRef<
         OBC.SimpleWorld<OBC.SimpleScene, OBC.SimpleCamera, OBC.SimpleRenderer> | null
     >(null);
+    const measurementAnchorRef = useRef<THREE.Vector3 | null>(null);
+    const measurementObjectsRef = useRef<Map<string, THREE.Object3D[]>>(new Map());
 
     const [selectedItems, setSelectedItems] = useState<SelectedElement[]>([]);
     const [activeSelectionKey, setActiveSelectionKey] = useState<string | null>(null);
-    const [overrideColor, setOverrideColor] = useState('#ff6b6b');
-    const [isApplyingColor, setIsApplyingColor] = useState(false);
-    const [colorOverrides, setColorOverrides] = useState<Record<string, string>>({});
     const [detailsTab, setDetailsTab] = useState<'quick' | 'json'>('quick');
+    const [measurementMode, setMeasurementMode] = useState(false);
+    const [measurements, setMeasurements] = useState<Measurement[]>([]);
 
     const activeElement = useMemo(() => {
         if (!selectedItems.length) return null;
@@ -109,60 +157,183 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
             }));
     }, [activeElement]);
 
+    const propertyHighlights = useMemo(() => {
+        if (!activeElement?.data) {
+            return [
+                { label: 'Element type', value: activeElement?.category ?? '-' },
+                { label: 'Material', value: '-' },
+                { label: 'Fire rating', value: '-' },
+                { label: 'Area', value: '-' },
+            ];
+        }
+
+        const data = activeElement.data;
+        const elementType =
+            getAttributeValueByCandidates(data, ['PredefinedType', 'ObjectType', 'TypeName', 'Entity', 'Type']) ??
+            activeElement.category;
+        const material = getAttributeValueByCandidates(data, ['Material', 'MaterialName', 'LayerSetName', 'LayerName']);
+        const fireRating = getAttributeValueByCandidates(data, ['FireRating', 'FireResistanceRating', 'Rating']);
+        const area = getAttributeValueByCandidates(data, ['NetArea', 'GrossArea', 'Area', 'NetFloorArea']);
+
+        return [
+            { label: 'Element type', value: toDisplayValue(elementType) },
+            { label: 'Material', value: toDisplayValue(material) },
+            { label: 'Fire rating', value: toDisplayValue(fireRating) },
+            { label: 'Area', value: formatAreaValue(area) },
+        ];
+    }, [activeElement]);
+
+    const propertyCount = useMemo(() => {
+        if (!activeElement?.data) return 0;
+
+        return Object.entries(activeElement.data).filter(([, value]) => {
+            return value && !Array.isArray(value) && typeof value === 'object' && 'value' in value;
+        }).length;
+    }, [activeElement]);
+
     const selectedCount = selectedItems.length;
 
-    const applyColorOverridesToModels = async (
-        overrides: Record<string, string>,
-        shouldUpdate = true,
-    ) => {
-        const fragments = fragmentsRef.current;
-        if (!fragments) return;
+    const clearMeasurementObjects = () => {
+        const world = worldRef.current;
 
-        const byModelAndColor = new Map<string, number[]>();
-        for (const [key, color] of Object.entries(overrides)) {
-            const splitIndex = key.lastIndexOf(':');
-            if (splitIndex < 0) continue;
+        for (const objects of measurementObjectsRef.current.values()) {
+            for (const object of objects) {
+                world?.scene.three.remove(object);
 
-            const modelId = key.slice(0, splitIndex);
-            const localId = Number(key.slice(splitIndex + 1));
-            if (Number.isNaN(localId)) continue;
+                if (object instanceof THREE.Line) {
+                    object.geometry.dispose();
+                    if (Array.isArray(object.material)) {
+                        object.material.forEach((material) => material.dispose());
+                    } else {
+                        object.material.dispose();
+                    }
+                }
 
-            const groupKey = `${modelId}|${color}`;
-            const current = byModelAndColor.get(groupKey) ?? [];
-            current.push(localId);
-            byModelAndColor.set(groupKey, current);
+                if (object instanceof THREE.Mesh) {
+                    object.geometry.dispose();
+                    if (Array.isArray(object.material)) {
+                        object.material.forEach((material) => material.dispose());
+                    } else {
+                        object.material.dispose();
+                    }
+                }
+            }
         }
 
-        for (const [groupKey, localIds] of byModelAndColor) {
-            const separator = groupKey.lastIndexOf('|');
-            const modelId = groupKey.slice(0, separator);
-            const color = groupKey.slice(separator + 1);
-            const model = fragments.list.get(modelId);
-
-            if (!model) continue;
-            await model.highlight(localIds, {
-                color: new THREE.Color(color),
-                renderedFaces: FRAGS.RenderedFaces.TWO,
-                opacity: 1,
-                transparent: false,
-                preserveOriginalMaterial: false,
-            });
-        }
-
-        if (shouldUpdate) {
-            fragments.core.update(true);
-        }
+        measurementObjectsRef.current.clear();
     };
 
-    const applySelectionHighlight = async (
-        items: SelectedElement[],
-        overrides: Record<string, string> = colorOverrides,
-    ) => {
+    const clearMeasurements = () => {
+        clearMeasurementObjects();
+        measurementAnchorRef.current = null;
+        setMeasurements([]);
+    };
+
+    const removeMeasurement = (measurementId: string) => {
+        const world = worldRef.current;
+        const objects = measurementObjectsRef.current.get(measurementId);
+
+        if (objects) {
+            for (const object of objects) {
+                world?.scene.three.remove(object);
+
+                if (object instanceof THREE.Line) {
+                    object.geometry.dispose();
+                    if (Array.isArray(object.material)) {
+                        object.material.forEach((material) => material.dispose());
+                    } else {
+                        object.material.dispose();
+                    }
+                }
+
+                if (object instanceof THREE.Mesh) {
+                    object.geometry.dispose();
+                    if (Array.isArray(object.material)) {
+                        object.material.forEach((material) => material.dispose());
+                    } else {
+                        object.material.dispose();
+                    }
+                }
+            }
+        }
+
+        measurementObjectsRef.current.delete(measurementId);
+        setMeasurements((previous) => previous.filter((item) => item.id !== measurementId));
+    };
+
+    const extractHitPoint = (result: unknown): THREE.Vector3 | null => {
+        if (!result || typeof result !== 'object') return null;
+
+        const point = (result as { point?: unknown }).point;
+        if (!point || typeof point !== 'object') return null;
+
+        const maybePoint = point as { x?: unknown; y?: unknown; z?: unknown };
+        if (
+            typeof maybePoint.x !== 'number' ||
+            typeof maybePoint.y !== 'number' ||
+            typeof maybePoint.z !== 'number'
+        ) {
+            return null;
+        }
+
+        return new THREE.Vector3(maybePoint.x, maybePoint.y, maybePoint.z);
+    };
+
+    const addMeasurementPoint = (point: THREE.Vector3) => {
+        const world = worldRef.current;
+        if (!world) return;
+
+        if (!measurementAnchorRef.current) {
+            measurementAnchorRef.current = point.clone();
+            onError?.(null);
+            return;
+        }
+
+        const start = measurementAnchorRef.current.clone();
+        const end = point.clone();
+        const distance = start.distanceTo(end);
+        const measurementId = `${Date.now()}-${Math.round(Math.random() * 10_000)}`;
+
+        const lineGeometry = new THREE.BufferGeometry().setFromPoints([start, end]);
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xc8a46a });
+        const line = new THREE.Line(lineGeometry, lineMaterial);
+
+        const markerGeometry = new THREE.SphereGeometry(0.12, 16, 16);
+        const startMarker = new THREE.Mesh(
+            markerGeometry,
+            new THREE.MeshBasicMaterial({ color: 0x8c7ab8 }),
+        );
+        const endMarker = new THREE.Mesh(
+            markerGeometry.clone(),
+            new THREE.MeshBasicMaterial({ color: 0xdcc395 }),
+        );
+        startMarker.position.copy(start);
+        endMarker.position.copy(end);
+
+        world.scene.three.add(line);
+        world.scene.three.add(startMarker);
+        world.scene.three.add(endMarker);
+
+        measurementObjectsRef.current.set(measurementId, [line, startMarker, endMarker]);
+        setMeasurements((previous) => [
+            {
+                id: measurementId,
+                start,
+                end,
+                distance,
+            },
+            ...previous,
+        ]);
+
+        measurementAnchorRef.current = null;
+        onError?.(null);
+    };
+
+    const applySelectionHighlight = async (items: SelectedElement[]) => {
         const fragments = fragmentsRef.current;
         if (!fragments) return;
 
         await fragments.resetHighlight();
-        await applyColorOverridesToModels(overrides, false);
 
         if (items.length > 0) {
             await fragments.highlight(defaultHighlightMaterial, buildSelectionMap(items));
@@ -182,7 +353,7 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
             onProgress?.(0);
             setSelectedItems([]);
             setActiveSelectionKey(null);
-            setColorOverrides({});
+            clearMeasurements();
 
             const components = new OBC.Components();
 
@@ -283,6 +454,7 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
         return () => {
             isMounted = false;
             onLoadStateChange?.(false);
+            clearMeasurements();
             fragmentsRef.current = null;
             worldRef.current = null;
             setSelectedItems([]);
@@ -316,11 +488,24 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
             });
 
             if (!result) {
+                if (measurementMode) return;
+
                 if (!event.shiftKey) {
                     await applySelectionHighlight([]);
                     setSelectedItems([]);
                     setActiveSelectionKey(null);
                 }
+                return;
+            }
+
+            if (measurementMode) {
+                const hitPoint = extractHitPoint(result);
+                if (!hitPoint) {
+                    onError?.('Unable to get a valid point for measurement on this click.');
+                    return;
+                }
+
+                addMeasurementPoint(hitPoint);
                 return;
             }
 
@@ -330,6 +515,9 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
 
             const dataByModel = await fragments.getData(selectionMap);
             const itemData = dataByModel[modelId]?.[0] ?? null;
+
+            console.log(">> Clicked element data:", itemData);
+            console.log(">> dataByModel:", dataByModel);
 
             const clickedElement: SelectedElement = {
                 modelId,
@@ -372,89 +560,6 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
         }
     };
 
-    const applyColorOverride = async () => {
-        if (!selectedItems.length || !fragmentsRef.current) return;
-
-        setIsApplyingColor(true);
-        try {
-            const byModel = new Map<string, number[]>();
-            for (const item of selectedItems) {
-                const current = byModel.get(item.modelId) ?? [];
-                current.push(item.localId);
-                byModel.set(item.modelId, current);
-            }
-
-            for (const [modelId, localIds] of byModel) {
-                const model = fragmentsRef.current.list.get(modelId);
-                if (!model) continue;
-                await model.highlight(localIds, {
-                    color: new THREE.Color(overrideColor),
-                    renderedFaces: FRAGS.RenderedFaces.TWO,
-                    opacity: 1,
-                    transparent: false,
-                    preserveOriginalMaterial: false,
-                });
-            }
-
-            const nextOverrides = { ...colorOverrides };
-            for (const item of selectedItems) {
-                nextOverrides[getSelectionKey(item.modelId, item.localId)] = overrideColor;
-            }
-            setColorOverrides(nextOverrides);
-
-            await fragmentsRef.current.resetHighlight();
-            await fragmentsRef.current.highlight(
-                {
-                    ...defaultHighlightMaterial,
-                    color: new THREE.Color(overrideColor),
-                },
-                buildSelectionMap(selectedItems),
-            );
-            fragmentsRef.current.core.update(true);
-        } catch (error) {
-            const message = error instanceof Error ? error.message : 'Failed to apply element color';
-            onError?.(message);
-            console.error('Color override error:', error);
-        } finally {
-            setIsApplyingColor(false);
-        }
-    };
-
-    const resetElementColor = async () => {
-        if (!selectedItems.length || !fragmentsRef.current) return;
-
-        setIsApplyingColor(true);
-        try {
-            const byModel = new Map<string, number[]>();
-            for (const item of selectedItems) {
-                const current = byModel.get(item.modelId) ?? [];
-                current.push(item.localId);
-                byModel.set(item.modelId, current);
-            }
-
-            for (const [modelId, localIds] of byModel) {
-                const model = fragmentsRef.current.list.get(modelId);
-                if (!model) continue;
-                await model.resetHighlight(localIds);
-            }
-
-            const nextOverrides = { ...colorOverrides };
-            for (const item of selectedItems) {
-                delete nextOverrides[getSelectionKey(item.modelId, item.localId)];
-            }
-            setColorOverrides(nextOverrides);
-
-            await applySelectionHighlight(selectedItems, nextOverrides);
-            fragmentsRef.current.core.update(true);
-        } catch (error) {
-            const message = error instanceof Error ? error.message : 'Failed to reset element color';
-            onError?.(message);
-            console.error('Reset color error:', error);
-        } finally {
-            setIsApplyingColor(false);
-        }
-    };
-
     const clearVisualState = async () => {
         if (!fragmentsRef.current) return;
 
@@ -463,7 +568,7 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
 
         setSelectedItems([]);
         setActiveSelectionKey(null);
-        setColorOverrides({});
+        clearMeasurements();
     };
 
     return (
@@ -479,11 +584,30 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
             >
                 {!activeElement && (
                     <div className="text-sm leading-6 text-[#5d5572]">
-                        Click an IFC element to inspect metadata. Use Shift + Click to multi-select and apply batch colors.
+                        Click an IFC element to inspect metadata. Use Shift + Click to multi-select elements.
                     </div>
                 )}
 
                 <div className="mb-3 flex flex-wrap gap-2">
+                    <button
+                        type='button'
+                        onClick={() => {
+                            setMeasurementMode((previous) => !previous);
+                            measurementAnchorRef.current = null;
+                            onError?.(null);
+                        }}
+                        className={`${actionButtonClass} ${measurementMode ? '!border-[#c8a46a] !text-[#dcc395]' : ''}`}
+                    >
+                        {measurementMode ? 'Measurement: ON' : 'Measurement: OFF'}
+                    </button>
+                    <button
+                        type='button'
+                        onClick={clearMeasurements}
+                        className={actionButtonClass}
+                        disabled={measurements.length === 0}
+                    >
+                        Clear measures
+                    </button>
                     <button
                         type='button'
                         onClick={clearVisualState}
@@ -497,12 +621,43 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
                     Selected elements: {selectedCount}
                 </div>
 
+                <div className="mb-2 text-sm text-[#5d5572]">
+                    Measurements: {measurements.length}
+                </div>
+
+                {measurementMode && (
+                    <div className="mb-3 rounded-xl border border-[#d8ccbb] bg-white/80 px-3 py-2 text-xs text-[#5d5572]">
+                        Click one point to start, click a second point to create a distance segment.
+                    </div>
+                )}
+
+                {measurements.length > 0 && (
+                    <div className="mb-3 grid max-h-[120px] gap-1.5 overflow-y-auto">
+                        {measurements.map((measurement, index) => (
+                            <div key={measurement.id} className="rounded-xl border border-[#d8ccbb] bg-white p-2">
+                                <div className="flex items-center justify-between gap-2">
+                                    <strong className="text-xs text-[#221b35]">Measure {measurements.length - index}</strong>
+                                    <button
+                                        type='button'
+                                        onClick={() => removeMeasurement(measurement.id)}
+                                        className="rounded-md border border-[#d8ccbb] px-2 py-0.5 text-[0.68rem] text-[#5d5572] hover:border-[#8c7ab8]"
+                                    >
+                                        Remove
+                                    </button>
+                                </div>
+                                <div className="mt-1 text-[0.72rem] text-[#6f6583]">
+                                    Distance: {measurement.distance.toFixed(3)} m
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+
                 {selectedItems.length > 0 && (
                     <div className="mb-3 grid max-h-[120px] gap-1.5 overflow-y-auto">
                         {selectedItems.map((item) => {
                             const key = getSelectionKey(item.modelId, item.localId);
                             const isActive = key === activeSelectionKey;
-                            const swatch = colorOverrides[key] ?? 'transparent';
 
                             return (
                                 <button
@@ -515,13 +670,7 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
                                             : 'border-[#d8ccbb] bg-white text-[#221b35] hover:border-[#8c7ab8]'
                                     }`}
                                 >
-                                    <div className="flex justify-between gap-2">
-                                        <strong className="text-xs font-semibold">{item.name}</strong>
-                                        <span
-                                            className="h-3 w-3 rounded-full border border-[#bcae99]"
-                                            style={{ background: swatch }}
-                                        />
-                                    </div>
+                                    <strong className="text-xs font-semibold">{item.name}</strong>
                                     <span className="text-[0.72rem] text-[#6f6583]">#{item.itemId} ({item.category})</span>
                                 </button>
                             );
@@ -529,80 +678,56 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
                     </div>
                 )}
 
+
                 {activeElement && (
                     <div>
-                        <h4 className="m-0 text-base font-semibold text-[#221b35]">{activeElement.name}</h4>
-                        <p className="my-1.5 text-sm text-[#5d5572]">
-                            IFC id: {activeElement.itemId} | Local id: {activeElement.localId}
-                        </p>
-                        <p className="my-1 text-sm text-[#4d4562]">
-                            GlobalId: {activeElement.globalId}
-                        </p>
-                        <p className="mb-2 mt-1 text-sm text-[#4d4562]">
-                            Category: {activeElement.category}
-                        </p>
+                        <h4 className="m-0 text-base font-semibold text-[#221b35]">
+                            {activeElement.name}
+                        </h4>
 
-                        <div className="mb-3 flex items-center gap-2">
-                            <input
-                                type='color'
-                                value={overrideColor}
-                                onChange={(e) => setOverrideColor(e.target.value)}
-                                aria-label='Choose color override'
-                                className="h-10 w-12 cursor-pointer rounded-lg border border-[#bcae99] bg-transparent p-1"
-                            />
-                            <button
-                                type='button'
-                                onClick={applyColorOverride}
-                                disabled={isApplyingColor || selectedItems.length === 0}
-                                className={actionButtonClass}
-                            >
-                                Apply to ({selectedCount})
-                            </button>
-                            <button
-                                type='button'
-                                onClick={resetElementColor}
-                                disabled={isApplyingColor || selectedItems.length === 0}
-                                className={actionButtonClass}
-                            >
-                                Reset
-                            </button>
-                        </div>
-
-                        <div className="mb-2 flex gap-2">
-                            <button
-                                type='button'
-                                onClick={() => setDetailsTab('quick')}
-                                className={`${tabButtonClass} ${detailsTab === 'quick' ? 'border-[#c8a46a] bg-[#efe4d1] text-[#221b35]' : 'bg-white text-[#5d5572]'}`}
-                            >
-                                Properties
-                            </button>
-                            <button
-                                type='button'
-                                onClick={() => setDetailsTab('json')}
-                                className={`${tabButtonClass} ${detailsTab === 'json' ? 'border-[#c8a46a] bg-[#efe4d1] text-[#221b35]' : 'bg-white text-[#5d5572]'}`}
-                            >
-                                Raw JSON
-                            </button>
-                        </div>
-
-                        {detailsTab === 'quick' && selectedDataRows.length > 0 && (
-                            <div className="grid gap-2">
-                                {selectedDataRows.map((row) => (
-                                    <div key={row.key} className="rounded-xl border border-[#d8ccbb] bg-white px-3 py-2">
-                                        <div className="text-[0.72rem] text-[#7b718d]">{row.key}</div>
-                                        <div className="text-sm text-[#221b35]">{row.value}</div>
-                                    </div>
-                                ))}
+                        <div className="mt-2 max-h-[40vh] overflow-y-auto pr-1">
+                            <div className="mb-3 rounded-xl border border-[#d8ccbb] bg-white p-3">
+                                <div className="mb-2 flex items-center justify-between gap-2">
+                                    <h5 className="m-0 text-xs uppercase tracking-[0.14em] text-[#7b718d]">BIM data panel</h5>
+                                    <span className="rounded-full border border-[#d8ccbb] bg-[#f7f1e8] px-2 py-0.5 text-[0.68rem] text-[#6f6583]">
+                                        {propertyCount} properties
+                                    </span>
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                    {propertyHighlights.map((item) => (
+                                        <div key={item.label} className="rounded-lg border border-[#e6dccf] bg-[#fcfaf7] px-2.5 py-2">
+                                            <div className="text-[0.68rem] uppercase tracking-[0.1em] text-[#8a7f9c]">{item.label}</div>
+                                            <div className="mt-1 text-xs font-medium text-[#2f2746]">{item.value}</div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        )}
 
-                        {detailsTab === 'json' && (
-                            <pre
-                                className="m-0 overflow-x-auto whitespace-pre-wrap rounded-xl border border-[#d8ccbb] bg-white p-3 text-[0.72rem] text-[#3d3453]"
-                            >
-                                {JSON.stringify(activeElement.data, null, 2)}
-                            </pre>
-                        )}
+                            {detailsTab === 'quick' && selectedDataRows.length > 0 && (
+                                <div className="grid gap-2">
+                                    {selectedDataRows.map((row) => (
+                                        <div key={row.key} className="rounded-xl border border-[#d8ccbb] bg-white px-3 py-2">
+                                            <div className="text-[0.72rem] text-[#7b718d]">{row.key}</div>
+                                            <div className="text-sm text-[#221b35]">{row.value}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {detailsTab === 'quick' && selectedDataRows.length === 0 && (
+                                <div className="rounded-xl border border-[#d8ccbb] bg-white px-3 py-2 text-sm text-[#5d5572]">
+                                    No structured IFC attributes available for this element.
+                                </div>
+                            )}
+
+                            {detailsTab === 'json' && (
+                                <pre
+                                    className="m-0 overflow-x-auto whitespace-pre-wrap rounded-xl border border-[#d8ccbb] bg-white p-3 text-[0.72rem] text-[#3d3453]"
+                                >
+                                    {JSON.stringify(activeElement.data, null, 2)}
+                                </pre>
+                            )}
+                        </div>
                     </div>
                 )}
             </aside>

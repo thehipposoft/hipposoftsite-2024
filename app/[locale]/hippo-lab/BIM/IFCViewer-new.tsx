@@ -73,6 +73,9 @@ const buildSelectionMap = (items: Pick<SelectedElement, 'modelId' | 'localId'>[]
     return map;
 };
 
+const actionButtonClass = 'rounded-xl border border-[#5f507f] bg-[#221b35] px-3 py-1.5 text-sm text-[#f5efe6] transition hover:border-[#c8a46a] hover:text-[#dcc395] disabled:cursor-not-allowed disabled:opacity-50';
+const tabButtonClass = 'rounded-xl border border-[#5f507f] px-3 py-1 text-sm transition';
+
 function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewerProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const fragmentsRef = useRef<OBC.FragmentsManager | null>(null);
@@ -464,51 +467,38 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
     };
 
     return (
-        <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+        <div className="relative h-full w-full">
             <div
                 ref={containerRef}
-                style={{ width: '100%', height: '100%', cursor: 'crosshair' }}
+                className="h-full w-full cursor-crosshair"
                 onClick={selectElement}
             />
 
             <aside
-                style={{
-                    position: 'absolute',
-                    right: 12,
-                    top: 12,
-                    width: 'min(360px, calc(100% - 24px))',
-                    maxHeight: 'calc(100% - 24px)',
-                    overflow: 'auto',
-                    borderRadius: 12,
-                    border: '1px solid #d5e4e8',
-                    background: 'rgba(255,255,255,0.94)',
-                    boxShadow: '0 12px 30px rgba(16,44,52,0.15)',
-                    backdropFilter: 'blur(2px)',
-                    padding: '0.8rem',
-                }}
+                className="absolute right-3 top-3 max-h-[calc(100%-24px)] w-[min(360px,calc(100%-24px))] overflow-auto rounded-2xl border border-[#5f507f]/50 bg-[#f7f1e8]/95 p-3 text-[#221b35] shadow-[0_16px_40px_rgba(18,15,29,0.3)] backdrop-blur-sm"
             >
                 {!activeElement && (
-                    <div style={{ color: '#32535b', fontSize: '0.88rem', lineHeight: 1.45 }}>
+                    <div className="text-sm leading-6 text-[#5d5572]">
                         Click an IFC element to inspect metadata. Use Shift + Click to multi-select and apply batch colors.
                     </div>
                 )}
 
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10 }}>
+                <div className="mb-3 flex flex-wrap gap-2">
                     <button
                         type='button'
                         onClick={clearVisualState}
-                        style={{ border: '1px solid #b8d0d6', borderRadius: 8, padding: '0.28rem 0.52rem', color: '#15404a' }}
+                        className={actionButtonClass}
                     >
                         Reset all
                     </button>
                 </div>
 
-                <div style={{ marginBottom: 8, color: '#2f5560', fontSize: '0.82rem' }}>
+                <div className="mb-2 text-sm text-[#5d5572]">
                     Selected elements: {selectedCount}
                 </div>
 
                 {selectedItems.length > 0 && (
-                    <div style={{ display: 'grid', gap: 5, marginBottom: 10, maxHeight: 120, overflowY: 'auto' }}>
+                    <div className="mb-3 grid max-h-[120px] gap-1.5 overflow-y-auto">
                         {selectedItems.map((item) => {
                             const key = getSelectionKey(item.modelId, item.localId);
                             const isActive = key === activeSelectionKey;
@@ -519,30 +509,20 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
                                     key={key}
                                     type='button'
                                     onClick={() => setActiveSelectionKey(key)}
-                                    style={{
-                                        textAlign: 'left',
-                                        border: `1px solid ${isActive ? '#78b8c5' : '#d9e6ea'}`,
-                                        borderRadius: 8,
-                                        padding: '0.42rem',
-                                        background: isActive ? '#edf9fc' : '#ffffff',
-                                        color: '#123841',
-                                        display: 'grid',
-                                        gap: 2,
-                                    }}
+                                    className={`grid gap-0.5 rounded-xl border p-2 text-left transition ${
+                                        isActive
+                                            ? 'border-[#c8a46a] bg-[#efe4d1] text-[#221b35]'
+                                            : 'border-[#d8ccbb] bg-white text-[#221b35] hover:border-[#8c7ab8]'
+                                    }`}
                                 >
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
-                                        <strong style={{ fontSize: '0.78rem' }}>{item.name}</strong>
+                                    <div className="flex justify-between gap-2">
+                                        <strong className="text-xs font-semibold">{item.name}</strong>
                                         <span
-                                            style={{
-                                                width: 12,
-                                                height: 12,
-                                                borderRadius: 999,
-                                                border: '1px solid #bdd2d8',
-                                                background: swatch,
-                                            }}
+                                            className="h-3 w-3 rounded-full border border-[#bcae99]"
+                                            style={{ background: swatch }}
                                         />
                                     </div>
-                                    <span style={{ fontSize: '0.72rem', color: '#54727a' }}>#{item.itemId} ({item.category})</span>
+                                    <span className="text-[0.72rem] text-[#6f6583]">#{item.itemId} ({item.category})</span>
                                 </button>
                             );
                         })}
@@ -551,77 +531,66 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
 
                 {activeElement && (
                     <div>
-                        <h4 style={{ margin: 0, color: '#0f2f36' }}>{activeElement.name}</h4>
-                        <p style={{ margin: '0.35rem 0', color: '#3c5f67', fontSize: '0.82rem' }}>
+                        <h4 className="m-0 text-base font-semibold text-[#221b35]">{activeElement.name}</h4>
+                        <p className="my-1.5 text-sm text-[#5d5572]">
                             IFC id: {activeElement.itemId} | Local id: {activeElement.localId}
                         </p>
-                        <p style={{ margin: '0.2rem 0', color: '#294951', fontSize: '0.82rem' }}>
+                        <p className="my-1 text-sm text-[#4d4562]">
                             GlobalId: {activeElement.globalId}
                         </p>
-                        <p style={{ margin: '0.2rem 0 0.55rem', color: '#294951', fontSize: '0.82rem' }}>
+                        <p className="mb-2 mt-1 text-sm text-[#4d4562]">
                             Category: {activeElement.category}
                         </p>
 
-                        <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 10 }}>
+                        <div className="mb-3 flex items-center gap-2">
                             <input
                                 type='color'
                                 value={overrideColor}
                                 onChange={(e) => setOverrideColor(e.target.value)}
                                 aria-label='Choose color override'
+                                className="h-10 w-12 cursor-pointer rounded-lg border border-[#bcae99] bg-transparent p-1"
                             />
                             <button
                                 type='button'
                                 onClick={applyColorOverride}
                                 disabled={isApplyingColor || selectedItems.length === 0}
-                                style={{ border: '1px solid #b8d0d6', borderRadius: 8, padding: '0.3rem 0.55rem', color: '#15404a' }}
+                                className={actionButtonClass}
                             >
-                                Apply to {selectedCount}
+                                Apply to ({selectedCount})
                             </button>
                             <button
                                 type='button'
                                 onClick={resetElementColor}
                                 disabled={isApplyingColor || selectedItems.length === 0}
-                                style={{ border: '1px solid #b8d0d6', borderRadius: 8, padding: '0.3rem 0.55rem', color: '#15404a' }}
+                                className={actionButtonClass}
                             >
                                 Reset
                             </button>
                         </div>
 
-                        <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
+                        <div className="mb-2 flex gap-2">
                             <button
                                 type='button'
                                 onClick={() => setDetailsTab('quick')}
-                                style={{
-                                    border: '1px solid #b8d0d6',
-                                    borderRadius: 8,
-                                    padding: '0.26rem 0.45rem',
-                                    background: detailsTab === 'quick' ? '#eaf6f9' : '#fff',
-                                    color: '#1a4953',
-                                }}
+                                className={`${tabButtonClass} ${detailsTab === 'quick' ? 'border-[#c8a46a] bg-[#efe4d1] text-[#221b35]' : 'bg-white text-[#5d5572]'}`}
                             >
                                 Properties
                             </button>
                             <button
                                 type='button'
                                 onClick={() => setDetailsTab('json')}
-                                style={{
-                                    border: '1px solid #b8d0d6',
-                                    borderRadius: 8,
-                                    padding: '0.26rem 0.45rem',
-                                    background: detailsTab === 'json' ? '#eaf6f9' : '#fff',
-                                    color: '#1a4953',
-                                }}
+                                className={`${tabButtonClass} ${detailsTab === 'json' ? 'border-[#c8a46a] bg-[#efe4d1] text-[#221b35]' : 'bg-white text-[#5d5572]'}`}
                             >
                                 Raw JSON
                             </button>
                         </div>
 
                         {detailsTab === 'quick' && selectedDataRows.length > 0 && (
-                            <div style={{ display: 'grid', gap: 6 }}>
+                            <div className="grid gap-2">
                                 {selectedDataRows.map((row) => (
-                                    <div key={row.key} style={{ border: '1px solid #e0ecef', borderRadius: 8, padding: '0.45rem' }}>
-                                        <div style={{ fontSize: '0.72rem', color: '#54727a' }}>{row.key}</div>
-                                        <div style={{ fontSize: '0.83rem', color: '#153d46' }}>{row.value}</div>
+                                    <div key={row.key} className="rounded-xl border border-[#d8ccbb] bg-white px-3 py-2">
+                                        <div className="text-[0.72rem] text-[#7b718d]">{row.key}</div>
+                                        <div className="text-sm text-[#221b35]">{row.value}</div>
                                     </div>
                                 ))}
                             </div>
@@ -629,17 +598,7 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
 
                         {detailsTab === 'json' && (
                             <pre
-                                style={{
-                                    margin: 0,
-                                    border: '1px solid #e0ecef',
-                                    borderRadius: 8,
-                                    padding: '0.55rem',
-                                    background: '#f8fbfc',
-                                    color: '#173e47',
-                                    fontSize: '0.7rem',
-                                    overflowX: 'auto',
-                                    whiteSpace: 'pre-wrap',
-                                }}
+                                className="m-0 overflow-x-auto whitespace-pre-wrap rounded-xl border border-[#d8ccbb] bg-white p-3 text-[0.72rem] text-[#3d3453]"
                             >
                                 {JSON.stringify(activeElement.data, null, 2)}
                             </pre>

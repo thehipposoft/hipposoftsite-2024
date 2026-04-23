@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import IFCViewer from './IFCViewer-new';
 
 type DemoModel = {
@@ -15,20 +15,28 @@ type DemoModel = {
 
 const baseModels: DemoModel[] = [
     {
-        id: 'granny-flat',
-        title: 'Residential Unit',
-        subtitle: 'Granny Flat',
-        tag: 'Residential',
-        description: 'Single-dwelling unit with full structural & MEP data',
-        url: '/models/granny-flat.ifc',
+        id: 'sample-castle',
+        title: 'SampleCastle',
+        subtitle: 'Castle Model',
+        tag: 'Architecture',
+        description: 'Sample IFC castle model for architectural exploration',
+        url: '/models/Ifc_SampleCastle.ifc',
     },
     {
-        id: 'hotel',
-        title: 'Hotel Payogastilla',
-        subtitle: 'Hospitality Complex',
-        tag: 'Commercial',
-        description: 'Multi-floor hospitality build with coordinated systems',
-        url: '/models/hotel-payogastilla.ifc',
+        id: 'sample-house',
+        title: 'SampleHouse',
+        subtitle: 'House Model',
+        tag: 'Residential',
+        description: 'Sample IFC house with core building elements',
+        url: '/models/Ifc_SampleHouse.ifc',
+    },
+    {
+        id: 'revit-mep',
+        title: 'Revit_MEP',
+        subtitle: 'MEP Coordination',
+        tag: 'MEP',
+        description: 'Revit-exported IFC focused on mechanical, electrical, and plumbing',
+        url: '/models/Ifc_Revit_MEP.ifc',
     },
 ];
 
@@ -161,13 +169,6 @@ const ViewerWrapper = () => {
                 <div className={`${panelClass} p-5 md:p-6`}>
                     <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
                         <p className="text-xs uppercase tracking-[0.18em] text-[#c8b6df]">Choose a demo model</p>
-                        <button
-                            type="button"
-                            onClick={() => fileInputRef.current?.click()}
-                            className="rounded-xl border border-[#c8a46a]/50 bg-[#c8a46a]/10 px-3 py-2 text-xs font-medium uppercase tracking-[0.12em] text-[#dcc395] transition hover:border-[#c8a46a] hover:bg-[#c8a46a]/20"
-                        >
-                            Add IFC demo
-                        </button>
                         <input
                             ref={fileInputRef}
                             type="file"
@@ -180,26 +181,43 @@ const ViewerWrapper = () => {
                     <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
                         {models.map((model) => {
                             const isActive = selectedModelId === model.id;
+                            const isLastBaseModel = model.id === baseModels[baseModels.length - 1].id;
 
                             return (
-                                <button
-                                    key={model.id}
-                                    type="button"
-                                    className={`${modelButtonBase} ${
-                                        isActive
-                                            ? 'border-[#c8a46a]/60 bg-[#c8a46a]/10 shadow-[0_0_0_1px_rgba(200,164,106,0.2)]'
-                                            : 'border-white/10 bg-black/10 hover:border-[#8c7ab8]/60 hover:bg-white/[0.06]'
-                                    }`}
-                                    onClick={() => {
-                                        setSelectedModelId(model.id);
-                                        setError(null);
-                                        setProgress(0);
-                                    }}
-                                >
-                                    <span className="mb-1 block text-[0.65rem] uppercase tracking-[0.18em] text-[#dcc395]">{model.tag}</span>
-                                    <span className="block text-base font-semibold text-white">{model.title}</span>
-                                    <span className="mt-1 block text-sm text-[#d3cadf]">{model.description}</span>
-                                </button>
+                                <Fragment key={model.id}>
+                                    <button
+                                        type="button"
+                                        className={`${modelButtonBase} ${
+                                            isActive
+                                                ? 'border-[#c8a46a]/60 bg-[#c8a46a]/10 shadow-[0_0_0_1px_rgba(200,164,106,0.2)]'
+                                                : 'border-white/10 bg-black/10 hover:border-[#8c7ab8]/60 hover:bg-white/[0.06]'
+                                        }`}
+                                        onClick={() => {
+                                            setSelectedModelId(model.id);
+                                            setError(null);
+                                            setProgress(0);
+                                        }}
+                                    >
+                                        <span className="mb-1 block text-[0.65rem] uppercase tracking-[0.18em] text-[#dcc395]">{model.tag}</span>
+                                        <span className="block text-base font-semibold text-white">{model.title}</span>
+                                        <span className="mt-1 block text-sm text-[#d3cadf]">{model.description}</span>
+                                    </button>
+
+                                    {isLastBaseModel && (
+                                        <button
+                                            type="button"
+                                            onClick={() => fileInputRef.current?.click()}
+                                            className={`${modelButtonBase} border-[#c8a46a]/55 bg-[linear-gradient(135deg,rgba(200,164,106,0.2),rgba(140,122,184,0.16))] shadow-[0_0_0_1px_rgba(200,164,106,0.35),0_12px_24px_rgba(15,11,24,0.35)] hover:border-[#dcc395] hover:bg-[linear-gradient(135deg,rgba(200,164,106,0.26),rgba(140,122,184,0.22))]`}
+                                        >
+                                            <span className="mb-1 block text-[0.65rem] uppercase tracking-[0.18em] text-[#dcc395]">Custom</span>
+                                            <span className="flex items-center gap-2 text-base font-semibold text-white">
+                                                <span className="text-4xl leading-none text-[#f0dec0]">+</span>
+                                                Add IFC demo
+                                            </span>
+                                            <span className="mt-1 block text-sm text-[#e2d7ee]">Upload your own IFC model from this device</span>
+                                        </button>
+                                    )}
+                                </Fragment>
                             );
                         })}
                     </div>

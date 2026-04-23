@@ -29,6 +29,12 @@ type Measurement = {
     distance: number;
 };
 
+type PropertyRow = {
+    key: string;
+    value: string;
+    normalizedKey: string;
+};
+
 const defaultHighlightMaterial: FRAGS.MaterialDefinition = {
     color: new THREE.Color('#ffd166'),
     renderedFaces: FRAGS.RenderedFaces.TWO,
@@ -62,27 +68,82 @@ const toDisplayValue = (value: unknown) => {
 
 const normalizeAttributeKey = (key: string) => key.toLowerCase().replace(/[^a-z0-9]/g, '');
 
-const getAttributeValueByCandidates = (data: FRAGS.ItemData | null, candidates: string[]) => {
-    if (!data) return undefined;
+const isRecord = (value: unknown): value is Record<string, unknown> => {
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
+};
 
-    const safeEntries = Object.entries(data).filter(([, value]) => {
-        return value && !Array.isArray(value) && typeof value === 'object' && 'value' in value;
-    }) as [string, FRAGS.ItemAttribute][];
+const isInternalPropertyKey = (key: string) => {
+    const normalized = normalizeAttributeKey(key);
+    return normalized === 'type' || normalized === 'expressid' || normalized === 'oid';
+};
 
-    const normalizedCandidates = candidates.map(normalizeAttributeKey);
+const collectPropertyRows = (
+    source: unknown,
+    prefix = '',
+    seen = new WeakSet<object>(),
+    depth = 0,
+): PropertyRow[] => {
+    if (depth > 8 || source === null || source === undefined) return [];
 
-    for (const [key, value] of safeEntries) {
-        const normalizedKey = normalizeAttributeKey(key);
-        if (normalizedCandidates.includes(normalizedKey)) {
-            return value.value;
-        }
+    if (Array.isArray(source)) {
+        return source.flatMap((item, index) => {
+            const nextPrefix = prefix ? `${prefix} > ${index + 1}` : `${index + 1}`;
+            return collectPropertyRows(item, nextPrefix, seen, depth + 1);
+        });
     }
 
-    for (const [key, value] of safeEntries) {
-        const normalizedKey = normalizeAttributeKey(key);
-        if (normalizedCandidates.some((candidate) => normalizedKey.includes(candidate))) {
-            return value.value;
+    if (!isRecord(source)) {
+        if (!prefix) return [];
+        return [{ key: prefix, value: toDisplayValue(source), normalizedKey: normalizeAttributeKey(prefix) }];
+    }
+
+    if (seen.has(source)) return [];
+    seen.add(source);
+
+    const rows: PropertyRow[] = [];
+    const valueCandidate = source.value;
+
+    if (valueCandidate !== undefined && !isRecord(valueCandidate) && !Array.isArray(valueCandidate) && prefix) {
+        rows.push({
+            key: prefix,
+            value: toDisplayValue(valueCandidate),
+            normalizedKey: normalizeAttributeKey(prefix),
+        });
+    }
+
+    for (const [key, value] of Object.entries(source)) {
+        if (key === 'value') {
+            if (isRecord(value) || Array.isArray(value)) {
+                rows.push(...collectPropertyRows(value, prefix || key, seen, depth + 1));
+            }
+            continue;
         }
+
+        if (isInternalPropertyKey(key)) continue;
+
+        const nextPrefix = prefix ? `${prefix} > ${key}` : key;
+        rows.push(...collectPropertyRows(value, nextPrefix, seen, depth + 1));
+    }
+
+    return rows;
+};
+
+const findPropertyValueByCandidates = (rows: PropertyRow[], candidates: string[]) => {
+    const normalizedCandidates = candidates.map(normalizeAttributeKey);
+
+    for (const candidate of normalizedCandidates) {
+        const exact = rows.find((row) => row.normalizedKey === candidate);
+        if (exact) return exact.value;
+    }
+
+    for (const candidate of normalizedCandidates) {
+        const suffix = rows.find((row) => row.normalizedKey.endsWith(candidate));
+        if (suffix) return suffix.value;
+    }
+
+    for (const candidate of normalizedCandidates) {
+        const includes = rows.find((row) => row.normalizedKey.includes(candidate));
+        if (includes) return includes.value;
     }
 
     return undefined;
@@ -131,12 +192,15 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
     >(null);
     const measurementAnchorRef = useRef<THREE.Vector3 | null>(null);
     const measurementObjectsRef = useRef<Map<string, THREE.Object3D[]>>(new Map());
+    const measurementAnchorMarkerRef = useRef<THREE.Object3D[] | null>(null);
+    const measurementPulseIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     const [selectedItems, setSelectedItems] = useState<SelectedElement[]>([]);
     const [activeSelectionKey, setActiveSelectionKey] = useState<string | null>(null);
-    const [detailsTab, setDetailsTab] = useState<'quick' | 'json'>('quick');
     const [measurementMode, setMeasurementMode] = useState(false);
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
+    const [isPanelOpen, setIsPanelOpen] = useState(false);
+    const [showAllProperties, setShowAllProperties] = useState(false);
 
     const activeElement = useMemo(() => {
         if (!selectedItems.length) return null;
@@ -145,17 +209,31 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
         return selectedItems.find((item) => getSelectionKey(item.modelId, item.localId) === activeSelectionKey) ?? selectedItems[0];
     }, [activeSelectionKey, selectedItems]);
 
-    const selectedDataRows = useMemo(() => {
+    const flattenedPropertyRows = useMemo(() => {
         if (!activeElement?.data) return [];
 
-        return Object.entries(activeElement.data)
-            .filter(([, value]) => value && !Array.isArray(value) && typeof value === 'object' && 'value' in value)
-            .slice(0, 12)
-            .map(([key, value]) => ({
-                key,
-                value: toDisplayValue((value as FRAGS.ItemAttribute).value),
-            }));
+        const rows = collectPropertyRows(activeElement.data)
+            .filter((row) => row.value !== '-' && row.value !== '[complex value]')
+            .filter((row) => row.normalizedKey.length > 0);
+
+        const dedup = new Map<string, PropertyRow>();
+        for (const row of rows) {
+            const key = `${row.normalizedKey}|${row.value}`;
+            if (!dedup.has(key)) {
+                dedup.set(key, row);
+            }
+        }
+
+        return Array.from(dedup.values());
     }, [activeElement]);
+
+    const selectedDataRows = useMemo(() => {
+        const allRows = flattenedPropertyRows.map((row) => ({ key: row.key, value: row.value }));
+        if (showAllProperties) return allRows;
+        return allRows.slice(0, 12);
+    }, [flattenedPropertyRows, showAllProperties]);
+
+    const hasMoreProperties = flattenedPropertyRows.length > 12;
 
     const propertyHighlights = useMemo(() => {
         if (!activeElement?.data) {
@@ -167,13 +245,12 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
             ];
         }
 
-        const data = activeElement.data;
         const elementType =
-            getAttributeValueByCandidates(data, ['PredefinedType', 'ObjectType', 'TypeName', 'Entity', 'Type']) ??
+            findPropertyValueByCandidates(flattenedPropertyRows, ['PredefinedType', 'ObjectType', 'TypeName', 'Entity', 'Type']) ??
             activeElement.category;
-        const material = getAttributeValueByCandidates(data, ['Material', 'MaterialName', 'LayerSetName', 'LayerName']);
-        const fireRating = getAttributeValueByCandidates(data, ['FireRating', 'FireResistanceRating', 'Rating']);
-        const area = getAttributeValueByCandidates(data, ['NetArea', 'GrossArea', 'Area', 'NetFloorArea']);
+        const material = findPropertyValueByCandidates(flattenedPropertyRows, ['Material', 'MaterialName', 'LayerSetName', 'LayerName']);
+        const fireRating = findPropertyValueByCandidates(flattenedPropertyRows, ['FireRating', 'FireResistanceRating']);
+        const area = findPropertyValueByCandidates(flattenedPropertyRows, ['NetArea', 'GrossArea', 'Area', 'NetFloorArea']);
 
         return [
             { label: 'Element type', value: toDisplayValue(elementType) },
@@ -181,17 +258,109 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
             { label: 'Fire rating', value: toDisplayValue(fireRating) },
             { label: 'Area', value: formatAreaValue(area) },
         ];
-    }, [activeElement]);
+    }, [activeElement, flattenedPropertyRows]);
 
     const propertyCount = useMemo(() => {
-        if (!activeElement?.data) return 0;
+        return flattenedPropertyRows.length;
+    }, [flattenedPropertyRows]);
 
-        return Object.entries(activeElement.data).filter(([, value]) => {
-            return value && !Array.isArray(value) && typeof value === 'object' && 'value' in value;
-        }).length;
-    }, [activeElement]);
+    useEffect(() => {
+        setShowAllProperties(false);
+    }, [activeSelectionKey]);
 
     const selectedCount = selectedItems.length;
+
+    const clearMeasurementAnchorMarker = () => {
+        const world = worldRef.current;
+
+        if (measurementPulseIntervalRef.current) {
+            clearInterval(measurementPulseIntervalRef.current);
+            measurementPulseIntervalRef.current = null;
+        }
+
+        const markerObjects = measurementAnchorMarkerRef.current;
+        if (markerObjects) {
+            for (const object of markerObjects) {
+                world?.scene.three.remove(object);
+
+                if (object instanceof THREE.Mesh) {
+                    object.geometry.dispose();
+                    if (Array.isArray(object.material)) {
+                        object.material.forEach((material) => material.dispose());
+                    } else {
+                        object.material.dispose();
+                    }
+                }
+            }
+        }
+
+        measurementAnchorMarkerRef.current = null;
+    };
+
+    const createMeasurementAnchorMarker = (point: THREE.Vector3) => {
+        const world = worldRef.current;
+        if (!world) return;
+
+        clearMeasurementAnchorMarker();
+
+        const core = new THREE.Mesh(
+            new THREE.SphereGeometry(0.12, 16, 16),
+            new THREE.MeshBasicMaterial({ color: 0xc8a46a }),
+        );
+        const halo = new THREE.Mesh(
+            new THREE.SphereGeometry(0.2, 16, 16),
+            new THREE.MeshBasicMaterial({ color: 0xc8a46a, transparent: true, opacity: 0.35 }),
+        );
+
+        core.position.copy(point);
+        halo.position.copy(point);
+
+        world.scene.three.add(core);
+        world.scene.three.add(halo);
+        measurementAnchorMarkerRef.current = [core, halo];
+
+        let tick = 0;
+        measurementPulseIntervalRef.current = setInterval(() => {
+            tick += 0.2;
+            const scale = 1 + Math.sin(tick) * 0.25;
+            halo.scale.set(scale, scale, scale);
+            fragmentsRef.current?.core.update(true);
+        }, 50);
+    };
+
+    const fitCameraToObject = (object: THREE.Object3D) => {
+        const world = worldRef.current;
+        if (!world) return;
+
+        const bounds = new THREE.Box3().setFromObject(object);
+        if (bounds.isEmpty()) return;
+
+        const sphere = bounds.getBoundingSphere(new THREE.Sphere());
+        const radius = Math.max(sphere.radius, 0.5);
+
+        const direction = world.camera.three.position.clone().sub(sphere.center);
+        if (direction.lengthSq() < 1e-6) {
+            direction.set(1, 0.7, 1);
+        }
+
+        direction.normalize();
+        const distance = radius * 2.6;
+        const position = sphere.center.clone().add(direction.multiplyScalar(distance));
+
+        world.camera.three.near = Math.max(radius / 100, 0.1);
+        world.camera.three.far = Math.max(radius * 30, 1000);
+        world.camera.three.updateProjectionMatrix();
+
+        world.camera.controls.setLookAt(
+            position.x,
+            position.y,
+            position.z,
+            sphere.center.x,
+            sphere.center.y,
+            sphere.center.z,
+            true,
+        );
+    };
 
     const clearMeasurementObjects = () => {
         const world = worldRef.current;
@@ -225,6 +394,7 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
 
     const clearMeasurements = () => {
         clearMeasurementObjects();
+        clearMeasurementAnchorMarker();
         measurementAnchorRef.current = null;
         setMeasurements([]);
     };
@@ -285,9 +455,12 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
 
         if (!measurementAnchorRef.current) {
             measurementAnchorRef.current = point.clone();
+            createMeasurementAnchorMarker(point);
             onError?.(null);
             return;
         }
+
+        clearMeasurementAnchorMarker();
 
         const start = measurementAnchorRef.current.clone();
         const end = point.clone();
@@ -401,16 +574,9 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
                     world.scene.three.add(model.object);
                     fragments.core.update(true);
 
-                    setTimeout(() => {
-                        world.camera.three.position.set(0, 10, 40);
-                        world.camera.three.lookAt(new THREE.Vector3(0, 0, 50));
-
-                        world.camera.controls.setLookAt(
-                            -14.932953878543646, 3.9172822989963167, 39.98790554193692,
-                            -5.6126231611163115, 3.7992060582434033, 1.5608709226067827,
-                            true
-                        );
-                    }, 100);
+                    requestAnimationFrame(() => {
+                        fitCameraToObject(model.object);
+                    });
                 });
 
                 const file = await fetch(ifcUrl);
@@ -506,6 +672,7 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
                 }
 
                 addMeasurementPoint(hitPoint);
+                setIsPanelOpen(true);
                 return;
             }
 
@@ -551,6 +718,7 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
                 const next = [clickedElement];
                 applySelectionHighlight(next);
                 setActiveSelectionKey(clickedKey);
+                setIsPanelOpen(true);
                 return next;
             });
         } catch (error) {
@@ -579,9 +747,28 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
                 onClick={selectElement}
             />
 
-            <aside
-                className="absolute right-3 top-3 max-h-[calc(100%-24px)] w-[min(360px,calc(100%-24px))] overflow-auto rounded-2xl border border-[#5f507f]/50 bg-[#f7f1e8]/95 p-3 text-[#221b35] shadow-[0_16px_40px_rgba(18,15,29,0.3)] backdrop-blur-sm"
+            <button
+                type='button'
+                onClick={() => setIsPanelOpen((previous) => !previous)}
+                className="absolute right-3 top-3 z-30 rounded-xl border border-[#5f507f] bg-[#221b35]/90 px-3 py-2 text-xs uppercase tracking-[0.12em] text-[#f5efe6] backdrop-blur-sm md:hidden"
             >
+                {isPanelOpen ? 'Close panel' : 'Open panel'}
+            </button>
+
+            <aside
+                className={`absolute inset-x-3 bottom-3 top-16 z-20 overflow-auto rounded-2xl border border-[#5f507f]/50 bg-[#f7f1e8]/95 p-3 text-[#221b35] shadow-[0_16px_40px_rgba(18,15,29,0.3)] backdrop-blur-sm transition duration-300 md:right-3 md:top-3 md:bottom-auto md:left-auto md:z-10 md:max-h-[calc(100%-24px)] md:w-[min(360px,calc(100%-24px))] ${isPanelOpen ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'} md:pointer-events-auto md:translate-y-0 md:opacity-100`}
+            >
+                <div className="mb-2 flex items-center justify-between md:hidden">
+                    <strong className="text-xs uppercase tracking-[0.14em] text-[#5d5572]">BIM Inspector</strong>
+                    <button
+                        type='button'
+                        onClick={() => setIsPanelOpen(false)}
+                        className="rounded-md border border-[#d8ccbb] px-2 py-1 text-[0.68rem] text-[#5d5572]"
+                    >
+                        Close
+                    </button>
+                </div>
+
                 {!activeElement && (
                     <div className="text-sm leading-6 text-[#5d5572]">
                         Click an IFC element to inspect metadata. Use Shift + Click to multi-select elements.
@@ -593,7 +780,10 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
                         type='button'
                         onClick={() => {
                             setMeasurementMode((previous) => !previous);
-                            measurementAnchorRef.current = null;
+                            if (measurementMode) {
+                                measurementAnchorRef.current = null;
+                                clearMeasurementAnchorMarker();
+                            }
                             onError?.(null);
                         }}
                         className={`${actionButtonClass} ${measurementMode ? '!border-[#c8a46a] !text-[#dcc395]' : ''}`}
@@ -653,32 +843,6 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
                     </div>
                 )}
 
-                {selectedItems.length > 0 && (
-                    <div className="mb-3 grid max-h-[120px] gap-1.5 overflow-y-auto">
-                        {selectedItems.map((item) => {
-                            const key = getSelectionKey(item.modelId, item.localId);
-                            const isActive = key === activeSelectionKey;
-
-                            return (
-                                <button
-                                    key={key}
-                                    type='button'
-                                    onClick={() => setActiveSelectionKey(key)}
-                                    className={`grid gap-0.5 rounded-xl border p-2 text-left transition ${
-                                        isActive
-                                            ? 'border-[#c8a46a] bg-[#efe4d1] text-[#221b35]'
-                                            : 'border-[#d8ccbb] bg-white text-[#221b35] hover:border-[#8c7ab8]'
-                                    }`}
-                                >
-                                    <strong className="text-xs font-semibold">{item.name}</strong>
-                                    <span className="text-[0.72rem] text-[#6f6583]">#{item.itemId} ({item.category})</span>
-                                </button>
-                            );
-                        })}
-                    </div>
-                )}
-
-
                 {activeElement && (
                     <div>
                         <h4 className="m-0 text-base font-semibold text-[#221b35]">
@@ -703,7 +867,7 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
                                 </div>
                             </div>
 
-                            {detailsTab === 'quick' && selectedDataRows.length > 0 && (
+                            {selectedDataRows.length > 0 && (
                                 <div className="grid gap-2">
                                     {selectedDataRows.map((row) => (
                                         <div key={row.key} className="rounded-xl border border-[#d8ccbb] bg-white px-3 py-2">
@@ -714,18 +878,20 @@ function IFCViewer({ ifcUrl, onProgress, onLoadStateChange, onError }: IFCViewer
                                 </div>
                             )}
 
-                            {detailsTab === 'quick' && selectedDataRows.length === 0 && (
+                            {hasMoreProperties && (
+                                <button
+                                    type='button'
+                                    onClick={() => setShowAllProperties((previous) => !previous)}
+                                    className="mt-2 rounded-xl border border-[#d8ccbb] bg-white px-3 py-2 text-xs uppercase tracking-[0.12em] text-[#5d5572] transition hover:border-[#8c7ab8]"
+                                >
+                                    {showAllProperties ? 'Show less' : `Show all ${propertyCount} properties`}
+                                </button>
+                            )}
+
+                            {selectedDataRows.length === 0 && (
                                 <div className="rounded-xl border border-[#d8ccbb] bg-white px-3 py-2 text-sm text-[#5d5572]">
                                     No structured IFC attributes available for this element.
                                 </div>
-                            )}
-
-                            {detailsTab === 'json' && (
-                                <pre
-                                    className="m-0 overflow-x-auto whitespace-pre-wrap rounded-xl border border-[#d8ccbb] bg-white p-3 text-[0.72rem] text-[#3d3453]"
-                                >
-                                    {JSON.stringify(activeElement.data, null, 2)}
-                                </pre>
                             )}
                         </div>
                     </div>

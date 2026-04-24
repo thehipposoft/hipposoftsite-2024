@@ -1,305 +1,355 @@
 'use client';
 
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import IFCViewer from './IFCViewer-new';
 
-type DemoModel = {
-    id: string;
-    title: string;
-    subtitle: string;
-    tag: string;
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+export type ViewerMode = 'measure' | 'inspect' | 'multiselect';
+
+type Demo = {
+    id: ViewerMode;
+    number: string;
+    label: string;
+    headline: string;
     description: string;
-    url: string;
-    isCustom?: boolean;
+    steps: string[];
+    modelUrl: string;
+    modelName: string;
 };
 
-const baseModels: DemoModel[] = [
+type CustomIfcModel = {
+    url: string;
+    name: string;
+    sizeLabel: string;
+};
+
+// ---------------------------------------------------------------------------
+// Demo definitions — one model + one focused BIM capability per tab
+// ---------------------------------------------------------------------------
+
+const demos: Demo[] = [
     {
-        id: 'sample-castle',
-        title: 'SampleCastle',
-        subtitle: 'Castle Model',
-        tag: 'Architecture',
-        description: 'Sample IFC castle model for architectural exploration',
-        url: '/models/Ifc_SampleCastle.ifc',
+        id: 'measure',
+        number: '01',
+        label: 'Measure',
+        headline: 'Measure anything, instantly.',
+        description:
+            'Click any two points on the model to get an accurate distance. No BIM software, no plugins — just your browser.',
+        steps: ['Click any surface to set the first point', 'Click a second point to complete the segment', 'Read the distance in the panel'],
+        modelUrl: '/models/granny-flat.ifc',
+        modelName: 'Residential Unit',
     },
     {
-        id: 'sample-house',
-        title: 'SampleHouse',
-        subtitle: 'House Model',
-        tag: 'Residential',
-        description: 'Sample IFC house with core building elements',
-        url: '/models/Ifc_SampleHouse.ifc',
+        id: 'inspect',
+        number: '02',
+        label: 'Inspect',
+        headline: 'Every element tells a story.',
+        description:
+            'Click any wall, slab, or fitting to surface the IFC data inside — materials, fire ratings, areas, and more.',
+        steps: ['Click any element in the model', 'Review its BIM data in the panel', 'See material, fire rating, area and more'],
+        modelUrl: '/models/Ifc_SampleHouse.ifc',
+        modelName: 'Hotel Payogastilla',
     },
     {
-        id: 'revit-mep',
-        title: 'Revit_MEP',
-        subtitle: 'MEP Coordination',
-        tag: 'MEP',
-        description: 'Revit-exported IFC focused on mechanical, electrical, and plumbing',
-        url: '/models/Ifc_Revit_MEP.ifc',
+        id: 'multiselect',
+        number: '03',
+        label: 'Multi-select',
+        headline: 'Group, compare, present.',
+        description:
+            'Shift-click to select multiple elements at once. Walk clients through a structural system, a floor plate, or a set of rooms.',
+        steps: ['Click any element to select it', 'Shift+click to add more to the group', 'See all selected elements listed in the panel'],
+        modelUrl: '/models/Ifc_SampleCastle.ifc',
+        modelName: 'Residential Unit',
     },
 ];
 
-const features = [
-    {
-        icon: (
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <path d="M9 1L16 5V13L9 17L2 13V5L9 1Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
-                <path d="M9 1V17M2 5L16 13M16 5L2 13" stroke="currentColor" strokeWidth="1.4" />
-            </svg>
-        ),
-        label: 'Full IFC geometry',
-        detail: 'Every wall, slab, and fitting rendered accurately from your model file.',
-    },
-    {
-        icon: (
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <circle cx="9" cy="9" r="7.5" stroke="currentColor" strokeWidth="1.4" />
-                <path d="M9 5V9.5L12 12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-            </svg>
-        ),
-        label: 'Loads in seconds',
-        detail: 'WASM-powered parsing — no server uploads, no waiting rooms.',
-    },
-    {
-        icon: (
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <rect x="2" y="2" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.4" />
-                <rect x="10" y="2" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.4" />
-                <rect x="2" y="10" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.4" />
-                <rect x="10" y="10" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.4" />
-            </svg>
-        ),
-        label: 'Inspect any element',
-        detail: 'Click any component to surface IFC properties instantly.',
-    },
-    {
-        icon: (
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <path d="M3 9H15M9 3L15 9L9 15" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-        ),
-        label: 'One embed, any site',
-        detail: 'Drop into React, Next.js, or plain HTML — no BIM software required.',
-    },
-];
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
 
 const ViewerWrapper = () => {
-    const [selectedModelId, setSelectedModelId] = useState(baseModels[0].id);
-    const [customModels, setCustomModels] = useState<DemoModel[]>([]);
+    const [activeDemoId, setActiveDemoId] = useState<ViewerMode>('measure');
     const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [customModel, setCustomModel] = useState<CustomIfcModel | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const models = useMemo(() => [...baseModels, ...customModels], [customModels]);
-
-    const selectedModel = useMemo(
-        () => models.find((item) => item.id === selectedModelId) ?? models[0],
-        [models, selectedModelId]
+    const activeDemo = useMemo(
+        () => demos.find((d) => d.id === activeDemoId) ?? demos[0],
+        [activeDemoId]
     );
 
-    useEffect(() => {
-        return () => {
-            for (const model of customModels) {
-                URL.revokeObjectURL(model.url);
-            }
-        };
-    }, [customModels]);
+    const activeDemoIdx = demos.findIndex((d) => d.id === activeDemoId);
+    const progressPercent = Math.round(progress * 100);
+    const activeModelUrl = customModel?.url ?? activeDemo.modelUrl;
+    const activeModelName = customModel ? `${customModel.name} · Custom IFC` : activeDemo.modelName;
 
-    const handleAddIfc = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        event.target.value = '';
-
-        if (!file) return;
-
-        const isIfcFile =
-            file.name.toLowerCase().endsWith('.ifc') ||
-            file.type.toLowerCase().includes('ifc') ||
-            file.type === '';
-
-        if (!isIfcFile) {
-            setError('Please select a valid IFC file (.ifc).');
-            return;
-        }
-
-        const objectUrl = URL.createObjectURL(file);
-        const fileBaseName = file.name.replace(/\.ifc$/i, '') || 'Custom IFC';
-        const newModel: DemoModel = {
-            id: `custom-${Date.now()}`,
-            title: fileBaseName,
-            subtitle: 'Local Upload',
-            tag: 'Custom',
-            description: `Uploaded IFC (${(file.size / (1024 * 1024)).toFixed(1)} MB)`,
-            url: objectUrl,
-            isCustom: true,
-        };
-
-        setCustomModels((previous) => [...previous, newModel]);
-        setSelectedModelId(newModel.id);
+    const handleTabChange = (id: ViewerMode) => {
+        if (id === activeDemoId) return;
+        setActiveDemoId(id);
         setError(null);
         setProgress(0);
     };
 
-    const progressPercent = Math.round(progress * 100);
-    const modelButtonBase = 'w-full rounded-2xl border p-4 text-left transition duration-200';
-    const panelClass = 'rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm';
+    useEffect(() => {
+        return () => {
+            if (customModel?.url) {
+                URL.revokeObjectURL(customModel.url);
+            }
+        };
+    }, [customModel]);
+
+    const handleCustomIfcUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        event.target.value = '';
+        if (!file) return;
+
+        const isIfc =
+            file.name.toLowerCase().endsWith('.ifc') ||
+            file.type.toLowerCase().includes('ifc') ||
+            file.type === '';
+
+        if (!isIfc) {
+            setError('Please select a valid IFC file (.ifc).');
+            return;
+        }
+
+        const url = URL.createObjectURL(file);
+        setCustomModel((previous) => {
+            if (previous?.url) {
+                URL.revokeObjectURL(previous.url);
+            }
+
+            return {
+                url,
+                name: file.name.replace(/\.ifc$/i, '') || 'Custom model',
+                sizeLabel: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
+            };
+        });
+
+        setError(null);
+        setProgress(0);
+    };
 
     return (
-        <section className="relative min-h-[calc(100vh-100px)] overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(69,48,102,0.35),_transparent_32%),linear-gradient(180deg,_#120f1d_0%,_#1a1530_45%,_#221b35_100%)] px-5 pb-16 pt-14 text-white md:px-8">
-            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:44px_44px] opacity-20" />
-            <div className="pointer-events-none absolute -left-20 top-0 h-[28rem] w-[28rem] rounded-full bg-[#c8a46a]/10 blur-3xl" />
-            <div className="pointer-events-none absolute bottom-0 right-0 h-[24rem] w-[24rem] rounded-full bg-[#8c7ab8]/20 blur-3xl" />
+        <>
+            {/* ── Root ── */}
+            <div
+                className="[font-family:'Sora',sans-serif] bg-[#09141a] text-[#cde4ea] min-h-[calc(100vh-100px)] px-5 pt-[52px] pb-[72px] relative overflow-hidden"
+            >
+                {/* Background decorations */}
+                <div className="absolute top-[-25%] left-[-12%] w-[70%] h-[70%] bg-[radial-gradient(ellipse,rgba(83,210,220,0.055)_0%,transparent_65%)] pointer-events-none" />
+                <div className="absolute bottom-[-20%] right-[-8%] w-[55%] h-[60%] bg-[radial-gradient(ellipse,rgba(240,160,87,0.045)_0%,transparent_65%)] pointer-events-none" />
+                <div className="absolute inset-0 [background-image:linear-gradient(rgba(83,210,220,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(83,210,220,0.025)_1px,transparent_1px)] [background-size:52px_52px] pointer-events-none" />
 
-            <div className="relative mx-auto max-w-7xl">
-                <header className="mb-10 max-w-3xl">
-                    <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#c8a46a]/25 bg-white/5 px-4 py-1.5 text-[0.68rem] uppercase tracking-[0.2em] text-[#dcc395]">
-                        <span className="h-2 w-2 rounded-full bg-[#dcc395] shadow-[0_0_10px_rgba(220,195,149,0.8)]" />
-                        BIM on the web
-                    </div>
-                    <h1 className="max-w-4xl text-4xl font-semibold leading-tight text-white md:text-6xl md:leading-[1.02]">
-                        Interactive IFC embedding for client websites
-                    </h1>
-                    <p className="mt-5 max-w-2xl text-base leading-7 text-[#d3cadf] md:text-lg">
-                        Show stakeholders real geometry, spatial context, and design intent directly on your website.
-                        No desktop BIM software needed.
-                    </p>
-                </header>
+                <div className="relative z-[1] max-w-[1320px] mx-auto">
 
-                <div className={`${panelClass} p-5 md:p-6`}>
-                    <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-                        <p className="text-xs uppercase tracking-[0.18em] text-[#c8b6df]">Choose a demo model</p>
+                    {/* ── Header ── */}
+                    <header className="mb-[52px]">
+                        <div className="inline-flex items-center gap-2 font-mono text-[0.67rem] tracking-[0.16em] uppercase text-[#53d2dc] mb-[18px]">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#53d2dc] shadow-[0_0_10px_#53d2dc] animate-pulse" />
+                            BIM on the web · Live demos
+                        </div>
+                        <h1 className="[font-family:'Sora',sans-serif] text-[clamp(2.4rem,4.8vw,4rem)] font-normal leading-[1.06] text-[#dff0f4] m-0 mb-4 max-w-[680px]">
+                            Your models,<br /><em className="text-[#53d2dc]">alive on the web.</em>
+                        </h1>
+                        <p className="text-base leading-[1.65] text-[#567a84] max-w-[520px] m-0">
+                            Show clients what their building actually contains — not a PDF, not a render.
+                            Interactive BIM, embedded directly on your website.
+                        </p>
+                    </header>
+
+                    {/* ── Tabs ── */}
+                    <nav className="flex flex-wrap items-center border border-white/[0.07] rounded-[14px] bg-[#112230] p-[5px] w-fit gap-1.5 mb-9">
+                        {demos.map((demo) => {
+                            const isActive = activeDemoId === demo.id;
+                            return (
+                                <button
+                                    key={demo.id}
+                                    type="button"
+                                    className={[
+                                        'flex items-center gap-[9px] px-[22px] py-[10px] rounded-[10px] border',
+                                        "[font-family:'Sora',sans-serif] text-[0.88rem] font-medium whitespace-nowrap",
+                                        'cursor-pointer transition-all duration-[180ms] ease-[ease]',
+                                        isActive
+                                            ? 'bg-[#09141a] border-[rgba(83,210,220,0.28)] text-[#53d2dc] shadow-[0_0_20px_rgba(83,210,220,0.08)]'
+                                            : 'border-transparent bg-transparent text-[#567a84] hover:text-[#cde4ea] hover:bg-white/[0.04]',
+                                    ].join(' ')}
+                                    onClick={() => handleTabChange(demo.id)}
+                                >
+                                    <span className="font-mono text-[0.62rem] tracking-[0.06em] opacity-50">
+                                        {demo.number}
+                                    </span>
+                                    {demo.label}
+                                </button>
+                            );
+                        })}
+
+                        <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="ml-1 rounded-[10px] border border-[rgba(83,210,220,0.28)] px-3 py-[10px] text-[0.78rem] font-semibold uppercase tracking-[0.08em] text-[#53d2dc] transition hover:border-[#7ce8f0] hover:text-[#7ce8f0]"
+                        >
+                            <span className='border rounded-full px-1'>+</span> Add custom .ifc
+                        </button>
+
+                    </nav>
+
+                    {/* ── Two-column layout ── */}
+                    <div className="grid grid-cols-1 gap-6 items-start lg:grid-cols-[1fr_360px]">
+
                         <input
                             ref={fileInputRef}
                             type="file"
                             accept=".ifc"
                             className="hidden"
-                            onChange={handleAddIfc}
+                            onChange={handleCustomIfcUpload}
                         />
-                    </div>
 
-                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-                        {models.map((model) => {
-                            const isActive = selectedModelId === model.id;
-                            const isLastBaseModel = model.id === baseModels[baseModels.length - 1].id;
+                        {/* ── Viewer card ── */}
+                        <div className="border border-white/[0.07] rounded-2xl overflow-hidden bg-[#112230] flex flex-col">
 
-                            return (
-                                <Fragment key={model.id}>
-                                    <button
-                                        type="button"
-                                        className={`${modelButtonBase} ${
-                                            isActive
-                                                ? 'border-[#c8a46a]/60 bg-[#c8a46a]/10 shadow-[0_0_0_1px_rgba(200,164,106,0.2)]'
-                                                : 'border-white/10 bg-black/10 hover:border-[#8c7ab8]/60 hover:bg-white/[0.06]'
-                                        }`}
-                                        onClick={() => {
-                                            setSelectedModelId(model.id);
-                                            setError(null);
-                                            setProgress(0);
-                                        }}
-                                    >
-                                        <span className="mb-1 block text-[0.65rem] uppercase tracking-[0.18em] text-[#dcc395]">{model.tag}</span>
-                                        <span className="block text-base font-semibold text-white">{model.title}</span>
-                                        <span className="mt-1 block text-sm text-[#d3cadf]">{model.description}</span>
-                                    </button>
-
-                                    {isLastBaseModel && (
-                                        <button
-                                            type="button"
-                                            onClick={() => fileInputRef.current?.click()}
-                                            className={`${modelButtonBase} border-[#c8a46a]/55 bg-[linear-gradient(135deg,rgba(200,164,106,0.2),rgba(140,122,184,0.16))] shadow-[0_0_0_1px_rgba(200,164,106,0.35),0_12px_24px_rgba(15,11,24,0.35)] hover:border-[#dcc395] hover:bg-[linear-gradient(135deg,rgba(200,164,106,0.26),rgba(140,122,184,0.22))]`}
-                                        >
-                                            <span className="mb-1 block text-[0.65rem] uppercase tracking-[0.18em] text-[#dcc395]">Custom</span>
-                                            <span className="flex items-center gap-2 text-base font-semibold text-white">
-                                                <span className="text-4xl leading-none text-[#f0dec0]">+</span>
-                                                Add IFC demo
-                                            </span>
-                                            <span className="mt-1 block text-sm text-[#e2d7ee]">Upload your own IFC model from this device</span>
-                                        </button>
-                                    )}
-                                </Fragment>
-                            );
-                        })}
-                    </div>
-
-                    {error && (
-                        <div className="mt-4 rounded-2xl border border-red-400/25 bg-red-400/10 px-4 py-3 text-sm text-red-100">
-                            {error}
-                        </div>
-                    )}
-                </div>
-
-                <div className={`${panelClass} mt-6 overflow-hidden`}>
-                    <div className="flex flex-col gap-4 border-b border-white/10 bg-black/15 px-5 py-4 md:flex-row md:items-center md:justify-between">
-                        <div>
-                            <div className="text-base font-semibold text-white">{selectedModel.title}</div>
-                            <div className="mt-1 flex items-center gap-2 text-[0.68rem] uppercase tracking-[0.16em] text-[#cabfd7]">
-                                <span className={`h-2 w-2 rounded-full ${loading ? 'bg-[#dcc395] shadow-[0_0_10px_rgba(220,195,149,0.8)]' : 'bg-[#8c7ab8] shadow-[0_0_10px_rgba(140,122,184,0.8)]'}`} />
-                                {loading ? 'Loading model' : 'Model ready'}
+                            {/* Top bar */}
+                            <div className="flex items-center justify-between gap-3 px-[18px] py-3 bg-[#0d1e26] border-b border-white/[0.07] shrink-0">
+                                <div>
+                                    <span className="text-[0.88rem] font-semibold text-[#d8eef3] block">{activeModelName}</span>
+                                    <span className="flex items-center gap-[5px] font-mono text-[0.62rem] tracking-[0.08em] text-[#567a84]">
+                                        <span className={[
+                                            'w-[5px] h-[5px] rounded-full shrink-0',
+                                            loading
+                                                ? 'bg-[#f0a057] shadow-[0_0_6px_#f0a057] animate-pulse'
+                                                : 'bg-[#53d2dc] shadow-[0_0_6px_#53d2dc]',
+                                        ].join(' ')} />
+                                        {loading ? 'Loading geometry…' : 'Ready'}
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-[120px] h-[2px] bg-white/10 rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full bg-gradient-to-r from-[#53d2dc] to-[#a8f0f8] rounded-full transition-[width] duration-200 shadow-[0_0_8px_rgba(83,210,220,0.6)]"
+                                            style={{ width: `${Math.max(4, progressPercent)}%` }}
+                                        />
+                                    </div>
+                                    <span className="font-mono text-[0.62rem] text-[#567a84] min-w-[28px] text-right">
+                                        {progressPercent}%
+                                    </span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="flex items-center gap-3" aria-label="Model loading progress">
-                            <div className="h-1.5 w-36 overflow-hidden rounded-full bg-white/10">
-                                <div
-                                    className="h-full rounded-full bg-[linear-gradient(90deg,#c8a46a_0%,#f0dec0_100%)] transition-[width] duration-200"
-                                    style={{ width: `${Math.max(4, progressPercent)}%` }}
+                            {/* Canvas */}
+                            <div className="h-[56vh] flex-1 lg:h-[min(68vh,660px)]">
+                                <IFCViewer
+                                    key={`${activeDemoId}-${activeModelUrl}`}
+                                    ifcUrl={activeModelUrl}
+                                    mode={activeDemoId}
+                                    onProgress={setProgress}
+                                    onLoadStateChange={setLoading}
+                                    onError={setError}
                                 />
                             </div>
-                            <span className="min-w-8 text-right text-xs uppercase tracking-[0.14em] text-[#cabfd7]">
-                                {progressPercent}%
-                            </span>
+
+                            {/* Bottom bar */}
+                            <div className="flex items-center gap-[10px] px-[18px] py-[9px] border-t border-white/[0.07] bg-[#0d1e26] shrink-0">
+                                <span className="font-mono text-[0.6rem] tracking-[0.1em] uppercase text-[#53d2dc] bg-[rgba(83,210,220,0.08)] border border-[rgba(83,210,220,0.18)] px-2 py-[3px] rounded-[4px] whitespace-nowrap">
+                                    Try it
+                                </span>
+                                <span className="text-[0.78rem] text-[#567a84]">
+                                    {customModel ? `Custom IFC loaded (${customModel.sizeLabel})` : activeDemo.steps[0]}
+                                </span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="h-[58vh] lg:h-[70vh] lg:max-h-[680px]">
-                        <IFCViewer
-                            ifcUrl={selectedModel.url}
-                            onProgress={setProgress}
-                            onLoadStateChange={setLoading}
-                            onError={setError}
-                        />
-                    </div>
+                        {/* ── Info sidebar ── */}
+                        <aside className="border border-white/[0.07] rounded-2xl bg-[#112230] overflow-hidden sticky top-6">
+                            <div className="px-6 pt-7 pb-5 border-b border-white/[0.07]">
+                                <span className="font-mono text-[0.63rem] tracking-[0.14em] text-[#53d2dc] block mb-3">
+                                    DEMO {activeDemo.number} / 0{demos.length}
+                                </span>
+                                <h2 className="[font-family:'Sora',sans-serif] text-[1.6rem] font-normal leading-[1.15] text-[#dff0f4] m-0 mb-3">
+                                    {activeDemo.headline}
+                                </h2>
+                                <p className="text-[0.88rem] leading-[1.65] text-[#567a84] m-0">
+                                    {activeDemo.description}
+                                </p>
+                            </div>
 
-                    <div className="flex flex-col gap-2 border-t border-white/10 bg-black/15 px-5 py-3 text-sm text-[#d3cadf] md:flex-row md:items-center">
-                        <span className="inline-flex w-fit items-center rounded-full border border-[#c8a46a]/25 bg-[#c8a46a]/10 px-3 py-1 text-[0.65rem] uppercase tracking-[0.16em] text-[#dcc395]">
-                            Live demo
-                        </span>
-                        <span>
-                            Shift + click multi-select, inspect IFC properties, create measurements, and reset all changes in one step.
-                        </span>
-                    </div>
-                </div>
-
-                <div className={`${panelClass} mt-6 p-5 md:p-6`}>
-                    <p className="mb-4 text-xs uppercase tracking-[0.18em] text-[#c8b6df]">What this demonstrates</p>
-                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-                        {features.map((feature) => (
-                            <div key={feature.label} className="flex gap-3 rounded-2xl border border-white/10 bg-black/10 p-4">
-                                <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#c8a46a]/20 bg-[#c8a46a]/10 text-[#dcc395]">
-                                    {feature.icon}
+                            <div className="px-6 pt-5 pb-6">
+                                <p className="font-mono text-[0.62rem] tracking-[0.12em] uppercase text-[#567a84] m-0 mb-[10px]">
+                                    How it works
+                                </p>
+                                <div className="flex flex-col gap-2">
+                                    {activeDemo.steps.map((step) => (
+                                        <div
+                                            key={step}
+                                            className="flex items-start gap-[10px] px-3 py-[10px] rounded-[10px] bg-white/[0.03] border border-white/[0.07] text-[0.82rem] text-[#cde4ea]"
+                                        >
+                                            <span className="w-1.5 h-1.5 rounded-full bg-[#53d2dc] shrink-0 mt-[5px]" />
+                                            {step}
+                                        </div>
+                                    ))}
                                 </div>
-                                <div>
-                                    <div className="text-sm font-semibold text-white">{feature.label}</div>
-                                    <div className="mt-1 text-sm leading-5 text-[#cbbfd8]">{feature.detail}</div>
+
+                                {error && (
+                                    <div className="mt-[14px] px-3 py-[10px] rounded-lg bg-[rgba(255,80,80,0.08)] border border-[rgba(255,80,80,0.2)] text-[#ff9a9a] text-[0.82rem]">
+                                        {error}
+                                    </div>
+                                )}
+
+                                {/* Nav buttons */}
+                                <div className="flex gap-2 mt-5">
+                                    <button
+                                        type="button"
+                                        disabled={activeDemoIdx === 0}
+                                        onClick={() => handleTabChange(demos[activeDemoIdx - 1].id)}
+                                        className="flex-1 px-[14px] py-[10px] rounded-[10px] border border-white/[0.07] bg-transparent text-[#567a84] [font-family:'Sora',sans-serif] text-[0.82rem] font-medium cursor-pointer transition-all duration-150 text-center disabled:opacity-[0.28] disabled:cursor-default enabled:hover:border-[rgba(83,210,220,0.28)] enabled:hover:text-[#53d2dc] enabled:hover:bg-[rgba(83,210,220,0.05)]"
+                                    >
+                                        ← Prev
+                                    </button>
+                                    <button
+                                        type="button"
+                                        disabled={activeDemoIdx === demos.length - 1}
+                                        onClick={() => handleTabChange(demos[activeDemoIdx + 1].id)}
+                                        className={[
+                                            "flex-1 px-[14px] py-[10px] rounded-[10px] border [font-family:'Sora',sans-serif]",
+                                            'text-[0.82rem] cursor-pointer transition-all duration-150 text-center',
+                                            'disabled:opacity-[0.28] disabled:cursor-default',
+                                            activeDemoIdx < demos.length - 1
+                                                ? 'bg-[#53d2dc] border-[#53d2dc] text-[#09141a] font-bold enabled:hover:bg-[#7ce8f0] enabled:hover:border-[#7ce8f0] enabled:hover:shadow-[0_0_24px_rgba(83,210,220,0.3)]'
+                                                : 'bg-transparent border-white/[0.07] text-[#567a84] font-medium enabled:hover:border-[rgba(83,210,220,0.28)] enabled:hover:text-[#53d2dc] enabled:hover:bg-[rgba(83,210,220,0.05)]',
+                                        ].join(' ')}
+                                    >
+                                        Next demo →
+                                    </button>
                                 </div>
                             </div>
-                        ))}
+                        </aside>
+
+                    </div>
+
+                    {/* ── CTA strip ── */}
+                    <div className="mt-14 px-10 py-9 border border-[rgba(83,210,220,0.28)] rounded-[18px] bg-[linear-gradient(135deg,rgba(83,210,220,0.06)_0%,rgba(240,160,87,0.04)_100%)] flex flex-col gap-5 items-start md:flex-row md:items-center md:justify-between">
+                        <div>
+                            <h2 className="[font-family:'Sora',sans-serif] text-[1.5rem] font-normal text-[#dff0f4] m-0">
+                                Ready to embed your own model?
+                            </h2>
+                            <p className="text-[0.88rem] text-[#567a84] mt-1 mb-0">
+                                Send us your .ifc file — we&apos;ll have it live on your site within a day.
+                            </p>
+                        </div>
+                        <button
+                            type="button"
+                            className="shrink-0 px-7 py-[13px] bg-[#53d2dc] text-[#09141a] [font-family:'Sora',sans-serif] font-bold text-[0.9rem] border-0 rounded-[10px] cursor-pointer transition-all duration-150 tracking-[0.02em] whitespace-nowrap hover:-translate-y-px hover:bg-[#7ce8f0] hover:shadow-[0_0_28px_rgba(83,210,220,0.35)]"
+                        >
+                            Get started →
+                        </button>
                     </div>
                 </div>
-
-                <div className="mt-10 rounded-[2rem] border border-[#c8a46a]/20 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),rgba(200,164,106,0.08))] px-6 py-7 backdrop-blur-sm md:px-8">
-                    <p className="text-xs uppercase tracking-[0.18em] text-[#c8b6df]">For clients</p>
-                    <h2 className="mt-3 max-w-3xl text-2xl font-semibold leading-tight text-white md:text-4xl">
-                        BIM data can live inside the sales site, not outside it.
-                    </h2>
-                    <p className="mt-4 max-w-4xl text-base leading-7 text-[#d3cadf]">
-                        Hipposoft can embed navigable BIM directly into a website, turning an IFC file into something clients,
-                        investors, and contractors can actually explore without leaving the browser.
-                    </p>
-                </div>
             </div>
-        </section>
+        </>
     );
 };
 

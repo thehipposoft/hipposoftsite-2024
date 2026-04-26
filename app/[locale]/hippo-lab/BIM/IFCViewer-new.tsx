@@ -471,7 +471,8 @@ function IFCViewer({ ifcUrl, mode, onProgress, onLoadStateChange, onError }: IFC
                 return;
             }
 
-            const { modelId, localId } = hit.fragments;
+            const modelId = hit.fragments.modelId;
+            const localId = hit.localId;
             const dataByModel = await frags.getData({ [modelId]: new Set([localId]) });
             const data = dataByModel[modelId]?.[0] ?? null;
 

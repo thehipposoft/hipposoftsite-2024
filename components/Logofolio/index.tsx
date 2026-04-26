@@ -1,4 +1,3 @@
-import React from 'react';
 import BackButton from '../commons/BackButton';
 import LogofolioLayout from './LogofolioLayout';
 import AnimatedLink from '../commons/AnimatedLink';

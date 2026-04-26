@@ -194,13 +194,26 @@ const NewLogofolioComp = ({
                         </div>
                     </div>
                     <div className='lg:w-1/2 relative' style={{backgroundColor: data.backgroundLegend}}>
-                        <Image sizes='50vw' src={data.backgroundThree} fill className={`${data.contain ? "object-contain" : "object-cover"} legend-image`} alt='Background three' />
+                        <Image
+                            sizes='50vw'
+                            src={data.backgroundThree}
+                            width={1200}
+                            height={800}
+                            className={`h-[50vh] lg:h-screen ${data.contain ? "object-contain" : "object-cover"} legend-image`}
+                            alt='Background three'
+                        />
                     </div>
                 </div>
                 <div style={{backgroundColor: data.backgroundLegend}} className='h-[50vh]' />
             </div>
             <div className='h-screen sticky top-0 flex items-end pb-12 '>
-                <Image src={data.backgroundFinal} alt='' className='object-cover -z-10' fill />
+                <Image
+                    src={data.backgroundFinal}
+                    alt=''
+                    className='object-cover -z-10 w-screen h-screen'
+                    width={1200}
+                    height={800}
+                />
             </div>
             <LogofolioSingleComp data={data} />
         </div>

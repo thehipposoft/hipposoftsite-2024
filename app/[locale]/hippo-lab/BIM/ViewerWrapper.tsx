@@ -32,8 +32,19 @@ type CustomIfcModel = {
 
 const demos: Demo[] = [
     {
-        id: 'measure',
+        id: 'inspect',
         number: '01',
+        label: 'Inspect',
+        headline: 'Every element tells a story.',
+        description:
+            'Click any wall, slab, or fitting to surface the IFC data inside — materials, fire ratings, areas, and more.',
+        steps: ['Click any element in the model', 'Review its BIM data in the panel', 'See material, fire rating, area and more'],
+        modelUrl: '/models/Ifc2x3_Duplex_Architecture.ifc',
+        modelName: 'Duplex Architecture',
+    },
+    {
+        id: 'measure',
+        number: '02',
         label: 'Measure',
         headline: 'Measure anything, instantly.',
         description:
@@ -43,17 +54,6 @@ const demos: Demo[] = [
         modelName: 'Residential Unit',
     },
     {
-        id: 'inspect',
-        number: '02',
-        label: 'Inspect',
-        headline: 'Every element tells a story.',
-        description:
-            'Click any wall, slab, or fitting to surface the IFC data inside — materials, fire ratings, areas, and more.',
-        steps: ['Click any element in the model', 'Review its BIM data in the panel', 'See material, fire rating, area and more'],
-        modelUrl: '/models/Ifc_SampleHouse.ifc',
-        modelName: 'Hotel Payogastilla',
-    },
-    {
         id: 'multiselect',
         number: '03',
         label: 'Multi-select',
@@ -61,7 +61,7 @@ const demos: Demo[] = [
         description:
             'Shift-click to select multiple elements at once. Walk clients through a structural system, a floor plate, or a set of rooms.',
         steps: ['Click any element to select it', 'Shift+click to add more to the group', 'See all selected elements listed in the panel'],
-        modelUrl: '/models/Ifc_SampleCastle.ifc',
+        modelUrl: '/models/Ifc4_Revit_ARC.ifc',
         modelName: 'Residential Unit',
     },
 ];
@@ -71,7 +71,7 @@ const demos: Demo[] = [
 // ---------------------------------------------------------------------------
 
 const ViewerWrapper = () => {
-    const [activeDemoId, setActiveDemoId] = useState<ViewerMode>('measure');
+    const [activeDemoId, setActiveDemoId] = useState<ViewerMode>('inspect');
     const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -158,8 +158,8 @@ const ViewerWrapper = () => {
                             Your models,<br /><em className="text-[#53d2dc]">alive on the web.</em>
                         </h1>
                         <p className="text-base leading-[1.65] text-[#567a84] max-w-[520px] m-0">
-                            Show clients what their building actually contains — not a PDF, not a render.
-                            Interactive BIM, embedded directly on your website.
+                            Go beyond the standard. Showcase a real-time BIM experience that brings projects to life.
+                            Immersive, interactive, and memorable — right on your website.
                         </p>
                     </header>
 

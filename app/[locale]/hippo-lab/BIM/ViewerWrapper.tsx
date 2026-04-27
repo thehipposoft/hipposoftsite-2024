@@ -7,7 +7,7 @@ import IFCViewer from './IFCViewer-new';
 // Types
 // ---------------------------------------------------------------------------
 
-export type ViewerMode = 'measure' | 'inspect' | 'multiselect';
+export type ViewerMode = 'measure' | 'inspect' | 'visual';
 
 type Demo = {
     id: ViewerMode;
@@ -54,15 +54,15 @@ const demos: Demo[] = [
         modelName: 'Residential Unit',
     },
     {
-        id: 'multiselect',
+        id: 'visual',
         number: '03',
-        label: 'Multi-select',
-        headline: 'Group, compare, present.',
+        label: 'Visual',
+        headline: 'Turn white models into clear stories.',
         description:
-            'Shift-click to select multiple elements at once. Walk clients through a structural system, a floor plate, or a set of rooms.',
-        steps: ['Click any element to select it', 'Shift+click to add more to the group', 'See all selected elements listed in the panel'],
+            'Switch visual modes and scene presets to highlight architecture, site context, and energy systems with stronger contrast.',
+        steps: ['Pick a scene preset', 'Toggle visual modes for contrast', 'Click elements to inspect highlighted data'],
         modelUrl: '/models/Ifc4_Revit_ARC.ifc',
-        modelName: 'Residential Unit',
+        modelName: 'Site + House Showcase',
     },
 ];
 

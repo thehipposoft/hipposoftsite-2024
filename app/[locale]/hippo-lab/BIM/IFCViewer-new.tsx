@@ -38,6 +38,29 @@ type PropertyRow = {
     normalizedKey: string;
 };
 
+type CameraControlsLike = {
+    setLookAt: (
+        positionX: number,
+        positionY: number,
+        positionZ: number,
+        targetX: number,
+        targetY: number,
+        targetZ: number,
+        enableTransition?: boolean,
+    ) => Promise<void> | void;
+};
+
+type VisualPreset = 'overview' | 'site' | 'energy' | 'interior';
+
+type MaterialSnapshot = {
+    color?: THREE.Color;
+    emissive?: THREE.Color;
+    emissiveIntensity?: number;
+    opacity: number;
+    transparent: boolean;
+    depthWrite: boolean;
+};
+
 // ---------------------------------------------------------------------------
 // Shared highlight material
 // ---------------------------------------------------------------------------
@@ -49,6 +72,15 @@ const HIGHLIGHT_MAT: FRAGS.MaterialDefinition = {
     transparent: false,
     preserveOriginalMaterial: false,
 };
+
+const VISUAL_PALETTE = [
+    new THREE.Color('#8ad8ff'),
+    new THREE.Color('#8bf4d5'),
+    new THREE.Color('#ffd084'),
+    new THREE.Color('#ffad9f'),
+    new THREE.Color('#d7c6ff'),
+    new THREE.Color('#b6f0ff'),
+];
 
 // ---------------------------------------------------------------------------
 // Pure helpers
@@ -127,20 +159,21 @@ const buildSelMap = (items: Pick<SelectedElement, 'modelId' | 'localId'>[]): OBC
     return map;
 };
 
+const asMaterialArray = (material: THREE.Material | THREE.Material[]) =>
+    Array.isArray(material) ? material : [material];
+
+const colorIndexFromKey = (key: string) => {
+    let hash = 0;
+    for (let i = 0; i < key.length; i += 1) {
+        hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
+    }
+    return hash % VISUAL_PALETTE.length;
+};
+
 const fitCamera = (
     object: THREE.Object3D,
     camera: THREE.PerspectiveCamera | THREE.OrthographicCamera,
-    controls: {
-        setLookAt: (
-            positionX: number,
-            positionY: number,
-            positionZ: number,
-            targetX: number,
-            targetY: number,
-            targetZ: number,
-            enableTransition?: boolean,
-        ) => Promise<void> | void;
-    },
+    controls: CameraControlsLike,
 ) => {
     const box = new THREE.Box3().setFromObject(object);
     if (box.isEmpty()) return;
@@ -242,6 +275,9 @@ function IFCViewer({ ifcUrl, mode, onProgress, onLoadStateChange, onError }: IFC
     const containerRef = useRef<HTMLDivElement>(null);
     const fragmentsRef = useRef<OBC.FragmentsManager | null>(null);
     const worldRef = useRef<OBC.SimpleWorld<OBC.SimpleScene, OBC.SimpleCamera, OBC.SimpleRenderer> | null>(null);
+    const loadedObjectsRef = useRef<THREE.Object3D[]>([]);
+    const sceneBoundsRef = useRef(new THREE.Box3());
+    const materialSnapshotsRef = useRef<WeakMap<THREE.Material, MaterialSnapshot>>(new WeakMap());
     const anchorRef = useRef<THREE.Vector3 | null>(null);
     const anchorMarkerRef = useRef<THREE.Object3D[] | null>(null);
     const pulseRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -260,6 +296,10 @@ function IFCViewer({ ifcUrl, mode, onProgress, onLoadStateChange, onError }: IFC
     const [measurements, setMeasurements] = useState<Measurement[]>([]);
     const [awaitingSecondPoint, setAwaitingSecondPoint] = useState(false);
     const [showAll, setShowAll] = useState(false);
+    const [colorByZone, setColorByZone] = useState(true);
+    const [xrayShell, setXrayShell] = useState(false);
+    const [contrastBoost, setContrastBoost] = useState(true);
+    const [activePreset, setActivePreset] = useState<VisualPreset>('overview');
 
     const activeEl = useMemo(
         () => selected.find((i) => selKey(i.modelId, i.localId) === activeKey) ?? selected[0] ?? null,
@@ -301,6 +341,13 @@ function IFCViewer({ ifcUrl, mode, onProgress, onLoadStateChange, onError }: IFC
         setAwaitingSecondPoint(false);
         setShowAll(false);
     }, [mode, ifcUrl]);
+
+    useEffect(() => {
+        setColorByZone(true);
+        setXrayShell(false);
+        setContrastBoost(true);
+        setActivePreset('overview');
+    }, [ifcUrl]);
 
     // ── Anchor marker helpers ──
     const clearAnchorMarker = useCallback(() => {
@@ -356,6 +403,144 @@ function IFCViewer({ ifcUrl, mode, onProgress, onLoadStateChange, onError }: IFC
         frags.core.update(true);
     }, []);
 
+    const restoreOriginalMaterials = useCallback(() => {
+        for (const root of loadedObjectsRef.current) {
+            root.traverse((obj) => {
+                if (!(obj instanceof THREE.Mesh)) return;
+                for (const mat of asMaterialArray(obj.material)) {
+                    const snap = materialSnapshotsRef.current.get(mat);
+                    if (!snap) continue;
+                    const colorMat = mat as THREE.Material & { color?: THREE.Color };
+                    const emissiveMat = mat as THREE.Material & { emissive?: THREE.Color; emissiveIntensity?: number };
+                    if (colorMat.color && snap.color) colorMat.color.copy(snap.color);
+                    if (emissiveMat.emissive && snap.emissive) emissiveMat.emissive.copy(snap.emissive);
+                    if (typeof snap.emissiveIntensity === 'number' && typeof emissiveMat.emissiveIntensity === 'number') {
+                        emissiveMat.emissiveIntensity = snap.emissiveIntensity;
+                    }
+                    mat.opacity = snap.opacity;
+                    mat.transparent = snap.transparent;
+                    mat.depthWrite = snap.depthWrite;
+                    mat.needsUpdate = true;
+                }
+            });
+        }
+    }, []);
+
+    const applyVisualPresentation = useCallback(() => {
+        for (const root of loadedObjectsRef.current) {
+            root.traverse((obj) => {
+                if (!(obj instanceof THREE.Mesh)) return;
+                const mats = asMaterialArray(obj.material);
+                mats.forEach((mat, index) => {
+                    const colorMat = mat as THREE.Material & { color?: THREE.Color };
+                    const emissiveMat = mat as THREE.Material & { emissive?: THREE.Color; emissiveIntensity?: number };
+                    if (!materialSnapshotsRef.current.has(mat)) {
+                        materialSnapshotsRef.current.set(mat, {
+                            color: colorMat.color ? colorMat.color.clone() : undefined,
+                            emissive: emissiveMat.emissive ? emissiveMat.emissive.clone() : undefined,
+                            emissiveIntensity: emissiveMat.emissiveIntensity,
+                            opacity: mat.opacity,
+                            transparent: mat.transparent,
+                            depthWrite: mat.depthWrite,
+                        });
+                    }
+
+                    const snap = materialSnapshotsRef.current.get(mat);
+                    if (!snap) return;
+
+                    if (colorMat.color && snap.color) colorMat.color.copy(snap.color);
+                    if (emissiveMat.emissive && snap.emissive) emissiveMat.emissive.copy(snap.emissive);
+                    if (typeof snap.emissiveIntensity === 'number' && typeof emissiveMat.emissiveIntensity === 'number') {
+                        emissiveMat.emissiveIntensity = snap.emissiveIntensity;
+                    }
+                    mat.opacity = snap.opacity;
+                    mat.transparent = snap.transparent;
+                    mat.depthWrite = snap.depthWrite;
+
+                    if (colorByZone && colorMat.color) {
+                        const paletteColor = VISUAL_PALETTE[colorIndexFromKey(`${obj.name}:${index}`)];
+                        colorMat.color.copy(paletteColor);
+                    }
+
+                    if (contrastBoost && emissiveMat.emissive) {
+                        emissiveMat.emissive.set('#0f1e26');
+                        if (typeof emissiveMat.emissiveIntensity === 'number') emissiveMat.emissiveIntensity = 0.2;
+                    }
+
+                    if (xrayShell) {
+                        mat.transparent = true;
+                        mat.opacity = Math.min(mat.opacity, 0.35);
+                        mat.depthWrite = false;
+                    }
+
+                    mat.needsUpdate = true;
+                });
+            });
+        }
+        fragmentsRef.current?.core.update(true);
+    }, [colorByZone, contrastBoost, xrayShell]);
+
+    const applyCameraPreset = useCallback((preset: VisualPreset) => {
+        const world = worldRef.current;
+        if (!world) return;
+        const bounds = sceneBoundsRef.current;
+        if (bounds.isEmpty()) return;
+
+        const sphere = bounds.getBoundingSphere(new THREE.Sphere());
+        const radius = Math.max(sphere.radius, 0.5);
+
+        const presetMap: Record<VisualPreset, { dir: THREE.Vector3; distance: number; targetOffset: THREE.Vector3 }> = {
+            overview: {
+                dir: new THREE.Vector3(1, 0.72, 1),
+                distance: radius * 2.1,
+                targetOffset: new THREE.Vector3(0, 0, 0),
+            },
+            site: {
+                dir: new THREE.Vector3(0.22, 1.7, 0.28),
+                distance: radius * 2.6,
+                targetOffset: new THREE.Vector3(0, radius * 0.05, 0),
+            },
+            energy: {
+                dir: new THREE.Vector3(1.9, 0.95, -1.2),
+                distance: radius * 1.95,
+                targetOffset: new THREE.Vector3(radius * 0.18, radius * 0.15, -radius * 0.05),
+            },
+            interior: {
+                dir: new THREE.Vector3(0.35, 0.2, 0.34),
+                distance: radius * 0.95,
+                targetOffset: new THREE.Vector3(0, radius * 0.1, 0),
+            },
+        };
+
+        const cfg = presetMap[preset];
+        const target = sphere.center.clone().add(cfg.targetOffset);
+        const position = target.clone().add(cfg.dir.normalize().multiplyScalar(cfg.distance));
+
+        world.camera.controls.setLookAt(
+            position.x,
+            position.y,
+            position.z,
+            target.x,
+            target.y,
+            target.z,
+            true,
+        );
+    }, []);
+
+    useEffect(() => {
+        if (mode === 'visual') {
+            applyVisualPresentation();
+            return;
+        }
+        restoreOriginalMaterials();
+        fragmentsRef.current?.core.update(true);
+    }, [mode, applyVisualPresentation, restoreOriginalMaterials]);
+
+    useEffect(() => {
+        if (mode !== 'visual') return;
+        applyCameraPreset(activePreset);
+    }, [mode, activePreset, applyCameraPreset]);
+
     // ── Main effect: init Three / load IFC ──
     useEffect(() => {
         if (!containerRef.current) return;
@@ -364,6 +549,8 @@ function IFCViewer({ ifcUrl, mode, onProgress, onLoadStateChange, onError }: IFC
         let removeWheelGuard: (() => void) | null = null;
 
         const run = async () => {
+            loadedObjectsRef.current = [];
+            sceneBoundsRef.current.makeEmpty();
             cbLoad.current?.(true);
             cbError.current?.(null);
             cbProgress.current?.(0);
@@ -403,8 +590,16 @@ function IFCViewer({ ifcUrl, mode, onProgress, onLoadStateChange, onError }: IFC
                 frags.list.onItemSet.add(({ value: model }) => {
                     model.useCamera(world.camera.three);
                     world.scene.three.add(model.object);
+                    loadedObjectsRef.current.push(model.object);
+                    sceneBoundsRef.current.expandByObject(model.object);
                     frags.core.update(true);
-                    requestAnimationFrame(() => fitCamera(model.object, world.camera.three, world.camera.controls));
+                    requestAnimationFrame(() => {
+                        fitCamera(model.object, world.camera.three, world.camera.controls);
+                        if (mode === 'visual') {
+                            applyVisualPresentation();
+                            applyCameraPreset(activePreset);
+                        }
+                    });
                 });
 
                 const res = await fetch(ifcUrl);
@@ -435,6 +630,8 @@ function IFCViewer({ ifcUrl, mode, onProgress, onLoadStateChange, onError }: IFC
             clearMeasureObjects();
             fragmentsRef.current = null;
             worldRef.current = null;
+            loadedObjectsRef.current = [];
+            sceneBoundsRef.current.makeEmpty();
             cbLoad.current?.(false);
             removeWheelGuard?.();
             components?.dispose();
@@ -490,13 +687,11 @@ function IFCViewer({ ifcUrl, mode, onProgress, onLoadStateChange, onError }: IFC
                 return;
             }
 
-            // ── INSPECT / MULTISELECT modes ──
+            // ── INSPECT / VISUAL modes ──
             if (!hit) {
-                if (!e.shiftKey) {
-                    await applyHighlight([]);
-                    setSelected([]);
-                    setActiveKey(null);
-                }
+                await applyHighlight([]);
+                setSelected([]);
+                setActiveKey(null);
                 return;
             }
 
@@ -514,24 +709,12 @@ function IFCViewer({ ifcUrl, mode, onProgress, onLoadStateChange, onError }: IFC
 
             const key = selKey(modelId, localId);
 
-            if (mode === 'inspect') {
-                // Single select only — replace regardless of shift
+            if (mode === 'inspect' || mode === 'visual') {
                 await applyHighlight([el]);
                 setSelected([el]);
                 setActiveKey(key);
                 return;
             }
-
-            // multiselect
-            setSelected((prev) => {
-                const exists = prev.some((i) => selKey(i.modelId, i.localId) === key);
-                const next = e.shiftKey
-                    ? exists ? prev.filter((i) => selKey(i.modelId, i.localId) !== key) : [...prev, el]
-                    : [el];
-                applyHighlight(next);
-                setActiveKey(next[0] ? selKey(next[0].modelId, next[0].localId) : null);
-                return next;
-            });
         } catch (err) {
             cbError.current?.(err instanceof Error ? err.message : 'Click error');
         }
@@ -636,45 +819,58 @@ function IFCViewer({ ifcUrl, mode, onProgress, onLoadStateChange, onError }: IFC
         </div>
     );
 
-    const renderMultiselectPanel = () => (
+    const renderVisualPanel = () => (
         <div style={panelStyle}>
-            <span style={labelStyle}>Selected — {selected.length} element{selected.length !== 1 ? 's' : ''}</span>
-            {selected.length === 0 ? (
-                <div style={{ color: '#567a84', fontSize: '0.8rem', lineHeight: 1.6 }}>
-                    Click elements to select them.<br />Hold Shift to add more.
+            <span style={labelStyle}>Visual mode</span>
+            <div style={{ color: '#567a84', fontSize: '0.78rem', lineHeight: 1.55, marginBottom: 10 }}>
+                Improve readability for white models using visual contrast controls.
+            </div>
+
+            <div style={{ marginBottom: 12 }}>
+                <div style={{ ...labelStyle, marginBottom: 6 }}>Visual toggles</div>
+                <div style={{ display: 'grid', gap: 6 }}>
+                    {([
+                        ['Color by zones', colorByZone, () => setColorByZone((v) => !v)],
+                        ['X-ray shell', xrayShell, () => setXrayShell((v) => !v)],
+                        ['Contrast boost', contrastBoost, () => setContrastBoost((v) => !v)],
+                    ] as Array<[string, boolean, () => void]>).map(([label, enabled, toggle]) => (
+                        <button
+                            key={label}
+                            type="button"
+                            onClick={toggle}
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                padding: '8px 10px',
+                                borderRadius: 8,
+                                border: '1px solid rgba(255,255,255,0.1)',
+                                background: enabled ? 'rgba(83,210,220,0.08)' : 'rgba(255,255,255,0.03)',
+                                color: enabled ? '#53d2dc' : '#cde4ea',
+                                cursor: 'pointer',
+                                fontSize: '0.76rem',
+                            }}
+                        >
+                            <span>{label}</span>
+                            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.64rem' }}>{enabled ? 'ON' : 'OFF'}</span>
+                        </button>
+                    ))}
                 </div>
-            ) : (
-                <>
-                    {selected.map((el) => {
-                        const k = selKey(el.modelId, el.localId);
-                        const isActive = k === activeKey;
-                        return (
-                            <button
-                                key={k}
-                                type="button"
-                                onClick={() => setActiveKey(k)}
-                                style={{
-                                    display: 'block', width: '100%', textAlign: 'left',
-                                    padding: '8px 10px', borderRadius: 8, marginBottom: 6,
-                                    border: `1px solid ${isActive ? 'rgba(83,210,220,0.35)' : 'rgba(255,255,255,0.07)'}`,
-                                    background: isActive ? 'rgba(83,210,220,0.08)' : 'rgba(255,255,255,0.03)',
-                                    cursor: 'pointer',
-                                }}
-                            >
-                                <div style={{ fontWeight: 600, color: '#dff0f4', fontSize: '0.82rem' }}>{el.name}</div>
-                                <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.6rem', color: '#567a84', letterSpacing: '0.08em', marginTop: 2 }}>{el.category}</div>
-                            </button>
-                        );
-                    })}
-                    <button
-                        type="button"
-                        onClick={async () => { await applyHighlight([]); setSelected([]); setActiveKey(null); }}
-                        style={{ marginTop: 4, width: '100%', padding: '7px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.08)', background: 'transparent', color: '#567a84', fontSize: '0.76rem', cursor: 'pointer', fontFamily: "'Syne', sans-serif" }}
-                    >
-                        Clear selection
-                    </button>
-                </>
-            )}
+            </div>
+
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 10 }}>
+                <div style={{ ...labelStyle, marginBottom: 6 }}>Selection</div>
+                {!activeEl ? (
+                    <div style={{ color: '#567a84', fontSize: '0.78rem', lineHeight: 1.5 }}>
+                        Click any element to inspect key metadata with the enhanced visual style.
+                    </div>
+                ) : (
+                    <div style={{ ...rowStyle, marginBottom: 0 }}>
+                        <div style={{ fontWeight: 600, color: '#dff0f4', fontSize: '0.83rem' }}>{activeEl.name}</div>
+                        <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.6rem', color: '#567a84', letterSpacing: '0.08em', marginTop: 3 }}>{activeEl.category}</div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 
@@ -702,7 +898,7 @@ function IFCViewer({ ifcUrl, mode, onProgress, onLoadStateChange, onError }: IFC
             {/* Mode-specific panel */}
             {mode === 'measure' && renderMeasurePanel()}
             {mode === 'inspect' && renderInspectPanel()}
-            {mode === 'multiselect' && renderMultiselectPanel()}
+            {mode === 'visual' && renderVisualPanel()}
 
             {/* Measurement: waiting for second point toast */}
             {mode === 'measure' && awaitingSecondPoint && (

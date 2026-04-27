@@ -354,6 +354,7 @@ function IFCViewer({ ifcUrl, mode, onProgress, onLoadStateChange, onError }: IFC
         if (!containerRef.current) return;
         let mounted = true;
         let components: OBC.Components | null = null;
+        let removeWheelGuard: (() => void) | null = null;
 
         const run = async () => {
             cbLoad.current?.(true);
@@ -372,6 +373,16 @@ function IFCViewer({ ifcUrl, mode, onProgress, onLoadStateChange, onError }: IFC
                 components.init();
                 world.scene.setup();
                 world.scene.three.background = new THREE.Color(0x0d1e26);
+
+                // Keep wheel zoom inside the viewer and avoid page scroll jumps.
+                const canvasEl = world.renderer.three.domElement;
+                const blockScrollOnWheel = (event: WheelEvent) => {
+                    event.preventDefault();
+                };
+                canvasEl.addEventListener('wheel', blockScrollOnWheel, { passive: false });
+                removeWheelGuard = () => {
+                    canvasEl.removeEventListener('wheel', blockScrollOnWheel);
+                };
 
                 const frags = components.get(OBC.FragmentsManager);
                 fragmentsRef.current = frags;
@@ -418,6 +429,7 @@ function IFCViewer({ ifcUrl, mode, onProgress, onLoadStateChange, onError }: IFC
             fragmentsRef.current = null;
             worldRef.current = null;
             cbLoad.current?.(false);
+            removeWheelGuard?.();
             components?.dispose();
             if (containerRef.current) containerRef.current.innerHTML = '';
         };
@@ -664,10 +676,19 @@ function IFCViewer({ ifcUrl, mode, onProgress, onLoadStateChange, onError }: IFC
     // ---------------------------------------------------------------------------
 
     return (
-        <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+        <div
+            style={{ position: 'relative', width: '100%', height: '100%' }}
+            data-lenis-prevent
+            data-lenis-prevent-wheel
+        >
             <div
                 ref={containerRef}
-                style={{ width: '100%', height: '100%', cursor: mode === 'measure' ? 'crosshair' : 'default' }}
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    cursor: mode === 'measure' ? 'crosshair' : 'default',
+                    overscrollBehavior: 'contain',
+                }}
                 onClick={handleClick}
             />
 

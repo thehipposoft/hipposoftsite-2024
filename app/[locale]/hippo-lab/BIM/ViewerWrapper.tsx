@@ -211,7 +211,7 @@ const ViewerWrapper = () => {
                         />
 
                         {/* ── Viewer card ── */}
-                        <div className="border border-white/[0.07] rounded-2xl overflow-hidden bg-[#112230] flex flex-col">
+                        <div className="border border-white/[0.07] rounded-2xl overflow-hidden bg-[#112230] flex flex-col h-full">
 
                             {/* Top bar */}
                             <div className="flex items-center justify-between gap-3 px-[18px] py-3 bg-[#0d1e26] border-b border-white/[0.07] shrink-0">

@@ -20,7 +20,7 @@ const Menu = () => {
 
     const openMenuFunc = () => setOpenMenu(!openMenu);
 
-    const tl = useRef<any>();
+    const tl = useRef<gsap.core.Timeline | null>(null);
 
     useGSAP(() => {
         tl.current = gsap
@@ -44,12 +44,12 @@ const Menu = () => {
     }, {scope: container});
 
     useEffect(() => {
-        tl.current.reversed(!openMenu);
+        tl.current?.reversed(!openMenu);
     }, [openMenu])
 
     return (
         <div ref={container} className=''>
-            <button 
+            <button
                 className='fixed md:top-4 top-5 md:right-6 right-7 hover:bg-white/20 bg-black/15 rounded-xl px-2 py-2 duration-500 cursor-pointer z-50'
                 onClick={openMenuFunc}
             >

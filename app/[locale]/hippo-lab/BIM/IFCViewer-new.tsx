@@ -128,8 +128,18 @@ const buildSelMap = (items: Pick<SelectedElement, 'modelId' | 'localId'>[]): OBC
 
 const fitCamera = (
     object: THREE.Object3D,
-    camera: THREE.PerspectiveCamera,
-    controls: { setLookAt: (...args: [...number[], boolean]) => void },
+    camera: THREE.PerspectiveCamera | THREE.OrthographicCamera,
+    controls: {
+        setLookAt: (
+            positionX: number,
+            positionY: number,
+            positionZ: number,
+            targetX: number,
+            targetY: number,
+            targetZ: number,
+            enableTransition?: boolean,
+        ) => Promise<void> | void;
+    },
 ) => {
     const box = new THREE.Box3().setFromObject(object);
     if (box.isEmpty()) return;

@@ -4,7 +4,7 @@ import gsap from 'gsap';
 
 const Loader = ({ onFinish }: { onFinish: () => void }) => {
   const counterRef = useRef<HTMLDivElement>(null);
-  const tl = useRef<any>();
+  const tl = useRef<gsap.core.Timeline | null>(null);
 
   useEffect(() => {
 

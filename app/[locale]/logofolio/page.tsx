@@ -8,8 +8,6 @@ export const metadata: Metadata = {
 
 export default function Logofolio() {
     return (
-        <div>
-            <LogofolioComp />
-        </div>
+        <LogofolioComp />
     );
 }

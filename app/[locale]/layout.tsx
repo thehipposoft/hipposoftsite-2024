@@ -17,60 +17,83 @@ import LocaleSwitcherButton from "@/components/commons/LocaleSwitcherButton";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "HippoSoft | Create to Connect",
-  description: "Create to connect. We create and build digital experiences to boost your business. We want to inspire you.",
-  openGraph: {
-    title: 'HippoSoft | Create to Connect',
-    description: 'Create to connect. We create and build digital experiences to boost your business. We want to inspire you.',
-    type: 'website',
-    url: 'https://www.thehipposoft.com/',
-    siteName: 'HippoSoft',
-    images: [
-      {
-        url: 'https://www.thehipposoft.com/assets/hippo-icon.png',
-        width: 512,
-        height: 512,
-        alt: 'HippoSoft | Create to Connect',
-      }
-    ],
-    locale: 'en-AU',
-  },
+    metadataBase: new URL("https://www.thehipposoft.com"),
+    title: "HippoSoft | Create to Connect",
+    description: "Create to connect. We create and build digital experiences to boost your business. We want to inspire you.",
+    alternates: {
+        canonical: "/",
+        languages: {
+            "en-AU": "/en",
+            "es-ES": "/es",
+            "x-default": "/en",
+        },
+    },
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+            "max-video-preview": -1,
+        },
+    },
+    openGraph: {
+        title: 'HippoSoft | Create to Connect',
+        description: 'Create to connect. We create and build digital experiences to boost your business. We want to inspire you.',
+        type: 'website',
+        url: '/',
+        siteName: 'HippoSoft',
+        images: [
+        {
+            url: '/assets/hippo-icon.png',
+            width: 1200,
+            height: 630,
+            alt: 'HippoSoft | Create to Connect',
+        }
+        ],
+        locale: 'en-AU',
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "HippoSoft | Create to Connect",
+        description: "Create to connect. We create and build digital experiences to boost your business. We want to inspire you.",
+        images: ["/assets/hippo-icon.png"],
+    },
 };
 
 export default async function RootLayout({
-  children,
-  params
+    children,
+    params
 }:{
-  children: React.ReactNode;
-  params: Promise<{locale: string}>;
+    children: React.ReactNode;
+    params: Promise<{locale: string}>;
 }) {
-
     // Ensure that the incoming `locale` is valid
     const {locale} = await params;
     if (!hasLocale(routing.locales, locale)) {
-      notFound();
+        notFound();
     }
 
     const messages = await getMessages()
-    
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        <NextIntlClientProvider messages={messages}>
-          <SchemaOrg />
-          <GoogleAnalytics />
-          <SmoothScroll>
-              {/* <LoaderClient> */}
-                <Transitions />
-                  <LocaleSwitcherButton />
-                  <Menu />
-                  {children}
-                <CustomCursor />
-                <StickyContact />
-              {/* </LoaderClient> */}
-          </SmoothScroll>
-        </NextIntlClientProvider>
-      </body>
-    </html>
-  );
+
+    return (
+        <html lang={locale}>
+            <body className={inter.className}>
+                <NextIntlClientProvider messages={messages}>
+                <SchemaOrg />
+                <GoogleAnalytics />
+                <SmoothScroll>
+                    <Transitions />
+                    <LocaleSwitcherButton />
+                    <Menu />
+                    {children}
+                    <CustomCursor />
+                    <StickyContact />
+                </SmoothScroll>
+                </NextIntlClientProvider>
+            </body>
+        </html>
+    );
 }

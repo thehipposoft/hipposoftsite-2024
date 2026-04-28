@@ -4,8 +4,31 @@ import Image from 'next/image';
 import NewLogofolioComp from '@/components/Logofolio/NewLogofolioComp';
 
 export const metadata: Metadata = {
-  title: 'HippoSoft | Logofolio: Inspir Performance',
-  description: 'We design the logo and give your brand identity, aligning it with the values ​​you want to convey.',
+    title: 'HippoSoft | Logofolio | Inspir Performance Case Study',
+    description: 'Case study for Inspir Performance: logo and brand identity design that ignites the mind and drives performance excellence.',
+    alternates: {
+        canonical: '/logofolio/inspir-performance',
+    },
+    openGraph: {
+        title: 'HippoSoft | Logofolio | Inspir Performance Case Study',
+        description: 'Explore the Inspir Performance branding project, from visual identity strategy to final logo applications.',
+        type: 'article',
+        url: '/logofolio/inspir-performance',
+        images: [
+        {
+            url: '/assets/images/logofolio/inspir.png',
+            width: 1200,
+            height: 630,
+            alt: 'Inspir Performance logo by HippoSoft',
+        },
+        ],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'HippoSoft | Logofolio | Inspir Performance Case Study',
+        description: 'Explore the Inspir Performance branding project, from visual identity strategy to final logo applications.',
+        images: ['/assets/images/logofolio/inspir.png'],
+    },
 }
 
 export default function InspirPerformancePage() {

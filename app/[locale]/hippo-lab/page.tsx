@@ -8,9 +8,7 @@ export const metadata: Metadata = {
 
 const HippoLab = () => {
     return (
-        <div>
-            <HippoLabComp />
-        </div>
+        <HippoLabComp />
     );
 }
 

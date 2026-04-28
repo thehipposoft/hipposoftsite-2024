@@ -1,17 +1,37 @@
-import React from 'react';
 import LogofolioSingleComp from '@/components/Logofolio/LogofolioSingleComp';
 import type { Metadata } from 'next'
 import { useTranslations } from 'next-intl';
- 
+
 export const metadata: Metadata = {
-  title: 'HippoSoft | Logofolio: Diversity & Employment',
-  description: 'We design the logo and give your brand identity, aligning it with the values ​​you want to convey.',
+    title: 'HippoSoft | Logofolio | Diversity & Employment Case Study',
+    description: 'Case study for Diversity & Employment: logo and brand identity design that celebrates inclusive hiring and employment excellence.',
+    alternates: {
+        canonical: '/logofolio/diversity-employment',
+    },
+    openGraph: {
+        title: 'HippoSoft | Logofolio | Diversity & Employment Case Study',
+        description: 'Explore the Diversity & Employment branding project, from visual identity strategy to final logo applications.',
+        type: 'article',
+        url: '/logofolio/diversity-employment',
+        images: [
+        {
+            url: '/assets/images/logofolio/diversity-employment.png',
+            width: 1200,
+            height: 630,
+            alt: 'Diversity & Employment logo by HippoSoft',
+        },
+        ],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'HippoSoft | Logofolio | Diversity & Employment Case Study',
+        description: 'Explore the Diversity & Employment branding project, from visual identity strategy to final logo applications.',
+        images: ['/assets/images/logofolio/diversity-employment.png'],
+    },
 }
 
 export default function DiversityEmploymentPage() {
-
     const t = useTranslations('LogofolioDiversity');
-
     const DIVERSITY_DATA = {
         isOld: true,
         name: 'Diversity Employment',
@@ -90,8 +110,6 @@ export default function DiversityEmploymentPage() {
     }
 
     return (
-        <div>
-            <LogofolioSingleComp data={DIVERSITY_DATA} />
-        </div>
+        <LogofolioSingleComp data={DIVERSITY_DATA} />
     );
 };

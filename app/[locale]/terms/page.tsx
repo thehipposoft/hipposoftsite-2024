@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'HippoSoft | Terms of Service',
-  description: 'Terms of Service for HippoSoft - Review the terms and conditions for using our services.',
+    title: 'HippoSoft | Terms of Service',
+    description: 'Terms of Service for HippoSoft - Review the terms and conditions for using our services.',
 }
 
 export default function TermsOfService() {

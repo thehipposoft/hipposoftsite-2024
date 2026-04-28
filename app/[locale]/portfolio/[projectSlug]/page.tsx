@@ -1,6 +1,6 @@
 import { ResolvingMetadata, Metadata } from "next";
 import { PROJECTS } from "@/components/Portfolio/constants";
-import SingleProyect from "@/components/Portfolio/SingleProyect";
+import SingleProject from "@/components/Portfolio/SingleProject";
 
 type PropsType = {
     params: Promise<{
@@ -18,20 +18,38 @@ export async function generateMetadata({
 
     if (project) {
         const previousImages = (await parent).openGraph?.images || [];
+        const projectName = projectData?.name || 'Project';
+        const industry = projectData?.industry || 'Design & Development';
+        const work = projectData?.work || 'Web Design + Development';
 
         return {
-            title: `HippoSoft | Projects | ${projectData.name} `,
+            title: `HippoSoft | Portfolio | ${projectName}`,
+            description: `${projectName}: ${industry} project. Our work includes ${work}.`,
+            alternates: {
+                canonical: `/portfolio/${slug}`,
+            },
             openGraph: {
+                title: `HippoSoft | Portfolio | ${projectName}`,
+                description: `${projectName}: ${industry} project. Our work includes ${work}.`,
+                type: 'article',
+                url: `/portfolio/${slug}`,
                 images: [
-                    projectData.mockBig,
+                    projectData?.mockBig || '/assets/hippo-icon.png',
                     ...previousImages,
                 ],
+            },
+            twitter: {
+                card: 'summary_large_image',
+                title: `HippoSoft | Portfolio | ${projectName}`,
+                description: `${projectName}: ${industry} project. Our work includes ${work}.`,
+                images: [projectData?.mockBig || '/assets/hippo-icon.png'],
             },
         };
     }
 
     return {
-        title: `HippoSoft | Projects | No project found`,
+        title: `HippoSoft | Portfolio | No project found`,
+        description: 'The requested project could not be found.',
     };
 }
 
@@ -44,7 +62,7 @@ export default async function ProjectPage({
 
     return (
         projectData
-            ? <SingleProyect project={projectData} />
+            ? <SingleProject project={projectData} />
             : <p>No project for the selected slug</p>
     )
 }

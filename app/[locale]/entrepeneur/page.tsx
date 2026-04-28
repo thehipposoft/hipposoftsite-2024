@@ -1,13 +1,36 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from 'next'
- 
+
 export const metadata: Metadata = {
-  title: 'HippoSoft | Entrepeneur',
-  description: 'We support the development of your project from the beginning. Contact us to boost your brand and build together.',
+    title: 'HippoSoft | Entrepreneur',
+    description: 'We support the development of your project from the beginning. Contact us to boost your brand and build together.',
+    alternates: {
+        canonical: '/entrepeneur',
+    },
+    openGraph: {
+        title: 'HippoSoft | Entrepreneur',
+        description: 'We support the development of your project from the beginning. Contact us to boost your brand and build together.',
+        type: 'website',
+        url: '/entrepeneur',
+        images: [
+        {
+            url: '/assets/hippo-icon.png',
+            width: 1200,
+            height: 630,
+            alt: 'HippoSoft Entrepreneur Support',
+        },
+        ],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'HippoSoft | Entrepreneur',
+        description: 'We support the development of your project from the beginning. Contact us to boost your brand and build together.',
+        images: ['/assets/hippo-icon.png'],
+    },
 }
 
-export default function EntrepeneurPage () {
+export default function EntrepreneurPage () {
     return(
         <div className="h-screen relative flex flex-col gap-8 justify-center items-center">
             <Image src={'/assets/images/entrepeneur/entrepeneurBg.webp'} alt="Background with pen and paper" fill className="object-cover" />
@@ -20,5 +43,4 @@ export default function EntrepeneurPage () {
             </Link>
         </div>
     )
-
 }

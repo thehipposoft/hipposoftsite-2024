@@ -1,33 +1,34 @@
 import type { Metadata } from 'next'
 import { useTranslations } from 'next-intl';
 import NewLogofolioComp from '@/components/Logofolio/NewLogofolioComp';
+import { buildLocalizedMetadata } from '../../metadata-utils';
 
-export const metadata: Metadata = {
-    title: 'HippoSoft | Logofolio | Destino Salta Case Study',
-    description: 'Case study for Destino Salta: logo and brand identity design that invites travelers to discover their next destination in Salta, Argentina.',
-    alternates: {
-        canonical: '/logofolio/destino-salta',
-    },
-    openGraph: {
-        title: 'HippoSoft | Logofolio | Destino Salta Case Study',
-        description: 'Explore the Destino Salta branding project, from visual identity strategy to final logo applications.',
+type MetadataProps = {
+    params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
+    const { locale } = await params;
+
+    return buildLocalizedMetadata({
+        locale,
+        path: '/logofolio/destino-salta',
+        image: '/assets/images/logofolio/destino.png',
+        imageAlt: 'Destino Salta logo by HippoSoft',
         type: 'article',
-        url: '/logofolio/destino-salta',
-        images: [
-        {
-            url: '/assets/images/logofolio/destino.png',
-            width: 1200,
-            height: 630,
-            alt: 'Destino Salta logo by HippoSoft',
+        content: {
+            en: {
+                title: 'HippoSoft | Logofolio | Destino Salta Case Study',
+                description: 'Case study for Destino Salta: logo and brand identity design that invites travelers to discover their next destination in Salta, Argentina.',
+                socialDescription: 'Explore the Destino Salta branding project, from visual identity strategy to final logo applications.',
+            },
+            es: {
+                title: 'HippoSoft | Logofolio | Caso de Estudio Destino Salta',
+                description: 'Caso de estudio de Destino Salta: diseno de logo e identidad de marca para promocionar turismo en Salta.',
+                socialDescription: 'Explora el proyecto de branding de Destino Salta, desde la estrategia visual hasta las aplicaciones finales del logo.',
+            },
         },
-        ],
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: 'HippoSoft | Logofolio | Destino Salta Case Study',
-        description: 'Explore the Destino Salta branding project, from visual identity strategy to final logo applications.',
-        images: ['/assets/images/logofolio/destino.png'],
-    },
+    });
 }
 
 export default function DestinoSaltaPage() {

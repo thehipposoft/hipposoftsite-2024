@@ -2,33 +2,34 @@ import type { Metadata } from 'next'
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import NewLogofolioComp from '@/components/Logofolio/NewLogofolioComp';
+import { buildLocalizedMetadata } from '../../metadata-utils';
 
-export const metadata: Metadata = {
-    title: 'HippoSoft | Logofolio | Lumina Technologies Case Study',
-    description: 'Case study for Lumina Technologies: logo and brand identity design that reimagines the interface between light and matter.',
-    alternates: {
-        canonical: '/logofolio/lumina-technologies',
-    },
-    openGraph: {
-        title: 'HippoSoft | Logofolio | Lumina Technologies Case Study',
-        description: 'Explore the Lumina Technologies branding project, from visual identity strategy to final logo applications.',
+type MetadataProps = {
+    params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
+    const { locale } = await params;
+
+    return buildLocalizedMetadata({
+        locale,
+        path: '/logofolio/lumina-technologies',
+        image: '/assets/images/logofolio/lumina.png',
+        imageAlt: 'Lumina Technologies logo by HippoSoft',
         type: 'article',
-        url: '/logofolio/lumina-technologies',
-        images: [
-            {
-                url: '/assets/images/logofolio/lumina.png',
-                width: 1200,
-                height: 630,
-                alt: 'Lumina Technologies logo by HippoSoft',
+        content: {
+            en: {
+                title: 'HippoSoft | Logofolio | Lumina Technologies Case Study',
+                description: 'Case study for Lumina Technologies: logo and brand identity design that reimagines the interface between light and matter.',
+                socialDescription: 'Explore the Lumina Technologies branding project, from visual identity strategy to final logo applications.',
             },
-        ],
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: 'HippoSoft | Logofolio | Lumina Technologies Case Study',
-        description: 'Explore the Lumina Technologies branding project, from visual identity strategy to final logo applications.',
-        images: ['/assets/images/logofolio/lumina.png'],
-    },
+            es: {
+                title: 'HippoSoft | Logofolio | Caso de Estudio Lumina Technologies',
+                description: 'Caso de estudio de Lumina Technologies: diseno de logo e identidad de marca inspirados en la relacion entre luz y materia.',
+                socialDescription: 'Explora el proyecto de branding de Lumina Technologies, desde la estrategia visual hasta las aplicaciones finales del logo.',
+            },
+        },
+    });
 }
 
 export default function LuminaTechnologiesPage() {

@@ -1,32 +1,29 @@
 import type { Metadata } from 'next';
 import HippoLabComp from './HippoLab';
+import { buildLocalizedMetadata } from '../metadata-utils';
 
-export const metadata: Metadata = {
-    title: 'HippoSoft | Hippo Lab',
-    description: 'Explore our innovative lab projects and experimental design solutions that push creative boundaries.',
-    alternates: {
-        canonical: '/hippo-lab',
-    },
-    openGraph: {
-        title: 'HippoSoft | Hippo Lab',
-        description: 'Explore our innovative lab projects and experimental design solutions that push creative boundaries.',
-        type: 'website',
-        url: '/hippo-lab',
-        images: [
-        {
-            url: '/assets/hippo-icon.png',
-            width: 1200,
-            height: 630,
-            alt: 'HippoSoft Hippo Lab',
+type MetadataProps = {
+    params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
+    const { locale } = await params;
+
+    return buildLocalizedMetadata({
+        locale,
+        path: '/hippo-lab',
+        imageAlt: 'HippoSoft Hippo Lab',
+        content: {
+            en: {
+                title: 'HippoSoft | Hippo Lab',
+                description: 'Explore our innovative lab projects and experimental design solutions that push creative boundaries.',
+            },
+            es: {
+                title: 'HippoSoft | Hippo Lab',
+                description: 'Explora nuestros proyectos de laboratorio e ideas experimentales que impulsan la innovacion.',
+            },
         },
-        ],
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: 'HippoSoft | Hippo Lab',
-        description: 'Explore our innovative lab projects and experimental design solutions that push creative boundaries.',
-        images: ['/assets/hippo-icon.png'],
-    },
+    });
 }
 
 const HippoLab = () => {

@@ -1,32 +1,29 @@
 import WebDevComponent from "@/components/WebDevelopment/WebDevComponent";
 import type { Metadata } from 'next'
+import { buildLocalizedMetadata } from '../metadata-utils';
 
-export const metadata: Metadata = {
-    title: 'HippoSoft | Web Development',
-    description: 'Full-stack web development services covering strategy, implementation, hosting, and maintenance for scalable digital solutions.',
-    alternates: {
-        canonical: '/web-development',
-    },
-    openGraph: {
-        title: 'HippoSoft | Web Development',
-        description: 'Full-stack web development services covering strategy, implementation, hosting, and maintenance for scalable digital solutions.',
-        type: 'website',
-        url: '/web-development',
-        images: [
-        {
-            url: '/assets/hippo-icon.png',
-            width: 1200,
-            height: 630,
-            alt: 'HippoSoft Web Development Services',
+type MetadataProps = {
+    params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
+    const { locale } = await params;
+
+    return buildLocalizedMetadata({
+        locale,
+        path: '/web-development',
+        imageAlt: 'HippoSoft web development services',
+        content: {
+            en: {
+                title: 'HippoSoft | Web Development',
+                description: 'Full-stack web development services covering strategy, implementation, hosting, and maintenance for scalable digital solutions.',
+            },
+            es: {
+                title: 'HippoSoft | Desarrollo Web',
+                description: 'Servicios de desarrollo web full-stack que incluyen estrategia, implementacion, hosting y mantenimiento.',
+            },
         },
-        ],
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: 'HippoSoft | Web Development',
-        description: 'Full-stack web development services covering strategy, implementation, hosting, and maintenance for scalable digital solutions.',
-        images: ['/assets/hippo-icon.png'],
-    },
+    });
 }
 
 export default function WebDevelopmentPage() {

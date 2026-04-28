@@ -1,33 +1,34 @@
 import LogofolioSingleComp from '@/components/Logofolio/LogofolioSingleComp';
 import type { Metadata } from 'next'
 import { useTranslations } from 'next-intl';
+import { buildLocalizedMetadata } from '../../metadata-utils';
 
-export const metadata: Metadata = {
-    title: 'HippoSoft | Logofolio | Diversity & Employment Case Study',
-    description: 'Case study for Diversity & Employment: logo and brand identity design that celebrates inclusive hiring and employment excellence.',
-    alternates: {
-        canonical: '/logofolio/diversity-employment',
-    },
-    openGraph: {
-        title: 'HippoSoft | Logofolio | Diversity & Employment Case Study',
-        description: 'Explore the Diversity & Employment branding project, from visual identity strategy to final logo applications.',
+type MetadataProps = {
+    params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
+    const { locale } = await params;
+
+    return buildLocalizedMetadata({
+        locale,
+        path: '/logofolio/diversity-employment',
+        image: '/assets/images/logofolio/diversity-employment.png',
+        imageAlt: 'Diversity and Employment logo by HippoSoft',
         type: 'article',
-        url: '/logofolio/diversity-employment',
-        images: [
-        {
-            url: '/assets/images/logofolio/diversity-employment.png',
-            width: 1200,
-            height: 630,
-            alt: 'Diversity & Employment logo by HippoSoft',
+        content: {
+            en: {
+                title: 'HippoSoft | Logofolio | Diversity & Employment Case Study',
+                description: 'Case study for Diversity & Employment: logo and brand identity design that celebrates inclusive hiring and employment excellence.',
+                socialDescription: 'Explore the Diversity & Employment branding project, from visual identity strategy to final logo applications.',
+            },
+            es: {
+                title: 'HippoSoft | Logofolio | Caso de Estudio Diversity & Employment',
+                description: 'Caso de estudio de Diversity & Employment: diseno de logo e identidad de marca enfocados en empleo inclusivo.',
+                socialDescription: 'Explora el proyecto de branding de Diversity & Employment, desde la estrategia visual hasta las aplicaciones finales del logo.',
+            },
         },
-        ],
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: 'HippoSoft | Logofolio | Diversity & Employment Case Study',
-        description: 'Explore the Diversity & Employment branding project, from visual identity strategy to final logo applications.',
-        images: ['/assets/images/logofolio/diversity-employment.png'],
-    },
+    });
 }
 
 export default function DiversityEmploymentPage() {

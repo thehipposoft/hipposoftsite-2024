@@ -2,33 +2,34 @@ import type { Metadata } from 'next'
 import {useTranslations} from 'next-intl';
 import Image from 'next/image';
 import NewLogofolioComp from '@/components/Logofolio/NewLogofolioComp';
+import { buildLocalizedMetadata } from '../../metadata-utils';
 
-export const metadata: Metadata = {
-    title: 'HippoSoft | Logofolio | Inspir Performance Case Study',
-    description: 'Case study for Inspir Performance: logo and brand identity design that ignites the mind and drives performance excellence.',
-    alternates: {
-        canonical: '/logofolio/inspir-performance',
-    },
-    openGraph: {
-        title: 'HippoSoft | Logofolio | Inspir Performance Case Study',
-        description: 'Explore the Inspir Performance branding project, from visual identity strategy to final logo applications.',
+type MetadataProps = {
+    params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
+    const { locale } = await params;
+
+    return buildLocalizedMetadata({
+        locale,
+        path: '/logofolio/inspir-performance',
+        image: '/assets/images/logofolio/inspir.png',
+        imageAlt: 'Inspir Performance logo by HippoSoft',
         type: 'article',
-        url: '/logofolio/inspir-performance',
-        images: [
-        {
-            url: '/assets/images/logofolio/inspir.png',
-            width: 1200,
-            height: 630,
-            alt: 'Inspir Performance logo by HippoSoft',
+        content: {
+            en: {
+                title: 'HippoSoft | Logofolio | Inspir Performance Case Study',
+                description: 'Case study for Inspir Performance: logo and brand identity design that ignites the mind and drives performance excellence.',
+                socialDescription: 'Explore the Inspir Performance branding project, from visual identity strategy to final logo applications.',
+            },
+            es: {
+                title: 'HippoSoft | Logofolio | Caso de Estudio Inspir Performance',
+                description: 'Caso de estudio de Inspir Performance: diseno de logo e identidad de marca orientados al alto rendimiento.',
+                socialDescription: 'Explora el proyecto de branding de Inspir Performance, desde la estrategia visual hasta las aplicaciones finales del logo.',
+            },
         },
-        ],
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: 'HippoSoft | Logofolio | Inspir Performance Case Study',
-        description: 'Explore the Inspir Performance branding project, from visual identity strategy to final logo applications.',
-        images: ['/assets/images/logofolio/inspir.png'],
-    },
+    });
 }
 
 export default function InspirPerformancePage() {

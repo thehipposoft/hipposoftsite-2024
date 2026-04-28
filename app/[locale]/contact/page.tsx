@@ -1,32 +1,29 @@
 import ContactComponent from '@/components/Contact';
 import type { Metadata } from 'next'
+import { buildLocalizedMetadata } from '../metadata-utils';
 
-export const metadata: Metadata = {
-    title: 'HippoSoft | Contact',
-    description: "Get in touch with the HippoSoft team and let's build your brand, design or website together right away.",
-    alternates: {
-        canonical: '/contact',
-    },
-    openGraph: {
-        title: 'HippoSoft | Contact',
-        description: "Get in touch with the HippoSoft team and let's build your brand, design or website together right away.",
-        type: 'website',
-        url: '/contact',
-        images: [
-        {
-            url: '/assets/hippo-icon.png',
-            width: 1200,
-            height: 630,
-            alt: 'Contact HippoSoft',
+type MetadataProps = {
+    params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
+    const { locale } = await params;
+
+    return buildLocalizedMetadata({
+        locale,
+        path: '/contact',
+        imageAlt: 'Contact HippoSoft',
+        content: {
+            en: {
+                title: 'HippoSoft | Contact',
+                description: "Get in touch with the HippoSoft team and let's build your brand, design or website together right away.",
+            },
+            es: {
+                title: 'HippoSoft | Contacto',
+                description: 'Contacta al equipo de HippoSoft y construyamos juntos tu marca, diseno o sitio web.',
+            },
         },
-        ],
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: 'HippoSoft | Contact',
-        description: "Get in touch with the HippoSoft team and let's build your brand, design or website together right away.",
-        images: ['/assets/hippo-icon.png'],
-    },
+    });
 }
 
 export default function Contact() {

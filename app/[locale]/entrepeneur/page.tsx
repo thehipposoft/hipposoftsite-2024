@@ -1,33 +1,30 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from 'next'
+import { buildLocalizedMetadata } from '../metadata-utils';
 
-export const metadata: Metadata = {
-    title: 'HippoSoft | Entrepreneur',
-    description: 'We support the development of your project from the beginning. Contact us to boost your brand and build together.',
-    alternates: {
-        canonical: '/entrepeneur',
-    },
-    openGraph: {
-        title: 'HippoSoft | Entrepreneur',
-        description: 'We support the development of your project from the beginning. Contact us to boost your brand and build together.',
-        type: 'website',
-        url: '/entrepeneur',
-        images: [
-        {
-            url: '/assets/hippo-icon.png',
-            width: 1200,
-            height: 630,
-            alt: 'HippoSoft Entrepreneur Support',
+type MetadataProps = {
+    params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
+    const { locale } = await params;
+
+    return buildLocalizedMetadata({
+        locale,
+        path: '/entrepeneur',
+        imageAlt: 'HippoSoft Entrepreneur support',
+        content: {
+            en: {
+                title: 'HippoSoft | Entrepreneur',
+                description: 'We support the development of your project from the beginning. Contact us to boost your brand and build together.',
+            },
+            es: {
+                title: 'HippoSoft | Emprendedor',
+                description: 'Acompanamos el desarrollo de tu proyecto desde el inicio para potenciar tu marca y crecer juntos.',
+            },
         },
-        ],
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: 'HippoSoft | Entrepreneur',
-        description: 'We support the development of your project from the beginning. Contact us to boost your brand and build together.',
-        images: ['/assets/hippo-icon.png'],
-    },
+    });
 }
 
 export default function EntrepreneurPage () {

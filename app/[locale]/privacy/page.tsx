@@ -1,8 +1,28 @@
 import type { Metadata } from 'next'
+import { buildLocalizedMetadata } from '../metadata-utils';
 
-export const metadata: Metadata = {
-    title: 'HippoSoft | Privacy Policy',
-    description: 'Privacy Policy for HippoSoft - Learn how we collect, use, and protect your personal information.',
+type MetadataProps = {
+    params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
+    const { locale } = await params;
+
+    return buildLocalizedMetadata({
+        locale,
+        path: '/privacy',
+        imageAlt: 'HippoSoft Privacy Policy',
+        content: {
+            en: {
+                title: 'HippoSoft | Privacy Policy',
+                description: 'Privacy Policy for HippoSoft - Learn how we collect, use, and protect your personal information.',
+            },
+            es: {
+                title: 'HippoSoft | Politica de Privacidad',
+                description: 'Politica de Privacidad de HippoSoft: conoce como recopilamos, usamos y protegemos tus datos personales.',
+            },
+        },
+    });
 }
 
 export default function PrivacyPolicy() {

@@ -1,33 +1,34 @@
 import type { Metadata } from 'next'
 import {useTranslations} from 'next-intl';
 import NewLogofolioComp from '@/components/Logofolio/NewLogofolioComp';
+import { buildLocalizedMetadata } from '../../metadata-utils';
 
-export const metadata: Metadata = {
-    title: 'HippoSoft | Logofolio | Rock Steady Digital Case Study',
-    description: 'Case study for Rock Steady Digital: logo and brand identity design built to connect people, process, tools and data for business growth.',
-    alternates: {
-        canonical: '/logofolio/rock-steady-digital',
-    },
-    openGraph: {
-        title: 'HippoSoft | Logofolio | Rock Steady Digital Case Study',
-        description: 'Explore the Rock Steady Digital branding project, from visual identity strategy to final logo applications.',
+type MetadataProps = {
+    params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
+    const { locale } = await params;
+
+    return buildLocalizedMetadata({
+        locale,
+        path: '/logofolio/rock-steady-digital',
+        image: '/assets/images/logofolio/rock-steady.png',
+        imageAlt: 'Rock Steady Digital logo by HippoSoft',
         type: 'article',
-        url: '/logofolio/rock-steady-digital',
-        images: [
-            {
-                url: '/assets/images/logofolio/rock-steady.png',
-                width: 1200,
-                height: 630,
-                alt: 'Rock Steady Digital logo by HippoSoft',
+        content: {
+            en: {
+                title: 'HippoSoft | Logofolio | Rock Steady Digital Case Study',
+                description: 'Case study for Rock Steady Digital: logo and brand identity design built to connect people, process, tools and data for business growth.',
+                socialDescription: 'Explore the Rock Steady Digital branding project, from visual identity strategy to final logo applications.',
             },
-        ],
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: 'HippoSoft | Logofolio | Rock Steady Digital Case Study',
-        description: 'Explore the Rock Steady Digital branding project, from visual identity strategy to final logo applications.',
-        images: ['/assets/images/logofolio/rock-steady.png'],
-    },
+            es: {
+                title: 'HippoSoft | Logofolio | Caso de Estudio Rock Steady Digital',
+                description: 'Caso de estudio de Rock Steady Digital: diseno de logo e identidad de marca para impulsar el crecimiento del negocio.',
+                socialDescription: 'Explora el proyecto de branding de Rock Steady Digital, desde la estrategia visual hasta las aplicaciones finales del logo.',
+            },
+        },
+    });
 }
 
 export default function RockSteadyDigitalPage() {

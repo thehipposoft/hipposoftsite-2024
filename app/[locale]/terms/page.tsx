@@ -1,8 +1,28 @@
 import type { Metadata } from 'next'
+import { buildLocalizedMetadata } from '../metadata-utils';
 
-export const metadata: Metadata = {
-    title: 'HippoSoft | Terms of Service',
-    description: 'Terms of Service for HippoSoft - Review the terms and conditions for using our services.',
+type MetadataProps = {
+    params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
+    const { locale } = await params;
+
+    return buildLocalizedMetadata({
+        locale,
+        path: '/terms',
+        imageAlt: 'HippoSoft Terms of Service',
+        content: {
+            en: {
+                title: 'HippoSoft | Terms of Service',
+                description: 'Terms of Service for HippoSoft - Review the terms and conditions for using our services.',
+            },
+            es: {
+                title: 'HippoSoft | Terminos del Servicio',
+                description: 'Terminos del Servicio de HippoSoft: revisa las condiciones para el uso de nuestros servicios.',
+            },
+        },
+    });
 }
 
 export default function TermsOfService() {

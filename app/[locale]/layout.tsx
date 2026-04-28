@@ -16,52 +16,79 @@ import LocaleSwitcherButton from "@/components/commons/LocaleSwitcherButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-    metadataBase: new URL("https://www.thehipposoft.com"),
-    title: "HippoSoft | Create to Connect",
-    description: "Create to connect. We create and build digital experiences to boost your business. We want to inspire you.",
-    alternates: {
-        canonical: "/",
-        languages: {
-            "en-AU": "/en",
-            "es-ES": "/es",
-            "x-default": "/en",
-        },
-    },
-    robots: {
-        index: true,
-        follow: true,
-        googleBot: {
-            index: true,
-            follow: true,
-            "max-image-preview": "large",
-            "max-snippet": -1,
-            "max-video-preview": -1,
-        },
-    },
-    openGraph: {
-        title: 'HippoSoft | Create to Connect',
-        description: 'Create to connect. We create and build digital experiences to boost your business. We want to inspire you.',
-        type: 'website',
-        url: '/',
-        siteName: 'HippoSoft',
-        images: [
-        {
-            url: '/assets/hippo-icon.png',
-            width: 1200,
-            height: 630,
-            alt: 'HippoSoft | Create to Connect',
-        }
-        ],
-        locale: 'en-AU',
-    },
-    twitter: {
-        card: "summary_large_image",
+const METADATA_BY_LOCALE = {
+    en: {
         title: "HippoSoft | Create to Connect",
         description: "Create to connect. We create and build digital experiences to boost your business. We want to inspire you.",
-        images: ["/assets/hippo-icon.png"],
+        ogLocale: "en_AU",
+        ogAlternateLocale: "es_ES",
     },
+    es: {
+        title: "HippoSoft | Crear Para Conectar",
+        description: "Creamos para conectar. Diseñamos y desarrollamos experiencias digitales para potenciar tu negocio.",
+        ogLocale: "es_ES",
+        ogAlternateLocale: "en_AU",
+    },
+} as const;
+
+type LayoutProps = {
+    params: Promise<{locale: string}>;
 };
+
+export async function generateMetadata({ params }: LayoutProps): Promise<Metadata> {
+    const { locale } = await params;
+    const currentLocale = hasLocale(routing.locales, locale) ? locale : routing.defaultLocale;
+    const localeMetadata = METADATA_BY_LOCALE[currentLocale as keyof typeof METADATA_BY_LOCALE];
+    const canonical = `/${currentLocale}`;
+
+    return {
+        metadataBase: new URL("https://www.thehipposoft.com"),
+        title: localeMetadata.title,
+        description: localeMetadata.description,
+        alternates: {
+            canonical,
+            languages: {
+                "en-AU": "/en",
+                "es-ES": "/es",
+                "x-default": "/en",
+            },
+        },
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+                "max-image-preview": "large",
+                "max-snippet": -1,
+                "max-video-preview": -1,
+            },
+        },
+        openGraph: {
+            title: localeMetadata.title,
+            description: localeMetadata.description,
+            type: "website",
+            url: canonical,
+            siteName: "HippoSoft",
+            images: [
+                {
+                    url: "/assets/hippo-icon.png",
+                    width: 1200,
+                    height: 630,
+                    alt: localeMetadata.title,
+                },
+            ],
+            locale: localeMetadata.ogLocale,
+            alternateLocale: [localeMetadata.ogAlternateLocale],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: localeMetadata.title,
+            description: localeMetadata.description,
+            images: ["/assets/hippo-icon.png"],
+        },
+    };
+}
 
 export default async function RootLayout({
     children,

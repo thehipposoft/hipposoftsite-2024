@@ -16,6 +16,7 @@ interface LogofolioTypes {
     logo: string,
     backgroundOne: string,
     backgroundTwo: string,
+    secondSectionCustom?: boolean,
     itemImage: string,
     contain?: boolean,
     left? : boolean
@@ -151,9 +152,22 @@ const NewLogofolioComp = ({
             <Image sizes='100vw' fill src={data.backgroundOne} alt='Background' className='-z-10' />
             <Image src={data.logo} alt={`${data.name} Logo`} sizes='375px' width={375} height={200} className='object-contain logo max-h-[250px] ' />
         </div>
-        <div className='h-screen sticky top-0'>
-            <Image sizes='100vw' src={data.backgroundTwo} fill className='object-cover' alt={`${data.name} image 2`} />
-        </div>
+        {
+            data.secondSectionCustom ?
+            <div className='h-screen sticky top-0 flex items-center justify-center'>
+                <Image sizes='100vw' src={data.backgroundTwo} fill className='object-cover' alt={`${data.name} image 2`} />
+                <div className='flex relative z-20'>
+                    <Image src={"/assets/images/logofolio/perri-salud.png"} alt='Perri salud logo' width={440} height={210} />
+                    <Image src={"/assets/images/logofolio/perri-import.png"} alt='Perri import logo' width={440} height={210} />
+                    <Image src={"/assets/images/logofolio/perri-casa.png"} alt='Perri casa logo' width={440} height={210} />
+                </div>
+            </div> 
+            :
+            <div className='h-screen sticky top-0'>
+                <Image sizes='100vw' src={data.backgroundTwo} fill className='object-cover' alt={`${data.name} image 2`} />
+            </div>
+        }
+
         <div className='h-screen flex flex-col lg:flex-row relative'>
             <div className={`${data.contain ? "bg-white" : ""} lg:w-1/2 relative h-screen`}>
                 <Image sizes='50vw' src={data.itemImage} fill className={`${data.contain ? "object-contain" : "object-cover"} ${data.left && "object-left"}`} alt='Object image' />

@@ -110,15 +110,21 @@ const LogofolioLayout = () => {
                         <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                     </svg>
                 </AnimatedLink>
-                <div className=' relative opacity-60 -top-8'>
-                    <Image 
-                        src={'/assets/images/logofolio/logofolio-5.webp'} 
-                        width={732}
-                        height={198}
-                        className='object-center w-[240px] h-[60px]' 
-                        alt='Lisbon Licores naturales logo'
-                     />
-                </div>
+                <AnimatedLink href={'/logofolio/perri'} className='flex flex-col items-center gap-4 group'>
+                    <div className=' relative opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 -bottom-2 group-hover:bottom-2 duration-500'>
+                        <Image 
+                            src={'/assets/images/logofolio/perri-logo.webp'} 
+                            width={660}
+                            height={686}
+                            className='object-center w-[260px] h-[100px]'  
+                            alt='Destino Salta Logo'
+                         />
+                    </div>
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1.25 20H38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                        <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
+                    </svg>
+                </AnimatedLink>
                 <div className=' relative opacity-60 -top-8'>
                     <Image 
                         src={'/assets/images/logofolio/logofolio-6.webp'} 

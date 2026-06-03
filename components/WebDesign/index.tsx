@@ -9,7 +9,6 @@ import BackButton from '../commons/BackButton';
 import AnimatedLink from '../commons/AnimatedLink';
 import {useTranslations} from 'next-intl';
 
-
 gsap.registerPlugin(ScrollTrigger);
 
 const WebDesignComp = () => {

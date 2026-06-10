@@ -2,4 +2,4 @@ User-Agent: *
 Allow: /
 Disallow: /private/
 
-Sitemap: https://thehipposoft.com/sitemap.xml
+Sitemap: https://www.thehipposoft.com/sitemap.xml

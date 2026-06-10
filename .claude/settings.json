@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp /Users/juanmanuelborigen/Desktop/HippoSoft/hipposoftsite-2024/proxy.ts /Users/juanmanuelborigen/Desktop/HippoSoft/hipposoftsite-2024/middleware.ts)"
+    ],
+    "additionalDirectories": [
+      "/Users/juanmanuelborigen/Desktop/HippoSoft/hipposoftsite-2024"
+    ]
+  }
+}

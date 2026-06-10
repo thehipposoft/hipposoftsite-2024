@@ -1,6 +1,5 @@
-'use client'
-import React from "react";
-import Script from "next/script"
+'use client';
+import Script from "next/script";
 
 const SchemaOrg = () => {
     return (
@@ -14,8 +13,8 @@ const SchemaOrg = () => {
                         "@context": "https://schema.org",
                         "@type": "Organization",
                         "name": "HippoSoft",
-                        "url": "https://thehipposoft.com/",
-                        "logo": "https://thehipposoft.com/assets/logo.png",
+                        "url": "https://www.thehipposoft.com/",
+                        "logo": "https://www.thehipposoft.com/assets/logo.png",
                         "contactPoint": {
                             "@type": "ContactPoint",
                             "telephone": "+61 414 286 242",

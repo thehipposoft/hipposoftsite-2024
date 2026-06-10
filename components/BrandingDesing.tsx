@@ -16,7 +16,7 @@ const BrandingDesing = () => {
 
     const container = useRef<HTMLDivElement>(null);
 
-    const tl = useRef<any>();
+    const tl = useRef<gsap.core.Timeline | null>(null);
 
     useGSAP(() => {
         tl.current = gsap
@@ -31,7 +31,7 @@ const BrandingDesing = () => {
         .to(['.title', '.info', '.carousel-slide'], {
             opacity: 1,
         })
-        
+
         gsap.to('.carousel__wrapper' , {
             x: -900,
             ease: 'power1.inOut',
@@ -64,7 +64,7 @@ const BrandingDesing = () => {
                                         <path d="M20 1.25V38.75" stroke="#70FFE5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="3 3"/>
                                     </svg>
                                 </div>
-                            </AnimatedLink>    
+                            </AnimatedLink>
                             <Image sizes='850px' src={"/assets/images/design/design-1.webp"} fill className={`group-hover:scale-110 duration-1000 rounded-md object-cover object-center`} alt='Logofolio section background' priority/>
                         </div>
                     </div>

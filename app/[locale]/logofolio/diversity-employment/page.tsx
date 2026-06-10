@@ -1,17 +1,38 @@
-import React from 'react';
 import LogofolioSingleComp from '@/components/Logofolio/LogofolioSingleComp';
 import type { Metadata } from 'next'
 import { useTranslations } from 'next-intl';
- 
-export const metadata: Metadata = {
-  title: 'HippoSoft | Logofolio: Diversity & Employment',
-  description: 'We design the logo and give your brand identity, aligning it with the values ​​you want to convey.',
+import { buildLocalizedMetadata } from '../../metadata-utils';
+
+type MetadataProps = {
+    params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
+    const { locale } = await params;
+
+    return buildLocalizedMetadata({
+        locale,
+        path: '/logofolio/diversity-employment',
+        image: '/assets/images/logofolio/diversity-employment.png',
+        imageAlt: 'Diversity and Employment logo by HippoSoft',
+        type: 'article',
+        content: {
+            en: {
+                title: 'HippoSoft | Logofolio | Diversity & Employment Case Study',
+                description: 'Case study for Diversity & Employment: logo and brand identity design that celebrates inclusive hiring and employment excellence.',
+                socialDescription: 'Explore the Diversity & Employment branding project, from visual identity strategy to final logo applications.',
+            },
+            es: {
+                title: 'HippoSoft | Logofolio | Caso de Estudio Diversity & Employment',
+                description: 'Caso de estudio de Diversity & Employment: diseno de logo e identidad de marca enfocados en empleo inclusivo.',
+                socialDescription: 'Explora el proyecto de branding de Diversity & Employment, desde la estrategia visual hasta las aplicaciones finales del logo.',
+            },
+        },
+    });
 }
 
 export default function DiversityEmploymentPage() {
-
     const t = useTranslations('LogofolioDiversity');
-
     const DIVERSITY_DATA = {
         isOld: true,
         name: 'Diversity Employment',
@@ -90,8 +111,6 @@ export default function DiversityEmploymentPage() {
     }
 
     return (
-        <div>
-            <LogofolioSingleComp data={DIVERSITY_DATA} />
-        </div>
+        <LogofolioSingleComp data={DIVERSITY_DATA} />
     );
 };

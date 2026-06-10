@@ -1,13 +1,33 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from 'next'
- 
-export const metadata: Metadata = {
-  title: 'HippoSoft | Entrepeneur',
-  description: 'We support the development of your project from the beginning. Contact us to boost your brand and build together.',
+import { buildLocalizedMetadata } from '../metadata-utils';
+
+type MetadataProps = {
+    params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
+    const { locale } = await params;
+
+    return buildLocalizedMetadata({
+        locale,
+        path: '/entrepeneur',
+        imageAlt: 'HippoSoft Entrepreneur support',
+        content: {
+            en: {
+                title: 'HippoSoft | Entrepreneur',
+                description: 'We support the development of your project from the beginning. Contact us to boost your brand and build together.',
+            },
+            es: {
+                title: 'HippoSoft | Emprendedor',
+                description: 'Acompanamos el desarrollo de tu proyecto desde el inicio para potenciar tu marca y crecer juntos.',
+            },
+        },
+    });
 }
 
-export default function EntrepeneurPage () {
+export default function EntrepreneurPage () {
     return(
         <div className="h-screen relative flex flex-col gap-8 justify-center items-center">
             <Image src={'/assets/images/entrepeneur/entrepeneurBg.webp'} alt="Background with pen and paper" fill className="object-cover" />
@@ -20,5 +40,4 @@ export default function EntrepeneurPage () {
             </Link>
         </div>
     )
-
 }

@@ -19,12 +19,12 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "sass": "^1.77.6",
+    "@thatopen/components": "^3.2.1",
+    "@thatopen/fragments": "^3.2.0",
     "three": "^0.180.0",
     "web-ifc": "^0.0.77"
   },
   "devDependencies": {
-    "@thatopen/components": "^3.2.1",
-    "@thatopen/fragments": "^3.2.0",
     "@types/node": "^20",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",

@@ -12,18 +12,18 @@ const Menu = () => {
     const container = useRef<HTMLDivElement>(null);
 
     const [openMenu, setOpenMenu] = useState<boolean>(false);
+    const [brochureURL, setBrochureURL] = useState('https://wp.thehipposoft.com/wp-content/uploads/2026/06/Services_Hipposoft_26_EN.pdf');
 
     const openMenuFunc = () => setOpenMenu(!openMenu);
 
     const tl = useRef<gsap.core.Timeline | null>(null);
 
-    const getBrochureURL = () => {
+    useEffect(() => {
         const locale = navigator.language || 'en';
         if (locale.startsWith('es')) {
-            return 'https://wp.thehipposoft.com/wp-content/uploads/2026/06/Servicios_Hippo_26_ES.pdf';
+            setBrochureURL('https://wp.thehipposoft.com/wp-content/uploads/2026/06/Servicios_Hippo_26_ES.pdf');
         }
-        return 'https://wp.thehipposoft.com/wp-content/uploads/2026/06/Services_Hipposoft_26_EN.pdf';
-    };
+    }, []);
 
     useGSAP(() => {
         tl.current = gsap
@@ -107,7 +107,7 @@ const Menu = () => {
                     </AnimatedLink>
                     <div className='flex justify-between mt-2 items-center flex-col md:flex-row gap-8'>
                         <Link
-                            href={getBrochureURL()}
+                            href={brochureURL}
                             target="_blank"
                             rel="noopener noreferrer"
                             className='px-8 tracking-[0.3em] uppercase mt-4 md:mt-0 border border-cyan hover:scale-x-105 hover:bg-transparent hover:text-cyan duration-300 text-sm font-medium py-3 bg-cyan text-black w-fit rounded-3xl'

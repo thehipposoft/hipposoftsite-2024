@@ -175,7 +175,7 @@
         "back_to_home": "Volver al inicio",
         "nav_back": "Volver",
         "nav_next": "Siguiente",
-        "nav_send": "Enviar formulario",
+        "nav_send": "Enviar",
         "nav_sending": "Enviando…",
         "error_send": "Hubo un problema al enviar el formulario. Por favor, intentá de nuevo.",
         "progress": "{pct}% completado",
@@ -211,6 +211,13 @@
         "step5_involvement": "¿Cuán involucrado querés estar durante el proceso creativo?",
         "step5_constraints": "¿Hay decisiones ya tomadas o restricciones que debamos conocer?",
         "step5_result": "¿Qué resultado esperás ver en los próximos 12–24 meses?",
-        "step5_extra": "¿Hay información adicional que consideres relevante para el proyecto?"
+        "step5_extra": "¿Hay información adicional que consideres relevante para el proyecto?",
+        "brand_title": "Identidad de Marca",
+        "brand_subtitle": "¿Cómo se presenta tu marca hoy?",
+        "brand_essence": "¿Cómo describirías la esencia actual de tu marca? ¿Qué comunica hoy?",
+        "brand_strength": "¿Cuál ves como la principal fortaleza de la marca en este momento?",
+        "brand_attributes": "¿Qué atributos de marca querés mantener sí o sí? (ej. Confianza, tradición, calidad)",
+        "brand_perceptions": "¿Qué imagen o percepción tienen los clientes o profesionales de tu marca hoy?",
+        "field_required": "Este campo es obligatorio"
     }
 }

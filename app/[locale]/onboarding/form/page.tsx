@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, createContext, useContext } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
@@ -83,13 +83,20 @@ const INITIAL_DATA: FormData = {
 
 const PROJECT_TYPES = ['Branding', 'Rebranding', 'Website', 'Improve automation in my business'];
 
-const TOTAL_STEPS = 5;
+const TOTAL_STEPS = 6;
 
 // ─── WP config ───────────────────────────────────────────────────────────────
 
 const WP_ENDPOINT = 'https://wp.thehipposoft.com/wp-json/hippo/v1/survey';
 const WP_APP_USER = 'Gomi';
 const WP_APP_PASS = '5lmz kemU JAKL Yw0L UnK7 Lb37';
+
+const FormErrorContext = createContext(false);
+
+const REQUIRED_FIELDS: Partial<Record<number, (keyof FormData)[]>> = {
+  1: ['full_name', 'company_name', 'email'],
+  2: ['negocio_descripcion'],
+};
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -103,24 +110,22 @@ interface InputFieldProps {
 }
 
 function InputField({ label, name, value, onChange, type = 'text', required }: InputFieldProps) {
+  const showErrors = useContext(FormErrorContext);
+  const t = useTranslations('OnboardingForm');
+  const hasError = !!(required && showErrors && !value.trim());
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1">
       <label htmlFor={name} className="text-[15px] text-[#1a2340] font-normal">
-        {label}
+        {label}{required && <span className="text-red-500 ml-0.5">*</span>}
       </label>
       <input
         id={name}
         type={type}
         value={value}
-        required={required}
         onChange={(e) => onChange(name, e.target.value)}
-        className="
-          w-full bg-transparent border-0 border-b border-[#c8e6e4]
-          text-[#1a2340] text-[15px] py-2 px-0
-          outline-none focus:border-cyan
-          transition-colors duration-200 placeholder-transparent
-        "
+        className={`w-full bg-transparent border-0 border-b text-[#1a2340] text-[15px] py-2 px-0 outline-none transition-colors duration-200 placeholder-transparent ${hasError ? 'border-red-400 focus:border-red-400' : 'border-[#c8e6e4] focus:border-cyan'}`}
       />
+      {hasError && <p className="text-[12px] text-red-500">{t('field_required')}</p>}
     </div>
   );
 }
@@ -130,26 +135,26 @@ interface TextAreaFieldProps {
   name: keyof FormData;
   value: string;
   onChange: (name: keyof FormData, value: string) => void;
+  required?: boolean;
 }
 
-function TextAreaField({ label, name, value, onChange }: TextAreaFieldProps) {
+function TextAreaField({ label, name, value, onChange, required }: TextAreaFieldProps) {
+  const showErrors = useContext(FormErrorContext);
+  const t = useTranslations('OnboardingForm');
+  const hasError = !!(required && showErrors && !value.trim());
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1">
       <label htmlFor={name} className="text-[15px] text-[#1a2340] font-normal">
-        {label}
+        {label}{required && <span className="text-red-500 ml-0.5">*</span>}
       </label>
       <textarea
         id={name}
         value={value}
         rows={2}
         onChange={(e) => onChange(name, e.target.value)}
-        className="
-          w-full bg-transparent border-0 border-b border-[#c8e6e4]
-          text-[#1a2340] text-[15px] py-2 px-0
-          outline-none focus:border-cyan resize-none
-          transition-colors duration-200
-        "
+        className={`w-full bg-transparent border-0 border-b text-[#1a2340] text-[15px] py-2 px-0 outline-none resize-none transition-colors duration-200 ${hasError ? 'border-red-400 focus:border-red-400' : 'border-[#c8e6e4] focus:border-cyan'}`}
       />
+      {hasError && <p className="text-[12px] text-red-500">{t('field_required')}</p>}
     </div>
   );
 }
@@ -271,18 +276,19 @@ function StepProjectGoals({ data, onChange, onToggleType }: {
   );
 }
 
-function _StepBrandIdentity({ data, onChange }: { data: FormData; onChange: (k: keyof FormData, v: string) => void }) {
+function StepBrandIdentity({ data, onChange }: { data: FormData; onChange: (k: keyof FormData, v: string) => void }) {
+  const t = useTranslations('OnboardingForm');
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h1 className="text-[42px] font-bold text-[#1a2340] leading-tight">Brand Identity</h1>
-        <p className="text-[15px] text-[#6b7280] mt-1">How does your brand show up today?</p>
+        <h1 className="text-[42px] font-bold text-[#1a2340] leading-tight">{t('brand_title')}</h1>
+        <p className="text-[15px] text-[#6b7280] mt-1">{t('brand_subtitle')}</p>
       </div>
       <div className="flex flex-col gap-7">
-        <TextAreaField label="How would you describe your brand's current essence? What does it communicate today?" name="identidad_esencia" value={data.identidad_esencia} onChange={onChange} />
-        <TextAreaField label="What do you see as the brand's main strength right now?" name="identidad_fortaleza" value={data.identidad_fortaleza} onChange={onChange} />
-        <InputField label="Which brand attributes do you want to keep no matter what? (e.g. Trust, tradition, quality)" name="identidad_atributos" value={data.identidad_atributos} onChange={onChange} />
-        <TextAreaField label="What image or perception do clients or professionals have of your brand today?" name="identidad_percepciones" value={data.identidad_percepciones} onChange={onChange} />
+        <TextAreaField label={t('brand_essence')} name="identidad_esencia" value={data.identidad_esencia} onChange={onChange} />
+        <TextAreaField label={t('brand_strength')} name="identidad_fortaleza" value={data.identidad_fortaleza} onChange={onChange} />
+        <InputField label={t('brand_attributes')} name="identidad_atributos" value={data.identidad_atributos} onChange={onChange} />
+        <TextAreaField label={t('brand_perceptions')} name="identidad_percepciones" value={data.identidad_percepciones} onChange={onChange} />
       </div>
     </div>
   );
@@ -331,12 +337,12 @@ function ProgressIndicator({ step, total }: { step: number; total: number }) {
   const pct = Math.round((step / total) * 100);
 
   return (
-    <div className="relative h-10 w-48 rounded-full bg-[#f3f4f6] overflow-hidden select-none">
+    <div className="relative h-8 w-36 md:h-10 md:w-48 rounded-full bg-[#f3f4f6] overflow-hidden select-none">
       <div
         className="absolute inset-0 rounded-full bg-cyan transition-all duration-500"
         style={{ width: `${pct}%` }}
       />
-      <span className="absolute inset-0 flex items-center justify-center text-[11px] font-semibold tracking-[0.2em] uppercase text-[#1a2340]">
+      <span className="absolute inset-0 flex items-center justify-center text-[9px] md:text-[11px] font-semibold tracking-[0.2em] uppercase text-[#1a2340]">
         {t('progress', { pct })}
       </span>
     </div>
@@ -367,6 +373,12 @@ export default function ProjectSurveyForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const [showErrors, setShowErrors] = useState(false);
+
+  const validateStep = () => {
+    const required = REQUIRED_FIELDS[step] ?? [];
+    return required.every((field) => String(data[field]).trim().length > 0);
+  };
 
   const handleChange = (name: keyof FormData, value: string) => {
     setData((prev) => ({ ...prev, [name]: value }));
@@ -382,14 +394,19 @@ export default function ProjectSurveyForm() {
   };
 
   const next = () => {
+    if (!validateStep()) { setShowErrors(true); return; }
+    setShowErrors(false);
     if (step < TOTAL_STEPS) setStep((s) => s + 1);
   };
 
   const prev = () => {
+    setShowErrors(false);
     if (step > 1) setStep((s) => s - 1);
   };
 
   const handleSubmit = async () => {
+    if (!validateStep()) { setShowErrors(true); return; }
+    setShowErrors(false);
     setSubmitting(true);
     setError('');
     try {
@@ -454,8 +471,9 @@ export default function ProjectSurveyForm() {
       case 2: return <StepAboutBusinessA data={data} onChange={handleChange} />;
       case 3: return <StepAboutBusinessB data={data} onChange={handleChange} />;
       case 4: return <StepProjectGoals data={data} onChange={handleChange} onToggleType={handleToggleType} />;
-      case 5: return <StepExpectations data={data} onChange={handleChange} />;
-      // Step 5 (Brand Identity) and Step 6 (Project Scope) temporarily disabled
+      case 5: return <StepBrandIdentity data={data} onChange={handleChange} />;
+      case 6: return <StepExpectations data={data} onChange={handleChange} />;
+      // Step 6 (Project Scope) temporarily disabled
     }
   };
 
@@ -466,26 +484,28 @@ export default function ProjectSurveyForm() {
 
       {/* Main content */}
       <div className="max-w-[680px] mx-auto px-8 pt-20 pb-40">
-        {renderStep()}
+        <FormErrorContext.Provider value={showErrors}>
+          {renderStep()}
+        </FormErrorContext.Provider>
       </div>
 
       {/* Bottom bar — navigation + progress */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#f3f4f6] px-8 py-5">
-        <div className="max-w-[680px] mx-auto flex items-center justify-between">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#f3f4f6] px-8 py-4">
+        <div className="max-w-[680px] mx-auto flex flex-col-reverse gap-3 md:flex-row md:items-center md:justify-between">
 
           {/* Progress */}
           <ProgressIndicator step={step} total={TOTAL_STEPS} />
 
           {/* Navigation buttons */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {step > 1 && (
               <button
                 type="button"
                 onClick={prev}
                 className="
-                  h-10 px-6 rounded-full border border-[#e5e7eb]
+                  h-8 px-4 md:h-10 md:px-6 rounded-full border border-[#e5e7eb]
                   flex items-center justify-center
-                  text-[#6b7280] text-[13px] font-semibold tracking-widest uppercase
+                  text-[#6b7280] text-[11px] md:text-[13px] font-semibold tracking-widest uppercase
                   hover:border-[#221b35] hover:text-[#221b35]
                   transition-all duration-150
                 "
@@ -499,10 +519,9 @@ export default function ProjectSurveyForm() {
                 type="button"
                 onClick={next}
                 className="
-                  h-10 px-6 rounded-full bg-[#333333]/40
+                  h-8 px-4 md:h-10 md:px-6 rounded-full bg-[#221b35]
                   flex items-center justify-center
-                  text-white text-[13px] font-semibold tracking-widest uppercase
-                  hover:bg-[#221b35]
+                  text-white text-[11px] md:text-[13px] font-semibold tracking-widest uppercase
                   transition-all duration-150
                 "
               >
@@ -518,7 +537,7 @@ export default function ProjectSurveyForm() {
                   flex items-center gap-2 tracking-widest uppercase
                   text-black text-[14px] font-semibold
                   hover:opacity-90 disabled:opacity-50
-                  transition-all duration-300 hover:tracking-[0.3em] hover:underline
+                  transition-all duration-300 lg:Lorem Ipsumhover:tracking-[0.3em] lg:hover:underline
                 "
               >
                 {submitting ? (

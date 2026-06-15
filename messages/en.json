@@ -174,7 +174,7 @@
         "back_to_home": "Back to Home",
         "nav_back": "Back",
         "nav_next": "Next",
-        "nav_send": "Send Survey",
+        "nav_send": "Send",
         "nav_sending": "Sending…",
         "error_send": "There was a problem sending the form. Please try again.",
         "progress": "{pct}% completed",
@@ -210,6 +210,13 @@
         "step5_involvement": "How involved do you want to be during the creative process?",
         "step5_constraints": "Are there any decisions already made or constraints we should know about?",
         "step5_result": "What result do you expect to see 12–24 months from now?",
-        "step5_extra": "Any extra information you think is relevant for the project?"
+        "step5_extra": "Any extra information you think is relevant for the project?",
+        "brand_title": "Brand Identity",
+        "brand_subtitle": "How does your brand show up today?",
+        "brand_essence": "How would you describe your brand's current essence? What does it communicate today?",
+        "brand_strength": "What do you see as the brand's main strength right now?",
+        "brand_attributes": "Which brand attributes do you want to keep no matter what? (e.g. Trust, tradition, quality)",
+        "brand_perceptions": "What image or perception do clients or professionals have of your brand today?",
+        "field_required": "This field is required"
     }
 }

@@ -32,13 +32,13 @@ export default async function OnBoardingPage () {
     const t = await getTranslations('OnboardingPage');
     return(
         <div className="h-screen relative flex flex-col gap-8">
-            <Image src={'/assets/images/onboarding/onboarding.webp'} alt="Background with pen and paper" fill className="object-cover" />
-            <div className="absolute h-full w-full bg-white/15" />
-            <div className="relative z-10 flex flex-col gap-4 mx-auto lg:w-[1100px] pt-24">
+            <Image src={'/assets/images/onboarding/onboarding.webp'} alt="Background with pen and paper" fill className="object-cover object-right lg:object-center" />
+            <div className="absolute h-full w-full lg:bg-white/25 bg-white/60" />
+            <div className="relative z-10 flex flex-col gap-4 mx-auto lg:w-[1100px] w-[80vw] pt-24">
                 <h1 className=" text-black md:text-6xl text-5xl">
                     {t('title')}
                 </h1>
-                <div className="flex flex-col gap-1 text-black">
+                <div className="flex flex-col gap-4 lg:gap-1 text-black font-semibold text-lg leading-5 lg:text-base">
                     <p>{t('p1')}</p>
                     <p>{t('p2')}</p>
                     <p>{t('p3')}</p>

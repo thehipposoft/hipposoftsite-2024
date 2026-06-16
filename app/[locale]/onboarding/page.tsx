@@ -14,15 +14,15 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
     return buildLocalizedMetadata({
         locale,
         path: '/onboarding',
-        imageAlt: 'HippoSoft Entrepreneur support',
+        imageAlt: 'HippoSoft Onboarding Form',
         content: {
             en: {
-                title: 'HippoSoft | Entrepreneur',
-                description: 'We support the development of your project from the beginning. Contact us to boost your brand and build together.',
+                title: 'HippoSoft | Start Working With Us',
+                description: 'Fill out our project discovery form and let us understand your business, goals, and needs. The first step to building something great together.',
             },
             es: {
-                title: 'HippoSoft | Emprendedor',
-                description: 'Acompanamos el desarrollo de tu proyecto desde el inicio para potenciar tu marca y crecer juntos.',
+                title: 'HippoSoft | Empecemos a Trabajar',
+                description: 'Completá nuestro formulario de descubrimiento y dejanos entender tu negocio, objetivos y necesidades. El primer paso para construir algo grande juntos.',
             },
         },
     });

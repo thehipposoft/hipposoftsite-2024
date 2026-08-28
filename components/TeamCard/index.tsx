@@ -10,6 +10,47 @@ type TeamCardProps = {
     whatsapp: string;
 };
 
+const handleSaveContact = async ({name, role, email, whatsapp}: Omit<TeamCardProps, 'photoSrc'>) => {
+  const vCardText = buildVCardText({ name, role, email, whatsapp });
+  const file = new File([vCardText], `${name.replace(/\s+/g, '-')}.vcf`, {
+    type: 'text/vcard',
+  });
+
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({
+        files: [file],
+        title: name,
+      });
+      return;
+    } catch (err) {
+      // usuario canceló el share, o falló -> caemos al fallback
+    }
+  }
+
+  // Fallback: descarga normal (desktop, o navegadores sin soporte)
+  const url = URL.createObjectURL(file);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = file.name;
+  link.click();
+  URL.revokeObjectURL(url);
+};
+
+const buildVCardText = ({ name, role, email, whatsapp }: Omit<TeamCardProps, 'photoSrc'>) => {
+  return [
+    'BEGIN:VCARD',
+    'VERSION:3.0',
+    `FN:${name}`,
+    `TITLE:${role}`,
+    'ORG:HippoSoft',
+    `EMAIL;TYPE=INTERNET:${email}`,
+    `TEL;TYPE=CELL:${whatsapp}`,
+    'URL:https://www.thehipposoft.com',
+    'END:VCARD',
+  ].join('\r\n'); // \r\n es más correcto según el spec vCard
+};
+
 const buildVCard = ({ name, role, email, whatsapp }: Omit<TeamCardProps, 'photoSrc'>) => {
     const vCard = [
         'BEGIN:VCARD',
@@ -50,7 +91,7 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
                         href={`mailto:${email}`}
                         className='flex items-center justify-center gap-3 w-full rounded-full border border-white/20 py-3 px-6 text-white hover:bg-white/10 transition-colors'
                     >
-                        <svg width="20" height="15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M.075 2.333A3 3 0 0 1 3 0h18a3 3 0 0 1 2.925 2.333L12 9.62.075 2.332ZM0 4.045v10.656l8.704-5.337L0 4.045Zm10.142 6.2-9.855 6.04A3 3 0 0 0 3 18h18a3 3 0 0 0 2.712-1.716l-9.855-6.04L12 11.378l-1.858-1.136v.002Zm5.154-.879L24 14.701V4.046l-8.704 5.318v.002Z" fill="#70FFE5"/></svg>
+                        <svg width="25" height="15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M.075 2.333A3 3 0 0 1 3 0h18a3 3 0 0 1 2.925 2.333L12 9.62.075 2.332ZM0 4.045v10.656l8.704-5.337L0 4.045Zm10.142 6.2-9.855 6.04A3 3 0 0 0 3 18h18a3 3 0 0 0 2.712-1.716l-9.855-6.04L12 11.378l-1.858-1.136v.002Zm5.154-.879L24 14.701V4.046l-8.704 5.318v.002Z" fill="#70FFE5"/></svg>
                         <span>{email}</span>
                     </Link>
 
@@ -64,13 +105,13 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
                         <span>WhatsApp</span>
                     </Link>
 
-                    <a
-                        href={buildVCard({ name, role, email, whatsapp })}
-                        download={`${name.replace(/\s+/g, '-')}.vcf`}
+                    <button
+                        type='button'
+                        onClick={() => handleSaveContact({ name, role, email, whatsapp })}
                         className='flex items-center justify-center gap-3 w-full rounded-full border border-white/20 py-3 px-6 text-white hover:bg-white/10 transition-colors'
                     >
-                        Save Contact
-                    </a>
+                        Guardar contacto
+                    </button>
                 </div>
             </div>
         </main>

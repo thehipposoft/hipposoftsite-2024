@@ -30,7 +30,7 @@ export default function DiegoTeamCard() {
     return (
         <TeamCard
             name="Diego Borigen"
-            role="Director"
+            role="Consultor Digital"
             photoSrc="/assets/images/team/Diego-profile.png"
             email="diego@thehipposoft.com"
             whatsapp="+61414286242"

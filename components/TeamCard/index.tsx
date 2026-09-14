@@ -1,6 +1,13 @@
 'use client'
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { Observer } from 'gsap/Observer';
+import { QRCodeSVG } from 'qrcode.react';
+import HippoFullColorLogo from '../HippoFullColorLogo';
+
+gsap.registerPlugin(Observer);
 
 type TeamCardProps = {
     name: string;
@@ -70,47 +77,133 @@ const buildVCard = ({ name, role, email, whatsapp }: Omit<TeamCardProps, 'photoS
 const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
     const whatsappNumber = whatsapp.replace(/[^\d]/g, '');
 
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const cardRef = useRef<HTMLDivElement>(null);
+    const qrPanelRef = useRef<HTMLDivElement>(null);
+    const openQRRef = useRef<() => void>(() => {});
+    const closeQRRef = useRef<() => void>(() => {});
+    const [isQrOpen, setIsQrOpen] = useState(false);
+    const [pageUrl, setPageUrl] = useState('https://www.thehipposoft.com');
+
+    useEffect(() => {
+        setPageUrl(window.location.href);
+    }, []);
+
+    useEffect(() => {
+        if (!cardRef.current || !qrPanelRef.current) return;
+
+        openQRRef.current = () => {
+            setIsQrOpen(true);
+            gsap.timeline()
+                .to(cardRef.current, { xPercent: 130, rotate: 6, opacity: 0, duration: 0.55, ease: 'power2.in' })
+                .fromTo(
+                    qrPanelRef.current,
+                    { scale: 0.85, opacity: 0 },
+                    { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.6)' },
+                    '-=0.3'
+                );
+        };
+
+        closeQRRef.current = () => {
+            setIsQrOpen(false);
+            gsap.timeline()
+                .to(qrPanelRef.current, { scale: 0.85, opacity: 0, duration: 0.35, ease: 'power2.in' })
+                .fromTo(
+                    cardRef.current,
+                    { xPercent: 130, rotate: 6, opacity: 0 },
+                    { xPercent: 0, rotate: 0, opacity: 1, duration: 0.5, ease: 'power2.out' },
+                    '-=0.15'
+                );
+        };
+
+        const observer = Observer.create({
+            target: wrapperRef.current,
+            type: 'touch,pointer',
+            tolerance: 70,
+            onRight: () => !isQrOpen && openQRRef.current(),
+            onLeft: () => isQrOpen && closeQRRef.current(),
+        });
+
+        return () => observer.kill();
+    }, [isQrOpen]);
+
     return (
-        <main className='relative min-h-screen bg-[#221b35] flex items-center justify-center px-6 py-16'>
-            <div className='w-full max-w-sm flex flex-col items-center gap-8 text-center'>
-                <div className='overflow-hidden'>
-                    <Image src={'/assets/logo.png'} alt='HippoSoft logo' width={1144} height={451} className='w-40' />
-                </div>
-
-                <div className='relative w-40 h-40 rounded-full overflow-hidden ring-4 ring-[#70FFE5]/40'>
-                    <Image src={photoSrc} alt={name} fill className='object-cover' />
-                </div>
-
-                <div className='flex flex-col gap-1'>
-                    <h1 className='text-3xl text-white'>{name}</h1>
-                    <p className='text-lg text-[#70FFE5] text-sora'>{role}</p>
-                </div>
-
-                <div className='flex flex-col gap-4 w-full mt-4'>
-                    <Link
-                        href={`mailto:${email}`}
-                        className='flex items-center justify-center gap-3 w-full rounded-full border border-white/20 py-3 px-6 text-white hover:bg-white/10 transition-colors'
+        <main className='relative min-h-screen bg-[#f7f7f1] flex items-center justify-center px-6 py-16'>
+            <div ref={wrapperRef} className='relative w-full max-w-sm overflow-hidden touch-pan-y select-none'>
+                <div
+                    ref={qrPanelRef}
+                    aria-hidden={!isQrOpen}
+                    className='absolute inset-0 z-0 flex flex-col items-center justify-center gap-6 text-center opacity-0'
+                    style={{ pointerEvents: isQrOpen ? 'auto' : 'none' }}
+                >
+                    <div className='rounded-3xl bg-white p-4'>
+                        <QRCodeSVG value={pageUrl} size={176} bgColor='#FFFFFF' fgColor='#221b35' level='M' />
+                    </div>
+                    <p className='text-[#1c4e3d] text-sm max-w-[16rem]'>Escaneá este código para abrir esta misma tarjeta en otro celular</p>
+                    <button
+                        type='button'
+                        onClick={() => closeQRRef.current()}
+                        className='flex items-center gap-2 rounded-full border border-white/20 py-2.5 px-5 text-[#1c4e3d] text-sm hover:bg-white/10 transition-colors'
                     >
-                        <svg width="25" height="15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M.075 2.333A3 3 0 0 1 3 0h18a3 3 0 0 1 2.925 2.333L12 9.62.075 2.332ZM0 4.045v10.656l8.704-5.337L0 4.045Zm10.142 6.2-9.855 6.04A3 3 0 0 0 3 18h18a3 3 0 0 0 2.712-1.716l-9.855-6.04L12 11.378l-1.858-1.136v.002Zm5.154-.879L24 14.701V4.046l-8.704 5.318v.002Z" fill="#70FFE5"/></svg>
-                        <span>{email}</span>
-                    </Link>
+                        <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M19 12H5M5 12l6-6M5 12l6 6' stroke='#1c4e3d' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/></svg>
+                        Volver a la tarjeta
+                    </button>
+                </div>
 
-                    <Link
-                        href={`https://wa.me/${whatsappNumber}`}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className='flex items-center justify-center gap-3 w-full rounded-full bg-[#70FFE5] py-3 px-6 text-[#221b35] font-medium hover:opacity-90 transition-opacity'
-                    >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.6 6.32A7.85 7.85 0 0 0 12.05 4 8.05 8.05 0 0 0 4 12.05a7.98 7.98 0 0 0 1.07 4.02L4 20l4.05-1.06a8 8 0 0 0 3.99 1.02h.01a8.05 8.05 0 0 0 8.05-8.05 7.85 7.85 0 0 0-2.5-5.6Zm-5.55 12.4h-.01a6.7 6.7 0 0 1-3.4-.93l-.24-.14-2.4.63.64-2.34-.16-.24a6.62 6.62 0 0 1-1.02-3.55 6.7 6.7 0 0 1 6.7-6.7 6.65 6.65 0 0 1 4.73 1.96 6.63 6.63 0 0 1 1.96 4.72 6.7 6.7 0 0 1-6.8 6.59Zm3.67-5.02c-.2-.1-1.18-.58-1.36-.65-.18-.07-.32-.1-.45.1-.13.2-.51.65-.63.78-.12.13-.23.15-.43.05a5.44 5.44 0 0 1-1.6-.99 6.01 6.01 0 0 1-1.1-1.37c-.12-.2 0-.31.09-.4.1-.1.2-.24.3-.36.1-.12.14-.2.2-.34.07-.13.04-.25-.01-.35-.05-.1-.45-1.09-.62-1.49-.16-.39-.33-.34-.45-.34h-.39c-.13 0-.34.05-.52.24-.18.2-.68.67-.68 1.63s.7 1.9.8 2.03c.1.13 1.38 2.11 3.35 2.96.47.2.83.32 1.12.41.47.15.9.13 1.24.08.38-.06 1.18-.48 1.34-.95.17-.46.17-.86.12-.95-.05-.09-.18-.15-.38-.25Z" fill="#221b35"/></svg>
-                        <span>WhatsApp</span>
-                    </Link>
+                <div
+                    ref={cardRef}
+                    aria-hidden={isQrOpen}
+                    className='relative z-10 w-full flex flex-col items-center gap-8 text-center'
+                    style={{ pointerEvents: isQrOpen ? 'none' : 'auto' }}
+                >
+                    <div className='overflow-hidden'>
+                        <HippoFullColorLogo className='w-48' />
+                    </div>
+
+                    <div className='relative w-40 h-40 rounded-full overflow-hidden ring-4 ring-[#283750]'>
+                        <Image src={photoSrc} alt={name} fill sizes='160px' className='object-cover' />
+                    </div>
+
+                    <div className='flex flex-col gap-1'>
+                        <h1 className='text-3xl text-[#283750]'>{name}</h1>
+                        <p className='text-lg text-[#1c4e3d] text-sora'>{role}</p>
+                    </div>
+
+                    <div className='flex flex-col gap-4 w-full mt-4'>
+                        <Link
+                            href={`mailto:${email}`}
+                            className='flex items-center justify-center gap-3 w-full rounded-full border border-white/20 py-3 px-6 text-[#1c4e3d] hover:bg-white/10 transition-colors'
+                        >
+                            <svg width="25" height="15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M.075 2.333A3 3 0 0 1 3 0h18a3 3 0 0 1 2.925 2.333L12 9.62.075 2.332ZM0 4.045v10.656l8.704-5.337L0 4.045Zm10.142 6.2-9.855 6.04A3 3 0 0 0 3 18h18a3 3 0 0 0 2.712-1.716l-9.855-6.04L12 11.378l-1.858-1.136v.002Zm5.154-.879L24 14.701V4.046l-8.704 5.318v.002Z" fill="#1c4e3d"/></svg>
+                            <span>{email}</span>
+                        </Link>
+
+                        <Link
+                            href={`https://wa.me/${whatsappNumber}`}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            className='flex items-center justify-center gap-3 w-full rounded-full bg-[#1c4e3d] py-3 px-6 text-white font-medium hover:opacity-90 transition-opacity'
+                        >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.6 6.32A7.85 7.85 0 0 0 12.05 4 8.05 8.05 0 0 0 4 12.05a7.98 7.98 0 0 0 1.07 4.02L4 20l4.05-1.06a8 8 0 0 0 3.99 1.02h.01a8.05 8.05 0 0 0 8.05-8.05 7.85 7.85 0 0 0-2.5-5.6Zm-5.55 12.4h-.01a6.7 6.7 0 0 1-3.4-.93l-.24-.14-2.4.63.64-2.34-.16-.24a6.62 6.62 0 0 1-1.02-3.55 6.7 6.7 0 0 1 6.7-6.7 6.65 6.65 0 0 1 4.73 1.96 6.63 6.63 0 0 1 1.96 4.72 6.7 6.7 0 0 1-6.8 6.59Zm3.67-5.02c-.2-.1-1.18-.58-1.36-.65-.18-.07-.32-.1-.45.1-.13.2-.51.65-.63.78-.12.13-.23.15-.43.05a5.44 5.44 0 0 1-1.6-.99 6.01 6.01 0 0 1-1.1-1.37c-.12-.2 0-.31.09-.4.1-.1.2-.24.3-.36.1-.12.14-.2.2-.34.07-.13.04-.25-.01-.35-.05-.1-.45-1.09-.62-1.49-.16-.39-.33-.34-.45-.34h-.39c-.13 0-.34.05-.52.24-.18.2-.68.67-.68 1.63s.7 1.9.8 2.03c.1.13 1.38 2.11 3.35 2.96.47.2.83.32 1.12.41.47.15.9.13 1.24.08.38-.06 1.18-.48 1.34-.95.17-.46.17-.86.12-.95-.05-.09-.18-.15-.38-.25Z" fill="#fff"/></svg>
+                            <span>WhatsApp</span>
+                        </Link>
+
+                        <button
+                            type='button'
+                            onClick={() => handleSaveContact({ name, role, email, whatsapp })}
+                            className='flex items-center justify-center gap-3 w-full rounded-full border border-white/20 py-3 px-6 text-[#1c4e3d] hover:bg-white/10 transition-colors'
+                        >
+                            Guardar contacto
+                        </button>
+                    </div>
 
                     <button
                         type='button'
-                        onClick={() => handleSaveContact({ name, role, email, whatsapp })}
-                        className='flex items-center justify-center gap-3 w-full rounded-full border border-white/20 py-3 px-6 text-white hover:bg-white/10 transition-colors'
+                        onClick={() => openQRRef.current()}
+                        className='flex items-center gap-2 text-[#1c4e3d] text-sm mt-2 hover:text-[#1c4e3d]/80 transition-colors'
                     >
-                        Guardar contacto
+                        Deslizá o tocá para ver el QR
+                        <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='animate-swipe-hint'><path d='M5 12h14M13 6l6 6-6 6' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/></svg>
                     </button>
                 </div>
             </div>

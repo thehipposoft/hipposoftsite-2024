@@ -101,3 +101,17 @@ h4 {
 .animate-float {
     animation: float 2.5s infinite;
 }
+
+@keyframes swipe-hint {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(4px); }
+}
+.animate-swipe-hint {
+    animation: swipe-hint 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-swipe-hint {
+        animation: none;
+    }
+}

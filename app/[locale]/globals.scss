@@ -110,8 +110,16 @@ h4 {
     animation: swipe-hint 1.4s ease-in-out infinite;
 }
 
+@keyframes swipe-hint-left {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-4px); }
+}
+.animate-swipe-hint-left {
+    animation: swipe-hint-left 1.4s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
-    .animate-swipe-hint {
+    .animate-swipe-hint, .animate-swipe-hint-left {
         animation: none;
     }
 }

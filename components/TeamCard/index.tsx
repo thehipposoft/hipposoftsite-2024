@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import { Observer } from 'gsap/Observer';
 import { QRCodeSVG } from 'qrcode.react';
 import HippoFullColorLogo from '../HippoFullColorLogo';
+import HippoCharacterIllustration from '../HippoCharacterIllustration';
 
 gsap.registerPlugin(Observer);
 
@@ -77,12 +78,17 @@ const buildVCard = ({ name, role, email, whatsapp }: Omit<TeamCardProps, 'photoS
 const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
     const whatsappNumber = whatsapp.replace(/[^\d]/g, '');
 
+    type View = 'card' | 'qr' | 'hippo';
+
     const wrapperRef = useRef<HTMLDivElement>(null);
     const cardRef = useRef<HTMLDivElement>(null);
     const qrPanelRef = useRef<HTMLDivElement>(null);
+    const hippoPanelRef = useRef<HTMLDivElement>(null);
     const openQRRef = useRef<() => void>(() => {});
     const closeQRRef = useRef<() => void>(() => {});
-    const [isQrOpen, setIsQrOpen] = useState(false);
+    const openHippoRef = useRef<() => void>(() => {});
+    const closeHippoRef = useRef<() => void>(() => {});
+    const [view, setView] = useState<View>('card');
     const [pageUrl, setPageUrl] = useState('https://www.thehipposoft.com');
 
     useEffect(() => {
@@ -90,10 +96,10 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
     }, []);
 
     useEffect(() => {
-        if (!cardRef.current || !qrPanelRef.current) return;
+        if (!cardRef.current || !qrPanelRef.current || !hippoPanelRef.current) return;
 
         openQRRef.current = () => {
-            setIsQrOpen(true);
+            setView('qr');
             gsap.timeline()
                 .to(cardRef.current, { xPercent: 130, rotate: 6, opacity: 0, duration: 0.55, ease: 'power2.in' })
                 .fromTo(
@@ -105,7 +111,7 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
         };
 
         closeQRRef.current = () => {
-            setIsQrOpen(false);
+            setView('card');
             gsap.timeline()
                 .to(qrPanelRef.current, { scale: 0.85, opacity: 0, duration: 0.35, ease: 'power2.in' })
                 .fromTo(
@@ -116,25 +122,55 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
                 );
         };
 
+        openHippoRef.current = () => {
+            setView('hippo');
+            gsap.timeline()
+                .to(cardRef.current, { xPercent: -130, rotate: -6, opacity: 0, duration: 0.55, ease: 'power2.in' })
+                .fromTo(
+                    hippoPanelRef.current,
+                    { scale: 0.85, opacity: 0 },
+                    { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.6)' },
+                    '-=0.3'
+                );
+        };
+
+        closeHippoRef.current = () => {
+            setView('card');
+            gsap.timeline()
+                .to(hippoPanelRef.current, { scale: 0.85, opacity: 0, duration: 0.35, ease: 'power2.in' })
+                .fromTo(
+                    cardRef.current,
+                    { xPercent: -130, rotate: -6, opacity: 0 },
+                    { xPercent: 0, rotate: 0, opacity: 1, duration: 0.5, ease: 'power2.out' },
+                    '-=0.15'
+                );
+        };
+
         const observer = Observer.create({
             target: wrapperRef.current,
             type: 'touch,pointer',
             tolerance: 70,
-            onRight: () => !isQrOpen && openQRRef.current(),
-            onLeft: () => isQrOpen && closeQRRef.current(),
+            onRight: () => {
+                if (view === 'card') openQRRef.current();
+                else if (view === 'hippo') closeHippoRef.current();
+            },
+            onLeft: () => {
+                if (view === 'card') openHippoRef.current();
+                else if (view === 'qr') closeQRRef.current();
+            },
         });
 
         return () => observer.kill();
-    }, [isQrOpen]);
+    }, [view]);
 
     return (
         <main className='relative min-h-screen bg-[#f7f7f1] flex items-center justify-center px-6 py-16'>
             <div ref={wrapperRef} className='relative w-full max-w-sm overflow-hidden touch-pan-y select-none'>
                 <div
                     ref={qrPanelRef}
-                    aria-hidden={!isQrOpen}
+                    aria-hidden={view !== 'qr'}
                     className='absolute inset-0 z-0 flex flex-col items-center justify-center gap-6 text-center opacity-0'
-                    style={{ pointerEvents: isQrOpen ? 'auto' : 'none' }}
+                    style={{ pointerEvents: view === 'qr' ? 'auto' : 'none' }}
                 >
                     <div className='rounded-3xl bg-white p-4'>
                         <QRCodeSVG value={pageUrl} size={176} bgColor='#FFFFFF' fgColor='#221b35' level='M' />
@@ -151,10 +187,28 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
                 </div>
 
                 <div
+                    ref={hippoPanelRef}
+                    aria-hidden={view !== 'hippo'}
+                    className='absolute inset-0 z-0 flex flex-col items-center justify-center gap-6 text-center opacity-0'
+                    style={{ pointerEvents: view === 'hippo' ? 'auto' : 'none' }}
+                >
+                    <HippoCharacterIllustration className='w-40' />
+                    <p className='text-[#1c4e3d] text-sm max-w-[16rem]'>¡Hola! Soy la mascota de HippoSoft</p>
+                    <button
+                        type='button'
+                        onClick={() => closeHippoRef.current()}
+                        className='flex items-center gap-2 rounded-full border border-white/20 py-2.5 px-5 text-[#1c4e3d] text-sm hover:bg-white/10 transition-colors'
+                    >
+                        Volver a la tarjeta
+                        <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M5 12h14M13 6l6 6-6 6' stroke='#1c4e3d' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/></svg>
+                    </button>
+                </div>
+
+                <div
                     ref={cardRef}
-                    aria-hidden={isQrOpen}
+                    aria-hidden={view !== 'card'}
                     className='relative z-10 w-full flex flex-col items-center gap-8 text-center'
-                    style={{ pointerEvents: isQrOpen ? 'none' : 'auto' }}
+                    style={{ pointerEvents: view === 'card' ? 'auto' : 'none' }}
                 >
                     <div className='overflow-hidden'>
                         <HippoFullColorLogo className='w-48' />
@@ -197,14 +251,24 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
                         </button>
                     </div>
 
-                    <button
-                        type='button'
-                        onClick={() => openQRRef.current()}
-                        className='flex items-center gap-2 text-[#1c4e3d] text-sm mt-2 hover:text-[#1c4e3d]/80 transition-colors'
-                    >
-                        Deslizá o tocá para ver el QR
-                        <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='animate-swipe-hint'><path d='M5 12h14M13 6l6 6-6 6' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/></svg>
-                    </button>
+                    <div className='flex flex-col items-center gap-1 mt-2'>
+                        <button
+                            type='button'
+                            onClick={() => openQRRef.current()}
+                            className='flex items-center gap-2 text-[#1c4e3d] text-sm hover:text-[#1c4e3d]/80 transition-colors'
+                        >
+                            Deslizá o tocá para ver el QR
+                            <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='animate-swipe-hint'><path d='M5 12h14M13 6l6 6-6 6' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/></svg>
+                        </button>
+                        <button
+                            type='button'
+                            onClick={() => openHippoRef.current()}
+                            className='flex items-center gap-2 text-[#1c4e3d] text-sm hover:text-[#1c4e3d]/80 transition-colors'
+                        >
+                            <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='animate-swipe-hint-left'><path d='M19 12H5M11 6l-6 6 6 6' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/></svg>
+                            Deslizá o tocá para conocer a Hippo
+                        </button>
+                    </div>
                 </div>
             </div>
         </main>

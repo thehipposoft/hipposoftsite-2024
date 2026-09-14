@@ -80,6 +80,11 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
 
     type View = 'card' | 'qr' | 'hippo';
 
+    const BG_DEFAULT = '#f7f7f1';
+    const BG_QR = 'rgba(191, 175, 240, 0.4784)'; // #bfaff07a
+    const BG_HIPPO = 'rgba(180, 220, 24, 0.3216)'; // #b4dc1852
+
+    const mainRef = useRef<HTMLElement>(null);
     const wrapperRef = useRef<HTMLDivElement>(null);
     const cardRef = useRef<HTMLDivElement>(null);
     const qrPanelRef = useRef<HTMLDivElement>(null);
@@ -101,7 +106,8 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
         openQRRef.current = () => {
             setView('qr');
             gsap.timeline()
-                .to(cardRef.current, { xPercent: 130, rotate: 6, opacity: 0, duration: 0.55, ease: 'power2.in' })
+                .to(mainRef.current, { backgroundColor: BG_QR, duration: 0.6, ease: 'power1.inOut' }, 0)
+                .to(cardRef.current, { xPercent: 130, rotate: 6, opacity: 0, duration: 0.55, ease: 'power2.in' }, 0)
                 .fromTo(
                     qrPanelRef.current,
                     { scale: 0.85, opacity: 0 },
@@ -113,7 +119,8 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
         closeQRRef.current = () => {
             setView('card');
             gsap.timeline()
-                .to(qrPanelRef.current, { scale: 0.85, opacity: 0, duration: 0.35, ease: 'power2.in' })
+                .to(mainRef.current, { backgroundColor: BG_DEFAULT, duration: 0.6, ease: 'power1.inOut' }, 0)
+                .to(qrPanelRef.current, { scale: 0.85, opacity: 0, duration: 0.35, ease: 'power2.in' }, 0)
                 .fromTo(
                     cardRef.current,
                     { xPercent: 130, rotate: 6, opacity: 0 },
@@ -125,7 +132,8 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
         openHippoRef.current = () => {
             setView('hippo');
             gsap.timeline()
-                .to(cardRef.current, { xPercent: -130, rotate: -6, opacity: 0, duration: 0.55, ease: 'power2.in' })
+                .to(mainRef.current, { backgroundColor: BG_HIPPO, duration: 0.6, ease: 'power1.inOut' }, 0)
+                .to(cardRef.current, { xPercent: -130, rotate: -6, opacity: 0, duration: 0.55, ease: 'power2.in' }, 0)
                 .fromTo(
                     hippoPanelRef.current,
                     { scale: 0.85, opacity: 0 },
@@ -137,7 +145,8 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
         closeHippoRef.current = () => {
             setView('card');
             gsap.timeline()
-                .to(hippoPanelRef.current, { scale: 0.85, opacity: 0, duration: 0.35, ease: 'power2.in' })
+                .to(mainRef.current, { backgroundColor: BG_DEFAULT, duration: 0.6, ease: 'power1.inOut' }, 0)
+                .to(hippoPanelRef.current, { scale: 0.85, opacity: 0, duration: 0.35, ease: 'power2.in' }, 0)
                 .fromTo(
                     cardRef.current,
                     { xPercent: -130, rotate: -6, opacity: 0 },
@@ -164,7 +173,7 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
     }, [view]);
 
     return (
-        <main className='relative min-h-screen bg-[#f7f7f1] flex items-center justify-center px-6 py-16'>
+        <main ref={mainRef} className='relative min-h-screen bg-[#f7f7f1] flex items-center justify-center px-6 py-16'>
             <div ref={wrapperRef} className='relative w-full max-w-sm overflow-hidden touch-pan-y select-none'>
                 <div
                     ref={qrPanelRef}

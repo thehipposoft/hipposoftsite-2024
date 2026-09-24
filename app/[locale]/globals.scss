@@ -118,8 +118,16 @@ h4 {
     animation: swipe-hint-left 1.4s ease-in-out infinite;
 }
 
+@keyframes bounce-arrow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+.animate-bounce-arrow {
+    animation: bounce-arrow 1.6s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
-    .animate-swipe-hint, .animate-swipe-hint-left {
+    .animate-swipe-hint, .animate-swipe-hint-left, .animate-bounce-arrow {
         animation: none;
     }
 }

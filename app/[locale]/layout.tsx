@@ -1,18 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.scss";
-import SmoothScroll from "@/components/SmoothScroll";
 import SchemaOrg from "./SchemaOrg";
 import GoogleAnalytics from "./GoogleAnalytics";
-import StickyContact from "@/components/commons/StickyContact";
-import Menu from "@/components/Menu";
-import CustomCursor from "@/components/CustomCursor";
-import Transitions from "@/components/commons/Transitions";
 import {NextIntlClientProvider, hasLocale} from 'next-intl';
 import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing';
 import { getMessages } from "next-intl/server";
-import LocaleSwitcherButton from "@/components/commons/LocaleSwitcherButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -111,14 +105,8 @@ export default async function RootLayout({
                 <NextIntlClientProvider messages={messages}>
                 <SchemaOrg />
                 <GoogleAnalytics />
-                <SmoothScroll>
-                    <Transitions />
-                    <LocaleSwitcherButton />
-                    <Menu />
-                    {children}
-                    <CustomCursor />
-                    <StickyContact />
-                </SmoothScroll>
+                {/* Site chrome (menu, cursor, smooth scroll…) lives in (site)/layout.tsx */}
+                {children}
                 </NextIntlClientProvider>
             </body>
         </html>

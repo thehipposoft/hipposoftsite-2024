@@ -18,51 +18,15 @@ type TeamCardProps = {
     whatsapp: string;
 };
 
-const handleSaveContact = async ({name, role, email, whatsapp}: Omit<TeamCardProps, 'photoSrc'>) => {
-  const vCardText = buildVCardText({ name, role, email, whatsapp });
-  const file = new File([vCardText], `${name.replace(/\s+/g, '-')}.vcf`, {
-    type: 'text/vcard',
-  });
-
-  if (navigator.canShare && navigator.canShare({ files: [file] })) {
-    try {
-      await navigator.share({
-        files: [file],
-        title: name,
-      });
-      return;
-    } catch (err) {
-      // usuario canceló el share, o falló -> caemos al fallback
-    }
-  }
-
-  // Fallback: descarga normal (desktop, o navegadores sin soporte)
-  const url = URL.createObjectURL(file);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = file.name;
-  link.click();
-  URL.revokeObjectURL(url);
-};
-
 const buildVCardText = ({ name, role, email, whatsapp }: Omit<TeamCardProps, 'photoSrc'>) => {
-  return [
-    'BEGIN:VCARD',
-    'VERSION:3.0',
-    `FN:${name}`,
-    `TITLE:${role}`,
-    'ORG:HippoSoft',
-    `EMAIL;TYPE=INTERNET:${email}`,
-    `TEL;TYPE=CELL:${whatsapp}`,
-    'URL:https://www.thehipposoft.com',
-    'END:VCARD',
-  ].join('\r\n'); // \r\n es más correcto según el spec vCard
-};
+    const parts = name.trim().split(/\s+/);
+    const lastName = parts.length > 1 ? parts[parts.length - 1] : '';
+    const givenNames = parts.length > 1 ? parts.slice(0, -1).join(' ') : parts[0];
 
-const buildVCard = ({ name, role, email, whatsapp }: Omit<TeamCardProps, 'photoSrc'>) => {
-    const vCard = [
+    return [
         'BEGIN:VCARD',
         'VERSION:3.0',
+        `N:${lastName};${givenNames};;;`,
         `FN:${name}`,
         `TITLE:${role}`,
         'ORG:HippoSoft',
@@ -70,82 +34,56 @@ const buildVCard = ({ name, role, email, whatsapp }: Omit<TeamCardProps, 'photoS
         `TEL;TYPE=CELL:${whatsapp}`,
         'URL:https://www.thehipposoft.com',
         'END:VCARD',
-    ].join('\n');
-
-    return `data:text/vcard;charset=utf-8,${encodeURIComponent(vCard)}`;
+    ].join('\r\n'); // \r\n es más correcto según el spec vCard
 };
+
+// Orden de las slides: deslizar a la derecha avanza, a la izquierda retrocede.
+const VIEWS = ['hippo', 'card', 'qr', 'contact'] as const;
+type View = (typeof VIEWS)[number];
+const CARD_INDEX = VIEWS.indexOf('card');
 
 const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
     const whatsappNumber = whatsapp.replace(/[^\d]/g, '');
     const [firstName, ...restNameParts] = name.split(' ');
     const restName = restNameParts.join(' ');
 
-    type View = 'card' | 'qr' | 'hippo';
-
     const wrapperRef = useRef<HTMLDivElement>(null);
-    const cardRef = useRef<HTMLDivElement>(null);
-    const qrPanelRef = useRef<HTMLDivElement>(null);
-    const hippoPanelRef = useRef<HTMLDivElement>(null);
-    const openQRRef = useRef<() => void>(() => {});
-    const closeQRRef = useRef<() => void>(() => {});
-    const openHippoRef = useRef<() => void>(() => {});
-    const closeHippoRef = useRef<() => void>(() => {});
+    const panelRefs = useRef<Record<View, HTMLDivElement | null>>({ hippo: null, card: null, qr: null, contact: null });
+    const goToRef = useRef<(target: View) => void>(() => {});
     const [view, setView] = useState<View>('card');
     const [pageUrl, setPageUrl] = useState('https://www.thehipposoft.com');
+    const vCardText = buildVCardText({ name, role, email, whatsapp });
 
     useEffect(() => {
         setPageUrl(window.location.href);
     }, []);
 
     useEffect(() => {
-        if (!cardRef.current || !qrPanelRef.current || !hippoPanelRef.current) return;
+        const currentIndex = VIEWS.indexOf(view);
+        // La tarjeta sale/entra por el costado de la slide hacia la que se navega.
+        const cardOffset = (index: number) => ({ xPercent: index > CARD_INDEX ? 130 : -130, rotate: index > CARD_INDEX ? 6 : -6, opacity: 0 });
 
-        openQRRef.current = () => {
-            setView('qr');
-            gsap.timeline()
-                .to(cardRef.current, { xPercent: 130, rotate: 6, opacity: 0, duration: 0.55, ease: 'power2.in' })
-                .fromTo(
-                    qrPanelRef.current,
-                    { scale: 0.85, opacity: 0 },
-                    { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.6)' },
-                    '-=0.3'
-                );
-        };
+        goToRef.current = (target: View) => {
+            if (target === view) return;
+            const from = panelRefs.current[view];
+            const to = panelRefs.current[target];
+            if (!from || !to) return;
+            const targetIndex = VIEWS.indexOf(target);
 
-        closeQRRef.current = () => {
-            setView('card');
-            gsap.timeline()
-                .to(qrPanelRef.current, { scale: 0.85, opacity: 0, duration: 0.35, ease: 'power2.in' })
-                .fromTo(
-                    cardRef.current,
-                    { xPercent: 130, rotate: 6, opacity: 0 },
-                    { xPercent: 0, rotate: 0, opacity: 1, duration: 0.5, ease: 'power2.out' },
-                    '-=0.15'
-                );
-        };
+            setView(target);
+            const tl = gsap.timeline();
 
-        openHippoRef.current = () => {
-            setView('hippo');
-            gsap.timeline()
-                .to(cardRef.current, { xPercent: -130, rotate: -6, opacity: 0, duration: 0.55, ease: 'power2.in' })
-                .fromTo(
-                    hippoPanelRef.current,
-                    { scale: 0.85, opacity: 0 },
-                    { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.6)' },
-                    '-=0.3'
-                );
-        };
+            if (view === 'card') {
+                tl.to(from, { ...cardOffset(targetIndex), duration: 0.55, ease: 'power2.in' });
+            } else {
+                tl.to(from, { scale: 0.85, opacity: 0, duration: 0.35, ease: 'power2.in' });
+            }
 
-        closeHippoRef.current = () => {
-            setView('card');
-            gsap.timeline()
-                .to(hippoPanelRef.current, { scale: 0.85, opacity: 0, duration: 0.35, ease: 'power2.in' })
-                .fromTo(
-                    cardRef.current,
-                    { xPercent: -130, rotate: -6, opacity: 0 },
-                    { xPercent: 0, rotate: 0, opacity: 1, duration: 0.5, ease: 'power2.out' },
-                    '-=0.15'
-                );
+            if (target === 'card') {
+                tl.fromTo(to, cardOffset(currentIndex), { xPercent: 0, rotate: 0, opacity: 1, duration: 0.5, ease: 'power2.out' }, '-=0.15');
+            } else {
+                tl.fromTo(to, { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.6)' }, view === 'card' ? '-=0.3' : '-=0.15');
+            }
         };
 
         const observer = Observer.create({
@@ -153,12 +91,10 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
             type: 'touch,pointer',
             tolerance: 70,
             onRight: () => {
-                if (view === 'card') openQRRef.current();
-                else if (view === 'hippo') closeHippoRef.current();
+                if (currentIndex < VIEWS.length - 1) goToRef.current(VIEWS[currentIndex + 1]);
             },
             onLeft: () => {
-                if (view === 'card') openHippoRef.current();
-                else if (view === 'qr') closeQRRef.current();
+                if (currentIndex > 0) goToRef.current(VIEWS[currentIndex - 1]);
             },
         });
 
@@ -169,7 +105,7 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
         <main className='relative min-h-screen bg-[#f6f7f1] flex items-center justify-center px-6 py-16'>
             <div ref={wrapperRef} className='relative w-full max-w-sm overflow-hidden touch-pan-y select-none'>
                 <div
-                    ref={qrPanelRef}
+                    ref={(el) => { panelRefs.current.qr = el; }}
                     aria-hidden={view !== 'qr'}
                     className='absolute inset-0 z-0 flex flex-col items-center justify-center gap-6 text-center opacity-0'
                     style={{ pointerEvents: view === 'qr' ? 'auto' : 'none' }}
@@ -201,7 +137,59 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
                     <p className='text-[#273346] text-sm max-w-[16rem]'>Escaneá este código para abrir esta misma tarjeta en otro celular</p>
                     <button
                         type='button'
-                        onClick={() => closeQRRef.current()}
+                        onClick={() => goToRef.current('card')}
+                        className='flex items-center gap-2 rounded-full border border-white/20 py-2.5 px-5 text-[#273346] text-sm hover:bg-white/10 transition-colors'
+                    >
+                        <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M19 12H5M5 12l6-6M5 12l6 6' stroke='#273346' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/></svg>
+                        Volver a la tarjeta
+                    </button>
+
+                    <button
+                        type='button'
+                        onClick={() => goToRef.current('contact')}
+                        className='flex items-center gap-2 text-[#273346] text-sm hover:text-[#273346]/80 transition-colors'
+                    >
+                        Deslizá o tocá para guardar el contacto
+                        <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='animate-swipe-hint'><path d='M5 12h14M13 6l6 6-6 6' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/></svg>
+                    </button>
+
+                    <HippoFullColorLogo className='w-40 mt-4' />
+                </div>
+
+                <div
+                    ref={(el) => { panelRefs.current.contact = el; }}
+                    aria-hidden={view !== 'contact'}
+                    className='absolute inset-0 z-0 flex flex-col items-center justify-center gap-6 text-center opacity-0'
+                    style={{ pointerEvents: view === 'contact' ? 'auto' : 'none' }}
+                >
+                    <div className='relative'>
+                        <Image
+                            src='/assets/icons/h-stamp.png'
+                            alt=''
+                            width={64}
+                            height={64}
+                            className='absolute -top-16 -left-12 w-14 h-14'
+                        />
+                        <Image
+                            src='/assets/icons/forma-1.svg'
+                            alt=''
+                            width={56}
+                            height={56}
+                            className='absolute -bottom-6 -right-16 z-0 w-14 h-14'
+                        />
+                        <div className='relative z-10 rounded-3xl bg-white p-4' style={{ boxShadow: '0 22px 32px -12px #C8AFF0' }}>
+                            <QRCodeSVG value={vCardText} size={200} bgColor='#FFFFFF' fgColor='#221b35' level='M' />
+                        </div>
+                    </div>
+
+                    <svg width='24' height='32' viewBox='0 0 24 32' fill='none' xmlns='http://www.w3.org/2000/svg' className='animate-bounce-arrow'>
+                        <path d='M12 30V2M2 12l10-10 10 10' stroke='#682760' strokeWidth='3' strokeLinecap='round' strokeLinejoin='round' />
+                    </svg>
+
+                    <p className='text-[#273346] text-sm max-w-[16rem]'>Escaneá este código para guardar el contacto de {firstName} en tu celular</p>
+                    <button
+                        type='button'
+                        onClick={() => goToRef.current('card')}
                         className='flex items-center gap-2 rounded-full border border-white/20 py-2.5 px-5 text-[#273346] text-sm hover:bg-white/10 transition-colors'
                     >
                         <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M19 12H5M5 12l6-6M5 12l6 6' stroke='#273346' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/></svg>
@@ -212,7 +200,7 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
                 </div>
 
                 <div
-                    ref={hippoPanelRef}
+                    ref={(el) => { panelRefs.current.hippo = el; }}
                     aria-hidden={view !== 'hippo'}
                     className='absolute inset-0 z-0 flex flex-col items-center justify-center gap-6 text-center opacity-0'
                     style={{ pointerEvents: view === 'hippo' ? 'auto' : 'none' }}
@@ -221,7 +209,7 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
                     <p className='text-[#273346] text-sm max-w-[16rem]'>¡Hola! Soy la mascota de HippoSoft</p>
                     <button
                         type='button'
-                        onClick={() => closeHippoRef.current()}
+                        onClick={() => goToRef.current('card')}
                         className='flex items-center gap-2 rounded-full border border-white/20 py-2.5 px-5 text-[#273346] text-sm hover:bg-white/10 transition-colors'
                     >
                         Volver a la tarjeta
@@ -230,7 +218,7 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
                 </div>
 
                 <div
-                    ref={cardRef}
+                    ref={(el) => { panelRefs.current.card = el; }}
                     aria-hidden={view !== 'card'}
                     className='relative z-10 w-full flex flex-col items-center gap-8 text-center'
                     style={{ pointerEvents: view === 'card' ? 'auto' : 'none' }}
@@ -270,19 +258,12 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
                             <span>WhatsApp</span>
                         </Link>
 
-                        <button
-                            type='button'
-                            onClick={() => handleSaveContact({ name, role, email, whatsapp })}
-                            className='flex items-center justify-center gap-3 w-full rounded-full border border-white/20 py-3 px-6 text-[#273346] hover:bg-white/10 transition-colors'
-                        >
-                            Guardar contacto
-                        </button>
                     </div>
 
                     <div className='flex flex-col items-center gap-1 mt-2'>
                         <button
                             type='button'
-                            onClick={() => openQRRef.current()}
+                            onClick={() => goToRef.current('qr')}
                             className='flex items-center gap-2 text-[#273346] text-sm hover:text-[#273346]/80 transition-colors'
                         >
                             Deslizá o tocá para ver el QR
@@ -290,7 +271,7 @@ const TeamCard = ({ name, role, photoSrc, email, whatsapp }: TeamCardProps) => {
                         </button>
                         <button
                             type='button'
-                            onClick={() => openHippoRef.current()}
+                            onClick={() => goToRef.current('hippo')}
                             className='flex items-center gap-2 text-[#273346] text-sm hover:text-[#273346]/80 transition-colors'
                         >
                             <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='animate-swipe-hint-left'><path d='M19 12H5M11 6l-6 6 6 6' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/></svg>
